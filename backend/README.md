@@ -21,6 +21,47 @@ Run `npm start` to start the app
 
 Server starts at localhost:3000
 
+## Keystone CLI
+To use the keystone cli run `npx keystone --help`
+
+```
+  Usage
+    $ keystone [command] [options]
+
+  Commands
+      dev             start the project in development mode (default)
+      migrate create  build the project for development and create a migration from the Prisma diff
+      migrate apply   build the project for development and apply any pending migrations
+      postinstall     build the project for development
+      build           build the project (required by `keystone start` and `keystone prisma`)
+      telemetry       sets telemetry preference (enable/disable/status)
+
+      start           start the project
+      prisma          use prisma commands in a Keystone context
+
+  Options
+    --fix (postinstall) @deprecated
+      do build the graphql or prisma schemas, don't validate them
+
+    --frozen (build, migrate)
+      don't build the graphql or prisma schemas, only validate them
+
+    --no-db-push (dev)
+      don't push any updates of your Prisma schema to your database
+
+    --no-prisma (build, dev)
+      don't build or validate the prisma schema
+
+    --no-server (dev, start)
+      don't start the express server
+
+    --no-ui (build, dev, start)
+      don't build and serve the AdminUI
+
+    --with-migrations (start)
+      trigger prisma to run migrations as part of startup
+```
+
 ## Keystone Project Starter
 
 Welcome to Keystone!
