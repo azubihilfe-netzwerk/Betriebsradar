@@ -1,4 +1,12 @@
-# Keystone Project Starter
+## Setup
+1. Make sure you have the latest nodejs version installed: [Download Nodejs](https://nodejs.org>
+2. clone this git repo
+3. cd Betriebsradar
+4. rm -rf backend
+5. run `npm create keystone-app@latest` to install dependencies - choose backend as folder
+6. run `git pull` to update config
+
+## Keystone Project Starter
 
 Welcome to Keystone!
 
