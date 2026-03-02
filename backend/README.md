@@ -1,5 +1,5 @@
 ## Setup
-1. Make sure you have the latest nodejs version installed: [Download Nodejs](https://nodejs.org>
+1. Make sure you have the latest nodejs version installed: [Download Nodejs](https://nodejs.org)
 2. clone this git repo
 3. cd Betriebsradar
 4. rm -rf backend
