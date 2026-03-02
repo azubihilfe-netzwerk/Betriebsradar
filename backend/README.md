@@ -1,10 +1,25 @@
 ## Setup
+
 1. Make sure you have the latest nodejs version installed: [Download Nodejs](https://nodejs.org)
 2. clone this git repo
 3. cd Betriebsradar
 4. rm -rf backend
 5. run `npm create keystone-app@latest` to install dependencies - choose backend as folder
 6. run `git pull` to update config
+
+## Dev Environment
+
+```
+npm run dev
+```
+Server starts at localhost:3000
+
+## Production Environment
+
+Run `npm run build` to build the app and migrate schemas
+Run `npm start` to start the app
+
+Server starts at localhost:3000
 
 ## Keystone Project Starter
 
