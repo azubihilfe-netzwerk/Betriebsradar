@@ -23,6 +23,7 @@ Server starts at localhost:3000
 
 ## Keystone CLI
 To use the keystone cli run `npx keystone --help`
+See docs [https://keystonejs.com/docs/guides/cli](https://keystonejs.com/docs/guides/cli)
 
 ```
   Usage
