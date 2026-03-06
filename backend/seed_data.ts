@@ -1,15 +1,14 @@
 // Generic function to get or create an entity by name
-async function getOrCreateByName(context: any, entity: string, data: any) {
+async function getOrCreateByName(context: any, entity: string, data: any, queryField: string = 'name') {
   const existing = await context.query[entity].findMany({
-    where: { name: { equals: data.name } },
-
+    where: { [queryField]: { equals: data[queryField] } },
   });
   if (existing.length === 0) {
     let created = await context.query[entity].createOne({ data });
-    console.log(`Created ${entity}: ${data.name}`);
+    console.log(`Created ${entity}: ${data[queryField]}`);
     return created;
   } else {
-    console.log(`${entity} already exists: ${data.name}`);
+    console.log(`${entity} already exists: ${data[queryField]}`);
     return existing[0];
   }
 }
@@ -35,12 +34,20 @@ export async function main() {
   await getOrCreateByName(context, 'User', adminUser);
   
 
+  const annaUser = getOrCreateByName(context, 'User', {
+    name: 'Anna Mustermann',
+    email: 'anna@example.com',
+    password: "test1234",
+    roles: ['reviewer'],
+  }, "email");
+
   // Seed 2 reviewers
   const reviewers = [
     {
       name: 'Anna Mustermann',
       publishName: true,
       gender: 'cis_female',
+      user: { connect: { id: annaUser.id } },
     },
     {
       name: 'Max Beispiel',

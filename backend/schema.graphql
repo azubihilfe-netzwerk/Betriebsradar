@@ -6,11 +6,18 @@ type User {
   name: String
   email: String
   password: PasswordState
+  roles: [UserRoleType!]
   createdAt: DateTime
 }
 
 type PasswordState {
   isSet: Boolean!
+}
+
+enum UserRoleType {
+  admin
+  reviewer
+  editor
 }
 
 scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
@@ -96,6 +103,7 @@ input UserUpdateInput {
   name: String
   email: String
   password: String
+  roles: [UserRoleType!]
   createdAt: DateTime
 }
 
@@ -108,6 +116,7 @@ input UserCreateInput {
   name: String
   email: String
   password: String
+  roles: [UserRoleType!]
   createdAt: DateTime
 }
 

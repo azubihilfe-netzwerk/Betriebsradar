@@ -16,6 +16,7 @@ model User {
   name               String     @default("")
   email              String     @unique @default("")
   password           String
+  roles              String     @default("[]")
   createdAt          DateTime?  @default(now())
   from_Reviewer_user Reviewer[] @relation("Reviewer_user")
 }
