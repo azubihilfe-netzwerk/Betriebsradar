@@ -6,13 +6,15 @@
     "dev": "keystone dev",
     "build": "keystone build",
     "postinstall": "keystone postinstall",
-    "start": "keystone start --with-migrations"
+    "start": "keystone start --with-migrations",
+    "seed_data": "tsx seed_data.ts"
 
   },
   "dependencies": {
     "@keystone-6/auth": "^8.0.0",
     "@keystone-6/core": "^6.0.0",
     "@keystone-6/fields-document": "^9.0.0",
-    "typescript": "^5.5.0"
+    "typescript": "^5.5.0",
+    "tsx": "^4.21.0"
   }
 }

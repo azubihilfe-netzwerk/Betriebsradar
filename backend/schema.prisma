@@ -12,27 +12,89 @@ generator client {
 }
 
 model User {
+  id                 String     @id @default(cuid())
+  name               String     @default("")
+  email              String     @unique @default("")
+  password           String
+  createdAt          DateTime?  @default(now())
+  from_Reviewer_user Reviewer[] @relation("Reviewer_user")
+}
+
+model Reviewer {
+  id          String   @id @default(cuid())
+  name        String   @default("")
+  publishName Boolean  @default(false)
+  gender      String?
+  user        User?    @relation("Reviewer_user", fields: [userId], references: [id])
+  userId      String?  @map("user")
+  reviews     Review[] @relation("Review_reviewer")
+
+  @@index([userId])
+}
+
+model Company {
+  id                  String          @id @default(cuid())
+  name                String          @default("")
+  description         String          @default("")
+  industry            String          @default("")
+  trade               String          @default("")
+  size                String
+  collective          Boolean         @default(false)
+  contact             String          @default("")
+  hoursPerWeek        Int
+  trainingShortenable Boolean         @default(false)
+  partTime            Boolean         @default(false)
+  trainingModels      TrainingModel[] @relation("Company_trainingModels")
+  reviews             Review[]        @relation("Review_company")
+  locations           String          @default("")
+  link                String          @default("")
+}
+
+model TrainingModel {
   id        String    @id @default(cuid())
-  name      String    @default("")
-  email     String    @unique @default("")
-  password  String
-  posts     Post[]    @relation("Post_author")
-  createdAt DateTime? @default(now())
+  title     String    @default("")
+  duration  String    @default("")
+  companies Company[] @relation("Company_trainingModels")
 }
 
-model Post {
-  id       String  @id @default(cuid())
-  title    String  @default("")
-  content  String  @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  author   User?   @relation("Post_author", fields: [authorId], references: [id])
-  authorId String? @map("author")
-  tags     Tag[]   @relation("Post_tags")
+model Review {
+  id                     String                @id @default(cuid())
+  name                   String                @default("")
+  reviewer               Reviewer?             @relation("Review_reviewer", fields: [reviewerId], references: [id])
+  reviewerId             String?               @map("reviewer")
+  company                Company?              @relation("Review_company", fields: [companyId], references: [id])
+  companyId              String?               @map("company")
+  ageAtEmployment        Int
+  genderOuted            Boolean               @default(false)
+  position               String
+  duration               String
+  yearOfHiring           String                @default("")
+  listenedTo             Boolean               @default(false)
+  tone                   String?
+  explained              String?
+  canAskColleagues       Boolean               @default(false)
+  canAskBoss             Boolean               @default(false)
+  proximity              String?
+  boundariesRespected    Boolean               @default(false)
+  appreciated            String?
+  experienceText         String                @default("")
+  groupsInCompany        DiscriminationGroup[] @relation("DiscriminationGroup_reviews")
+  languages              String                @default("")
+  discriminationGroups   DiscriminationGroup[] @relation("DiscriminationGroup_recommendedByReviews")
+  sharedWithCompany      String?
+  feltComfortableSharing String?
+  needsRespected         String?
+  feedback               String                @default("")
+  moreWishes             String                @default("")
+  status                 String?               @default("draft")
 
-  @@index([authorId])
+  @@index([reviewerId])
+  @@index([companyId])
 }
 
-model Tag {
-  id    String @id @default(cuid())
-  name  String @default("")
-  posts Post[] @relation("Post_tags")
+model DiscriminationGroup {
+  id                   String   @id @default(cuid())
+  name                 String   @unique @default("")
+  reviews              Review[] @relation("DiscriminationGroup_reviews")
+  recommendedByReviews Review[] @relation("DiscriminationGroup_recommendedByReviews")
 }

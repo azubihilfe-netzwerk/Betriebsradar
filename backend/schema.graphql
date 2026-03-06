@@ -6,8 +6,6 @@ type User {
   name: String
   email: String
   password: PasswordState
-  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
-  postsCount(where: PostWhereInput! = {}): Int
   createdAt: DateTime
 }
 
@@ -29,7 +27,6 @@ input UserWhereInput {
   id: IDFilter
   name: StringFilter
   email: StringFilter
-  posts: PostManyRelationFilter
   createdAt: DateTimeNullableFilter
 }
 
@@ -72,12 +69,6 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
-input PostManyRelationFilter {
-  every: PostWhereInput
-  some: PostWhereInput
-  none: PostWhereInput
-}
-
 input DateTimeNullableFilter {
   equals: DateTime
   in: [DateTime!]
@@ -105,15 +96,7 @@ input UserUpdateInput {
   name: String
   email: String
   password: String
-  posts: PostRelateToManyForUpdateInput
   createdAt: DateTime
-}
-
-input PostRelateToManyForUpdateInput {
-  disconnect: [PostWhereUniqueInput!]
-  set: [PostWhereUniqueInput!]
-  create: [PostCreateInput!]
-  connect: [PostWhereUniqueInput!]
 }
 
 input UserUpdateArgs {
@@ -125,58 +108,73 @@ input UserCreateInput {
   name: String
   email: String
   password: String
-  posts: PostRelateToManyForCreateInput
   createdAt: DateTime
 }
 
-input PostRelateToManyForCreateInput {
-  create: [PostCreateInput!]
-  connect: [PostWhereUniqueInput!]
-}
-
-type Post {
+type Reviewer {
   id: ID!
-  title: String
-  content: Post_content_Document
-  author: User
-  tags(where: TagWhereInput! = {}, orderBy: [TagOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TagWhereUniqueInput): [Tag!]
-  tagsCount(where: TagWhereInput! = {}): Int
+  name: String
+  publishName: Boolean
+  gender: String
+  user: User
+  reviews(where: ReviewWhereInput! = {}, orderBy: [ReviewOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewWhereUniqueInput): [Review!]
+  reviewsCount(where: ReviewWhereInput! = {}): Int
 }
 
-type Post_content_Document {
-  document(hydrateRelationships: Boolean! = false): JSON!
-}
-
-input PostWhereUniqueInput {
+input ReviewerWhereUniqueInput {
   id: ID
 }
 
-input PostWhereInput {
-  AND: [PostWhereInput!]
-  OR: [PostWhereInput!]
-  NOT: [PostWhereInput!]
+input ReviewerWhereInput {
+  AND: [ReviewerWhereInput!]
+  OR: [ReviewerWhereInput!]
+  NOT: [ReviewerWhereInput!]
   id: IDFilter
-  title: StringFilter
-  author: UserWhereInput
-  tags: TagManyRelationFilter
+  name: StringFilter
+  publishName: BooleanFilter
+  gender: StringNullableFilter
+  user: UserWhereInput
+  reviews: ReviewManyRelationFilter
 }
 
-input TagManyRelationFilter {
-  every: TagWhereInput
-  some: TagWhereInput
-  none: TagWhereInput
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
 }
 
-input PostOrderByInput {
+input StringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: StringNullableFilter
+}
+
+input ReviewManyRelationFilter {
+  every: ReviewWhereInput
+  some: ReviewWhereInput
+  none: ReviewWhereInput
+}
+
+input ReviewerOrderByInput {
   id: OrderDirection
-  title: OrderDirection
+  name: OrderDirection
+  publishName: OrderDirection
+  gender: OrderDirection
 }
 
-input PostUpdateInput {
-  title: String
-  content: JSON
-  author: UserRelateToOneForUpdateInput
-  tags: TagRelateToManyForUpdateInput
+input ReviewerUpdateInput {
+  name: String
+  publishName: Boolean
+  gender: String
+  user: UserRelateToOneForUpdateInput
+  reviews: ReviewRelateToManyForUpdateInput
 }
 
 input UserRelateToOneForUpdateInput {
@@ -185,23 +183,24 @@ input UserRelateToOneForUpdateInput {
   disconnect: Boolean
 }
 
-input TagRelateToManyForUpdateInput {
-  disconnect: [TagWhereUniqueInput!]
-  set: [TagWhereUniqueInput!]
-  create: [TagCreateInput!]
-  connect: [TagWhereUniqueInput!]
+input ReviewRelateToManyForUpdateInput {
+  disconnect: [ReviewWhereUniqueInput!]
+  set: [ReviewWhereUniqueInput!]
+  create: [ReviewCreateInput!]
+  connect: [ReviewWhereUniqueInput!]
 }
 
-input PostUpdateArgs {
-  where: PostWhereUniqueInput!
-  data: PostUpdateInput!
+input ReviewerUpdateArgs {
+  where: ReviewerWhereUniqueInput!
+  data: ReviewerUpdateInput!
 }
 
-input PostCreateInput {
-  title: String
-  content: JSON
-  author: UserRelateToOneForCreateInput
-  tags: TagRelateToManyForCreateInput
+input ReviewerCreateInput {
+  name: String
+  publishName: Boolean
+  gender: String
+  user: UserRelateToOneForCreateInput
+  reviews: ReviewRelateToManyForCreateInput
 }
 
 input UserRelateToOneForCreateInput {
@@ -209,49 +208,445 @@ input UserRelateToOneForCreateInput {
   connect: UserWhereUniqueInput
 }
 
-input TagRelateToManyForCreateInput {
-  create: [TagCreateInput!]
-  connect: [TagWhereUniqueInput!]
+input ReviewRelateToManyForCreateInput {
+  create: [ReviewCreateInput!]
+  connect: [ReviewWhereUniqueInput!]
 }
 
-type Tag {
+type Company {
   id: ID!
   name: String
-  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
-  postsCount(where: PostWhereInput! = {}): Int
+  description: String
+  industry: String
+  trade: String
+  size: String
+  collective: Boolean
+  contact: String
+  hoursPerWeek: Int
+  trainingShortenable: Boolean
+  partTime: Boolean
+  trainingModels(where: TrainingModelWhereInput! = {}, orderBy: [TrainingModelOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TrainingModelWhereUniqueInput): [TrainingModel!]
+  trainingModelsCount(where: TrainingModelWhereInput! = {}): Int
+  reviews(where: ReviewWhereInput! = {}, orderBy: [ReviewOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewWhereUniqueInput): [Review!]
+  reviewsCount(where: ReviewWhereInput! = {}): Int
+  locations: String
+  link: String
 }
 
-input TagWhereUniqueInput {
+input CompanyWhereUniqueInput {
   id: ID
 }
 
-input TagWhereInput {
-  AND: [TagWhereInput!]
-  OR: [TagWhereInput!]
-  NOT: [TagWhereInput!]
+input CompanyWhereInput {
+  AND: [CompanyWhereInput!]
+  OR: [CompanyWhereInput!]
+  NOT: [CompanyWhereInput!]
   id: IDFilter
   name: StringFilter
-  posts: PostManyRelationFilter
+  description: StringFilter
+  industry: StringFilter
+  trade: StringFilter
+  size: StringFilter
+  collective: BooleanFilter
+  contact: StringFilter
+  hoursPerWeek: IntFilter
+  trainingShortenable: BooleanFilter
+  partTime: BooleanFilter
+  trainingModels: TrainingModelManyRelationFilter
+  reviews: ReviewManyRelationFilter
+  locations: StringFilter
+  link: StringFilter
 }
 
-input TagOrderByInput {
+input IntFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntFilter
+}
+
+input TrainingModelManyRelationFilter {
+  every: TrainingModelWhereInput
+  some: TrainingModelWhereInput
+  none: TrainingModelWhereInput
+}
+
+input CompanyOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  description: OrderDirection
+  industry: OrderDirection
+  trade: OrderDirection
+  size: OrderDirection
+  collective: OrderDirection
+  contact: OrderDirection
+  hoursPerWeek: OrderDirection
+  trainingShortenable: OrderDirection
+  partTime: OrderDirection
+  locations: OrderDirection
+  link: OrderDirection
+}
+
+input CompanyUpdateInput {
+  name: String
+  description: String
+  industry: String
+  trade: String
+  size: String
+  collective: Boolean
+  contact: String
+  hoursPerWeek: Int
+  trainingShortenable: Boolean
+  partTime: Boolean
+  trainingModels: TrainingModelRelateToManyForUpdateInput
+  reviews: ReviewRelateToManyForUpdateInput
+  locations: String
+  link: String
+}
+
+input TrainingModelRelateToManyForUpdateInput {
+  disconnect: [TrainingModelWhereUniqueInput!]
+  set: [TrainingModelWhereUniqueInput!]
+  create: [TrainingModelCreateInput!]
+  connect: [TrainingModelWhereUniqueInput!]
+}
+
+input CompanyUpdateArgs {
+  where: CompanyWhereUniqueInput!
+  data: CompanyUpdateInput!
+}
+
+input CompanyCreateInput {
+  name: String
+  description: String
+  industry: String
+  trade: String
+  size: String
+  collective: Boolean
+  contact: String
+  hoursPerWeek: Int
+  trainingShortenable: Boolean
+  partTime: Boolean
+  trainingModels: TrainingModelRelateToManyForCreateInput
+  reviews: ReviewRelateToManyForCreateInput
+  locations: String
+  link: String
+}
+
+input TrainingModelRelateToManyForCreateInput {
+  create: [TrainingModelCreateInput!]
+  connect: [TrainingModelWhereUniqueInput!]
+}
+
+type TrainingModel {
+  id: ID!
+  title: String
+  duration: String
+  companies(where: CompanyWhereInput! = {}, orderBy: [CompanyOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CompanyWhereUniqueInput): [Company!]
+  companiesCount(where: CompanyWhereInput! = {}): Int
+}
+
+input TrainingModelWhereUniqueInput {
+  id: ID
+}
+
+input TrainingModelWhereInput {
+  AND: [TrainingModelWhereInput!]
+  OR: [TrainingModelWhereInput!]
+  NOT: [TrainingModelWhereInput!]
+  id: IDFilter
+  title: StringFilter
+  duration: StringFilter
+  companies: CompanyManyRelationFilter
+}
+
+input CompanyManyRelationFilter {
+  every: CompanyWhereInput
+  some: CompanyWhereInput
+  none: CompanyWhereInput
+}
+
+input TrainingModelOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+  duration: OrderDirection
+}
+
+input TrainingModelUpdateInput {
+  title: String
+  duration: String
+  companies: CompanyRelateToManyForUpdateInput
+}
+
+input CompanyRelateToManyForUpdateInput {
+  disconnect: [CompanyWhereUniqueInput!]
+  set: [CompanyWhereUniqueInput!]
+  create: [CompanyCreateInput!]
+  connect: [CompanyWhereUniqueInput!]
+}
+
+input TrainingModelUpdateArgs {
+  where: TrainingModelWhereUniqueInput!
+  data: TrainingModelUpdateInput!
+}
+
+input TrainingModelCreateInput {
+  title: String
+  duration: String
+  companies: CompanyRelateToManyForCreateInput
+}
+
+input CompanyRelateToManyForCreateInput {
+  create: [CompanyCreateInput!]
+  connect: [CompanyWhereUniqueInput!]
+}
+
+type Review {
+  id: ID!
+  name: String
+  reviewer: Reviewer
+  company: Company
+  ageAtEmployment: Int
+  genderOuted: Boolean
+  position: String
+  duration: String
+  yearOfHiring: String
+  listenedTo: Boolean
+  tone: String
+  explained: String
+  canAskColleagues: Boolean
+  canAskBoss: Boolean
+  proximity: String
+  boundariesRespected: Boolean
+  appreciated: String
+  experienceText: String
+  groupsInCompany(where: DiscriminationGroupWhereInput! = {}, orderBy: [DiscriminationGroupOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: DiscriminationGroupWhereUniqueInput): [DiscriminationGroup!]
+  groupsInCompanyCount(where: DiscriminationGroupWhereInput! = {}): Int
+  languages: String
+  discriminationGroups(where: DiscriminationGroupWhereInput! = {}, orderBy: [DiscriminationGroupOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: DiscriminationGroupWhereUniqueInput): [DiscriminationGroup!]
+  discriminationGroupsCount(where: DiscriminationGroupWhereInput! = {}): Int
+  sharedWithCompany: String
+  feltComfortableSharing: String
+  needsRespected: String
+  feedback: String
+  moreWishes: String
+  status: String
+}
+
+input ReviewWhereUniqueInput {
+  id: ID
+}
+
+input ReviewWhereInput {
+  AND: [ReviewWhereInput!]
+  OR: [ReviewWhereInput!]
+  NOT: [ReviewWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  reviewer: ReviewerWhereInput
+  company: CompanyWhereInput
+  ageAtEmployment: IntFilter
+  genderOuted: BooleanFilter
+  position: StringFilter
+  duration: StringFilter
+  yearOfHiring: StringFilter
+  listenedTo: BooleanFilter
+  tone: StringNullableFilter
+  explained: StringNullableFilter
+  canAskColleagues: BooleanFilter
+  canAskBoss: BooleanFilter
+  proximity: StringNullableFilter
+  boundariesRespected: BooleanFilter
+  appreciated: StringNullableFilter
+  experienceText: StringFilter
+  groupsInCompany: DiscriminationGroupManyRelationFilter
+  languages: StringFilter
+  discriminationGroups: DiscriminationGroupManyRelationFilter
+  sharedWithCompany: StringNullableFilter
+  feltComfortableSharing: StringNullableFilter
+  needsRespected: StringNullableFilter
+  feedback: StringFilter
+  moreWishes: StringFilter
+  status: StringNullableFilter
+}
+
+input DiscriminationGroupManyRelationFilter {
+  every: DiscriminationGroupWhereInput
+  some: DiscriminationGroupWhereInput
+  none: DiscriminationGroupWhereInput
+}
+
+input ReviewOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  ageAtEmployment: OrderDirection
+  genderOuted: OrderDirection
+  position: OrderDirection
+  duration: OrderDirection
+  yearOfHiring: OrderDirection
+  listenedTo: OrderDirection
+  tone: OrderDirection
+  explained: OrderDirection
+  canAskColleagues: OrderDirection
+  canAskBoss: OrderDirection
+  proximity: OrderDirection
+  boundariesRespected: OrderDirection
+  appreciated: OrderDirection
+  experienceText: OrderDirection
+  languages: OrderDirection
+  sharedWithCompany: OrderDirection
+  feltComfortableSharing: OrderDirection
+  needsRespected: OrderDirection
+  feedback: OrderDirection
+  moreWishes: OrderDirection
+  status: OrderDirection
+}
+
+input ReviewUpdateInput {
+  name: String
+  reviewer: ReviewerRelateToOneForUpdateInput
+  company: CompanyRelateToOneForUpdateInput
+  ageAtEmployment: Int
+  genderOuted: Boolean
+  position: String
+  duration: String
+  yearOfHiring: String
+  listenedTo: Boolean
+  tone: String
+  explained: String
+  canAskColleagues: Boolean
+  canAskBoss: Boolean
+  proximity: String
+  boundariesRespected: Boolean
+  appreciated: String
+  experienceText: String
+  groupsInCompany: DiscriminationGroupRelateToManyForUpdateInput
+  languages: String
+  discriminationGroups: DiscriminationGroupRelateToManyForUpdateInput
+  sharedWithCompany: String
+  feltComfortableSharing: String
+  needsRespected: String
+  feedback: String
+  moreWishes: String
+  status: String
+}
+
+input ReviewerRelateToOneForUpdateInput {
+  create: ReviewerCreateInput
+  connect: ReviewerWhereUniqueInput
+  disconnect: Boolean
+}
+
+input CompanyRelateToOneForUpdateInput {
+  create: CompanyCreateInput
+  connect: CompanyWhereUniqueInput
+  disconnect: Boolean
+}
+
+input DiscriminationGroupRelateToManyForUpdateInput {
+  disconnect: [DiscriminationGroupWhereUniqueInput!]
+  set: [DiscriminationGroupWhereUniqueInput!]
+  create: [DiscriminationGroupCreateInput!]
+  connect: [DiscriminationGroupWhereUniqueInput!]
+}
+
+input ReviewUpdateArgs {
+  where: ReviewWhereUniqueInput!
+  data: ReviewUpdateInput!
+}
+
+input ReviewCreateInput {
+  name: String
+  reviewer: ReviewerRelateToOneForCreateInput
+  company: CompanyRelateToOneForCreateInput
+  ageAtEmployment: Int
+  genderOuted: Boolean
+  position: String
+  duration: String
+  yearOfHiring: String
+  listenedTo: Boolean
+  tone: String
+  explained: String
+  canAskColleagues: Boolean
+  canAskBoss: Boolean
+  proximity: String
+  boundariesRespected: Boolean
+  appreciated: String
+  experienceText: String
+  groupsInCompany: DiscriminationGroupRelateToManyForCreateInput
+  languages: String
+  discriminationGroups: DiscriminationGroupRelateToManyForCreateInput
+  sharedWithCompany: String
+  feltComfortableSharing: String
+  needsRespected: String
+  feedback: String
+  moreWishes: String
+  status: String
+}
+
+input ReviewerRelateToOneForCreateInput {
+  create: ReviewerCreateInput
+  connect: ReviewerWhereUniqueInput
+}
+
+input CompanyRelateToOneForCreateInput {
+  create: CompanyCreateInput
+  connect: CompanyWhereUniqueInput
+}
+
+input DiscriminationGroupRelateToManyForCreateInput {
+  create: [DiscriminationGroupCreateInput!]
+  connect: [DiscriminationGroupWhereUniqueInput!]
+}
+
+type DiscriminationGroup {
+  id: ID!
+  name: String
+  reviews(where: ReviewWhereInput! = {}, orderBy: [ReviewOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewWhereUniqueInput): [Review!]
+  reviewsCount(where: ReviewWhereInput! = {}): Int
+  recommendedByReviews(where: ReviewWhereInput! = {}, orderBy: [ReviewOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewWhereUniqueInput): [Review!]
+  recommendedByReviewsCount(where: ReviewWhereInput! = {}): Int
+}
+
+input DiscriminationGroupWhereUniqueInput {
+  id: ID
+  name: String
+}
+
+input DiscriminationGroupWhereInput {
+  AND: [DiscriminationGroupWhereInput!]
+  OR: [DiscriminationGroupWhereInput!]
+  NOT: [DiscriminationGroupWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  reviews: ReviewManyRelationFilter
+  recommendedByReviews: ReviewManyRelationFilter
+}
+
+input DiscriminationGroupOrderByInput {
   id: OrderDirection
   name: OrderDirection
 }
 
-input TagUpdateInput {
+input DiscriminationGroupUpdateInput {
   name: String
-  posts: PostRelateToManyForUpdateInput
+  reviews: ReviewRelateToManyForUpdateInput
+  recommendedByReviews: ReviewRelateToManyForUpdateInput
 }
 
-input TagUpdateArgs {
-  where: TagWhereUniqueInput!
-  data: TagUpdateInput!
+input DiscriminationGroupUpdateArgs {
+  where: DiscriminationGroupWhereUniqueInput!
+  data: DiscriminationGroupUpdateInput!
 }
 
-input TagCreateInput {
+input DiscriminationGroupCreateInput {
   name: String
-  posts: PostRelateToManyForCreateInput
+  reviews: ReviewRelateToManyForCreateInput
+  recommendedByReviews: ReviewRelateToManyForCreateInput
 }
 
 """
@@ -266,18 +661,36 @@ type Mutation {
   updateUsers(data: [UserUpdateArgs!]!): [User]
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUsers(where: [UserWhereUniqueInput!]!): [User]
-  createPost(data: PostCreateInput!): Post
-  createPosts(data: [PostCreateInput!]!): [Post]
-  updatePost(where: PostWhereUniqueInput!, data: PostUpdateInput!): Post
-  updatePosts(data: [PostUpdateArgs!]!): [Post]
-  deletePost(where: PostWhereUniqueInput!): Post
-  deletePosts(where: [PostWhereUniqueInput!]!): [Post]
-  createTag(data: TagCreateInput!): Tag
-  createTags(data: [TagCreateInput!]!): [Tag]
-  updateTag(where: TagWhereUniqueInput!, data: TagUpdateInput!): Tag
-  updateTags(data: [TagUpdateArgs!]!): [Tag]
-  deleteTag(where: TagWhereUniqueInput!): Tag
-  deleteTags(where: [TagWhereUniqueInput!]!): [Tag]
+  createReviewer(data: ReviewerCreateInput!): Reviewer
+  createReviewers(data: [ReviewerCreateInput!]!): [Reviewer]
+  updateReviewer(where: ReviewerWhereUniqueInput!, data: ReviewerUpdateInput!): Reviewer
+  updateReviewers(data: [ReviewerUpdateArgs!]!): [Reviewer]
+  deleteReviewer(where: ReviewerWhereUniqueInput!): Reviewer
+  deleteReviewers(where: [ReviewerWhereUniqueInput!]!): [Reviewer]
+  createCompany(data: CompanyCreateInput!): Company
+  createCompanies(data: [CompanyCreateInput!]!): [Company]
+  updateCompany(where: CompanyWhereUniqueInput!, data: CompanyUpdateInput!): Company
+  updateCompanies(data: [CompanyUpdateArgs!]!): [Company]
+  deleteCompany(where: CompanyWhereUniqueInput!): Company
+  deleteCompanies(where: [CompanyWhereUniqueInput!]!): [Company]
+  createTrainingModel(data: TrainingModelCreateInput!): TrainingModel
+  createTrainingModels(data: [TrainingModelCreateInput!]!): [TrainingModel]
+  updateTrainingModel(where: TrainingModelWhereUniqueInput!, data: TrainingModelUpdateInput!): TrainingModel
+  updateTrainingModels(data: [TrainingModelUpdateArgs!]!): [TrainingModel]
+  deleteTrainingModel(where: TrainingModelWhereUniqueInput!): TrainingModel
+  deleteTrainingModels(where: [TrainingModelWhereUniqueInput!]!): [TrainingModel]
+  createReview(data: ReviewCreateInput!): Review
+  createReviews(data: [ReviewCreateInput!]!): [Review]
+  updateReview(where: ReviewWhereUniqueInput!, data: ReviewUpdateInput!): Review
+  updateReviews(data: [ReviewUpdateArgs!]!): [Review]
+  deleteReview(where: ReviewWhereUniqueInput!): Review
+  deleteReviews(where: [ReviewWhereUniqueInput!]!): [Review]
+  createDiscriminationGroup(data: DiscriminationGroupCreateInput!): DiscriminationGroup
+  createDiscriminationGroups(data: [DiscriminationGroupCreateInput!]!): [DiscriminationGroup]
+  updateDiscriminationGroup(where: DiscriminationGroupWhereUniqueInput!, data: DiscriminationGroupUpdateInput!): DiscriminationGroup
+  updateDiscriminationGroups(data: [DiscriminationGroupUpdateArgs!]!): [DiscriminationGroup]
+  deleteDiscriminationGroup(where: DiscriminationGroupWhereUniqueInput!): DiscriminationGroup
+  deleteDiscriminationGroups(where: [DiscriminationGroupWhereUniqueInput!]!): [DiscriminationGroup]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -304,12 +717,21 @@ type Query {
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   usersCount(where: UserWhereInput! = {}): Int
-  post(where: PostWhereUniqueInput!): Post
-  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
-  postsCount(where: PostWhereInput! = {}): Int
-  tag(where: TagWhereUniqueInput!): Tag
-  tags(where: TagWhereInput! = {}, orderBy: [TagOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TagWhereUniqueInput): [Tag!]
-  tagsCount(where: TagWhereInput! = {}): Int
+  reviewer(where: ReviewerWhereUniqueInput!): Reviewer
+  reviewers(where: ReviewerWhereInput! = {}, orderBy: [ReviewerOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewerWhereUniqueInput): [Reviewer!]
+  reviewersCount(where: ReviewerWhereInput! = {}): Int
+  company(where: CompanyWhereUniqueInput!): Company
+  companies(where: CompanyWhereInput! = {}, orderBy: [CompanyOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CompanyWhereUniqueInput): [Company!]
+  companiesCount(where: CompanyWhereInput! = {}): Int
+  trainingModel(where: TrainingModelWhereUniqueInput!): TrainingModel
+  trainingModels(where: TrainingModelWhereInput! = {}, orderBy: [TrainingModelOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TrainingModelWhereUniqueInput): [TrainingModel!]
+  trainingModelsCount(where: TrainingModelWhereInput! = {}): Int
+  review(where: ReviewWhereUniqueInput!): Review
+  reviews(where: ReviewWhereInput! = {}, orderBy: [ReviewOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewWhereUniqueInput): [Review!]
+  reviewsCount(where: ReviewWhereInput! = {}): Int
+  discriminationGroup(where: DiscriminationGroupWhereUniqueInput!): DiscriminationGroup
+  discriminationGroups(where: DiscriminationGroupWhereInput! = {}, orderBy: [DiscriminationGroupOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: DiscriminationGroupWhereUniqueInput): [DiscriminationGroup!]
+  discriminationGroupsCount(where: DiscriminationGroupWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }
