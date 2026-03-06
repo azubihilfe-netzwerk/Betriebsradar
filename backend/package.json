@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "keystone dev",
-    "start": "keystone start",
-    "build": "keystone build"
+    "build": "keystone build",
+    "postinstall": "keystone postinstall",
+    "start": "keystone start --with-migrations"
+
   },
   "dependencies": {
     "@keystone-6/auth": "^8.0.0",
