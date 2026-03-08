@@ -92,7 +92,30 @@ export const lists = {
   }),
 
   Review: list({
-    access: allowAll,
+    access: {   
+      filter: 
+        {
+          query: ({ session, context, listKey, operation }) => {
+            //If logged in as author, I can only see my own reviews, otherwise I can see all published reviews
+            if (session.data.roles?.includes('author')) {
+              return { reviewer: { user: { id: context.session?.data.id } } };
+            } else {
+              return { status:  {
+                equals: 'published'
+               }};
+            }
+          },
+          update: ({ session, context, listKey, operation }) => {
+            return { reviewer: { user: { id: context.session?.data.id } } };
+          },
+          delete: ({ session, context, listKey, operation }) => {
+            return { reviewer: { user: { id: context.session?.data.id } } };
+          },
+        },
+        operation: allowAll,
+       
+      
+      }      ,
     fields: {
       name: text({ label: 'Titel des Erfahrungsberichts', validation: { isRequired: true } }),
       reviewer: relationship({ ref: 'Reviewer.reviews', label: 'Reviewer' }),
@@ -206,7 +229,7 @@ export const lists = {
         options: [
           { label: 'Entwurf', value: 'draft' },
           { label: 'In Review', value: 'in_review' },
-          { label: 'Published', value: 'published' },
+          { label: 'Veröffentlicht', value: 'published' },
         ],
         defaultValue: 'draft',
         ui: { displayMode: 'segmented-control' },
