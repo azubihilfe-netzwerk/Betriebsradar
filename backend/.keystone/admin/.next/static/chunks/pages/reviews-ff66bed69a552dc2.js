@@ -1,0 +1,1 @@
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[929],{8578:function(n,e,u){(window.__NEXT_P=window.__NEXT_P||[]).push(["/reviews",function(){return u(9370)}])},9370:function(n,e,u){"use strict";u.r(e);var _=u(2054);e.default=(0,_.d)({listKey:"Review"})}},function(n){n.O(0,[54,888,774,179],function(){return n(n.s=8578)}),_N_E=n.O()}]);

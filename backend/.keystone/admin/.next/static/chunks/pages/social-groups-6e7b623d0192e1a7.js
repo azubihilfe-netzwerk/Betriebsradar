@@ -1,0 +1,1 @@
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[709],{1078:function(n,u,_){(window.__NEXT_P=window.__NEXT_P||[]).push(["/social-groups",function(){return _(6124)}])},6124:function(n,u,_){"use strict";_.r(u);var i=_(2054);u.default=(0,i.d)({listKey:"SocialGroup"})}},function(n){n.O(0,[54,888,774,179],function(){return n(n.s=1078)}),_N_E=n.O()}]);

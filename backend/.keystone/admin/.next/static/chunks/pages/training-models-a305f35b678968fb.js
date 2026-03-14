@@ -1,0 +1,1 @@
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[148],{4606:function(n,i,u){(window.__NEXT_P=window.__NEXT_P||[]).push(["/training-models",function(){return u(3277)}])},3277:function(n,i,u){"use strict";u.r(i);var t=u(2054);i.default=(0,t.d)({listKey:"TrainingModel"})}},function(n){n.O(0,[54,888,774,179],function(){return n(n.s=4606)}),_N_E=n.O()}]);

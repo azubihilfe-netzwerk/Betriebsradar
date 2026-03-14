@@ -1,0 +1,1 @@
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[782],{4256:function(n,u,_){(window.__NEXT_P=window.__NEXT_P||[]).push(["/companies",function(){return _(1990)}])},1990:function(n,u,_){"use strict";_.r(u);var t=_(2054);u.default=(0,t.d)({listKey:"Company"})}},function(n){n.O(0,[54,888,774,179],function(){return n(n.s=4256)}),_N_E=n.O()}]);

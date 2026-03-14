@@ -1,0 +1,1 @@
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[160],{691:function(n,e,u){(window.__NEXT_P=window.__NEXT_P||[]).push(["/reviewers/[id]",function(){return u(1851)}])},1851:function(n,e,u){"use strict";u.r(e);var i=u(1086);e.default=(0,i.p)({listKey:"Reviewer"})}},function(n){n.O(0,[86,888,774,179],function(){return n(n.s=691)}),_N_E=n.O()}]);
