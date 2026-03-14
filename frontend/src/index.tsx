@@ -4,14 +4,27 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
+import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client/react";
+import { HttpLink } from '@apollo/client';
+
+//create an Apollo Client instance
+const client = new ApolloClient({
+    link: new HttpLink({
+        uri: "/api/graphql",
+    }),
+    cache: new InMemoryCache(),
+});
 
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement
 );
 root.render(
     <BrowserRouter basename={process.env.NODE_ENV === 'production' ? "/liste" : "/"} >
-        <App />
+        <ApolloProvider client={client}>
+            <App />
+        </ApolloProvider>
     </BrowserRouter>
 );
 
