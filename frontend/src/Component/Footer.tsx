@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
 
 const Footer: React.FC = () => {
@@ -12,9 +13,9 @@ const Footer: React.FC = () => {
                 <p className="text-sm">&copy; {new Date().getFullYear()} AzubiNetzwerk. Alle Rechte vorbehalten.</p>
 
                 <div className="flex items-center space-x-4 mt-4 md:mt-0">
-                    <a href="/impressum" className="hover:underline text-sm text-white">Impressum</a>
-                    <a href="/datenschutz" className="hover:underline text-sm text-white">Datenschutz</a>
-                    <a href="/kontakt" className="hover:underline text-sm text-white">Kontakt</a>
+                    <Link to="/impressum" className="hover:underline text-sm text-white">Impressum</Link>
+                    <Link to="/datenschutz" className="hover:underline text-sm text-white">Datenschutz</Link>
+                    <Link to="/kontakt" className="hover:underline text-sm text-white">Kontakt</Link>
 
                     {/* Scroll to Top Button */}
                     <button

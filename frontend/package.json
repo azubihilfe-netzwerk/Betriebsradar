@@ -1,7 +1,7 @@
 {
   "name": "azubihilfe-netzwerk",
   "version": "0.1.0",
-  "homepage": "https://azubihilfe-netzwerk.github.io/liste/",
+  "homepage": "https://azubihilfe-netzwerk.github.io/Betriebsradar",
   "proxy": "http://localhost:3010",
   "private": true,
   "dependencies": {

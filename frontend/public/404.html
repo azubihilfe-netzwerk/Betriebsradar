@@ -3,18 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <title>Redirecting...</title>
-    <script>
-        var base = '/liste';
-        var path = window.location.pathname;
-
-        // Wenn der Pfad nicht mit /liste beginnt → redirect
-        if (!path.startsWith(base)) {
-            var redirectTo = base + path + window.location.search + window.location.hash;
-            window.location.replace(redirectTo);
-        }
-    </script>
 </head>
 <body>
-<p>Redirecting...</p>
+    <h1>404</h1>
+    <p>Page not found</p>
 </body>
 </html>

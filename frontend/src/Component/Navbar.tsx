@@ -28,8 +28,8 @@ const Navbar: React.FC = () => {
 
                 {/* Desktop Links */}
                 <div className="hidden md:flex space-x-6 items-center">
-                    <a href="/" className="text-gray-700 hover:text-navbar-blue  text-lg uppercase font-semibold">Home</a>
-                    <a href="/karte" className="text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Karte</a>
+                    <Link to="/" className="text-gray-700 hover:text-navbar-blue  text-lg uppercase font-semibold">Home</Link>
+                    <Link to="/karte" className="text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Karte</Link>
 
                     {/* Unternehmen mit Dropdown */}
                     <div className="relative group">
@@ -37,12 +37,12 @@ const Navbar: React.FC = () => {
                             Unternehmen <ChevronDown className="ml-1 w-4 h-4" />
                         </button>
                         <div className="absolute left-0 mt-2 w-48 bg-white border rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
-                            <a href="/unternehmeneintragen" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">Eintragen</a>
-                            <a href="/unternehmensuchen" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">Suchen</a>
+                            <Link to="/unternehmeneintragen" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">Eintragen</Link>
+                            <Link to="/unternehmensuchen" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">Suchen</Link>
                         </div>
                     </div>
 
-                    <a href="/kontakt" className="text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Kontakt</a>
+                    <Link to="/kontakt" className="text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Kontakt</Link>
 
                     {/* Auth Buttons */}
                     <div className="flex items-center gap-4 ml-6 pl-6 border-l border-gray-300">
@@ -75,8 +75,8 @@ const Navbar: React.FC = () => {
             {/* Mobile Links */}
             {menuOpen && (
                 <div className="md:hidden bg-white px-4 pb-4 space-y-2">
-                    <a href="/" className="block text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Home</a>
-                    <a href="/karte" className="block text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Karte</a>
+                    <Link to="/" className="block text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Home</Link>
+                    <Link to="/karte" className="block text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Karte</Link>
 
                     {/* Mobile Untermenü Toggle */}
                     <div>
@@ -89,13 +89,13 @@ const Navbar: React.FC = () => {
                         </button>
                         {showUnternehmenSubmenu && (
                             <div className="ml-4 mt-2 space-y-1">
-                                <a href="/unternehmeneintragen" className="block text-sm text-gray-700 hover:text-navbar-blue">Eintragen</a>
-                                <a href="/unternehmensuchen" className="block text-sm text-gray-700 hover:text-navbar-blue">Suchen</a>
+                                <Link to="/unternehmeneintragen" className="block text-sm text-gray-700 hover:text-navbar-blue">Eintragen</Link>
+                                <Link to="/unternehmensuchen" className="block text-sm text-gray-700 hover:text-navbar-blue">Suchen</Link>
                             </div>
                         )}
                     </div>
 
-                    <a href="/kontakt" className="block text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Kontakt</a>
+                    <Link to="/kontakt" className="block text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Kontakt</Link>
 
                     {/* Mobile Auth */}
                     <div className="pt-4 border-t border-gray-200 mt-4">

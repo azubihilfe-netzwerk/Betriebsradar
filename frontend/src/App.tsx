@@ -31,9 +31,9 @@ function App() {
                         <Route path="/kontakt" element={<Kontakt />} />
                         <Route path="/datenschutz" element={<Datenschutz />} />
                         <Route path="/karte" element={<Karte />} />
-                        <Route path="unternehmeneintragen" element={<UnternehmenEintragen />} />
-                        <Route path="unternehmensuchen" element={<UnternehmenSuchen />} />
-                        <Route path="unternehmen/:id" element={<UnternehmenDetail />} />
+                        <Route path="/unternehmeneintragen" element={<UnternehmenEintragen />} />
+                        <Route path="/unternehmensuchen" element={<UnternehmenSuchen />} />
+                        <Route path="/unternehmen/:id" element={<UnternehmenDetail />} />
                     </Routes>
                 </main>
             </div>
