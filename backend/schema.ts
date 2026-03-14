@@ -97,8 +97,8 @@ export const lists = {
         {
           query: ({ session, context, listKey, operation }) => {
             //If logged in as author, I can only see my own reviews, otherwise I can see all published reviews
-            if (session.data.roles?.includes('author')) {
-              return { reviewer: { user: { id: context.session?.data.id } } };
+            if (session?.data?.roles?.includes('author')) {
+              return { reviewer: { user: { id: context.session?.data?.id } } };
             } else {
               return { status:  {
                 equals: 'published'
@@ -192,9 +192,8 @@ export const lists = {
         ui: { displayMode: 'select' },
       }),
       experienceText: text({ label: 'Freitextfeld für Ausführungen', ui: { displayMode: 'textarea' } }),
-      groupsInCompany: relationship({ ref: 'DiscriminationGroup.reviews', many: true, label: 'Personengruppen im Betrieb' }),
       languages: text({ label: 'Sprachen im Betrieb' }),
-      discriminationGroups: relationship({ ref: 'DiscriminationGroup.recommendedByReviews', many: true, label: 'Empfohlene Personengruppen' }),
+      socialGroups: relationship({ ref: 'SocialGroup.recommendedByReviews', many: true, label: 'Würdest du den Betrieb Menschen aus einer dieser Gruppen empfehlen?' }),
       sharedWithCompany: select({
         label: 'Hast du diese Informationen mit dem Betrieb geteilt?',
         options: [
@@ -237,13 +236,12 @@ export const lists = {
     },
   }),
 
-  DiscriminationGroup: list({
+  SocialGroup: list({
     access: allowAll,
     fields: {
       //make name uniique
       name: text({ label: 'Name der Personengruppe', validation: { isRequired: true } , isIndexed: 'unique'}),
-      reviews: relationship({ ref: 'Review.groupsInCompany', many: true, label: 'Berichte mit dieser Gruppe' }),
-      recommendedByReviews: relationship({ ref: 'Review.discriminationGroups', many: true, label: 'Empfohlen von Berichten' }),
+      recommendedByReviews: relationship({ ref: 'Review.socialGroups', many: true, label: 'Empfohlen von Berichten' }),
     },
   }),
 };

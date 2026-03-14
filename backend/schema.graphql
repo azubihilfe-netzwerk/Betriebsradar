@@ -433,11 +433,9 @@ type Review {
   boundariesRespected: Boolean
   appreciated: String
   experienceText: String
-  groupsInCompany(where: DiscriminationGroupWhereInput! = {}, orderBy: [DiscriminationGroupOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: DiscriminationGroupWhereUniqueInput): [DiscriminationGroup!]
-  groupsInCompanyCount(where: DiscriminationGroupWhereInput! = {}): Int
   languages: String
-  discriminationGroups(where: DiscriminationGroupWhereInput! = {}, orderBy: [DiscriminationGroupOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: DiscriminationGroupWhereUniqueInput): [DiscriminationGroup!]
-  discriminationGroupsCount(where: DiscriminationGroupWhereInput! = {}): Int
+  socialGroups(where: SocialGroupWhereInput! = {}, orderBy: [SocialGroupOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: SocialGroupWhereUniqueInput): [SocialGroup!]
+  socialGroupsCount(where: SocialGroupWhereInput! = {}): Int
   sharedWithCompany: String
   feltComfortableSharing: String
   needsRespected: String
@@ -472,9 +470,8 @@ input ReviewWhereInput {
   boundariesRespected: BooleanFilter
   appreciated: StringNullableFilter
   experienceText: StringFilter
-  groupsInCompany: DiscriminationGroupManyRelationFilter
   languages: StringFilter
-  discriminationGroups: DiscriminationGroupManyRelationFilter
+  socialGroups: SocialGroupManyRelationFilter
   sharedWithCompany: StringNullableFilter
   feltComfortableSharing: StringNullableFilter
   needsRespected: StringNullableFilter
@@ -483,10 +480,10 @@ input ReviewWhereInput {
   status: StringNullableFilter
 }
 
-input DiscriminationGroupManyRelationFilter {
-  every: DiscriminationGroupWhereInput
-  some: DiscriminationGroupWhereInput
-  none: DiscriminationGroupWhereInput
+input SocialGroupManyRelationFilter {
+  every: SocialGroupWhereInput
+  some: SocialGroupWhereInput
+  none: SocialGroupWhereInput
 }
 
 input ReviewOrderByInput {
@@ -533,9 +530,8 @@ input ReviewUpdateInput {
   boundariesRespected: Boolean
   appreciated: String
   experienceText: String
-  groupsInCompany: DiscriminationGroupRelateToManyForUpdateInput
   languages: String
-  discriminationGroups: DiscriminationGroupRelateToManyForUpdateInput
+  socialGroups: SocialGroupRelateToManyForUpdateInput
   sharedWithCompany: String
   feltComfortableSharing: String
   needsRespected: String
@@ -556,11 +552,11 @@ input CompanyRelateToOneForUpdateInput {
   disconnect: Boolean
 }
 
-input DiscriminationGroupRelateToManyForUpdateInput {
-  disconnect: [DiscriminationGroupWhereUniqueInput!]
-  set: [DiscriminationGroupWhereUniqueInput!]
-  create: [DiscriminationGroupCreateInput!]
-  connect: [DiscriminationGroupWhereUniqueInput!]
+input SocialGroupRelateToManyForUpdateInput {
+  disconnect: [SocialGroupWhereUniqueInput!]
+  set: [SocialGroupWhereUniqueInput!]
+  create: [SocialGroupCreateInput!]
+  connect: [SocialGroupWhereUniqueInput!]
 }
 
 input ReviewUpdateArgs {
@@ -586,9 +582,8 @@ input ReviewCreateInput {
   boundariesRespected: Boolean
   appreciated: String
   experienceText: String
-  groupsInCompany: DiscriminationGroupRelateToManyForCreateInput
   languages: String
-  discriminationGroups: DiscriminationGroupRelateToManyForCreateInput
+  socialGroups: SocialGroupRelateToManyForCreateInput
   sharedWithCompany: String
   feltComfortableSharing: String
   needsRespected: String
@@ -607,54 +602,49 @@ input CompanyRelateToOneForCreateInput {
   connect: CompanyWhereUniqueInput
 }
 
-input DiscriminationGroupRelateToManyForCreateInput {
-  create: [DiscriminationGroupCreateInput!]
-  connect: [DiscriminationGroupWhereUniqueInput!]
+input SocialGroupRelateToManyForCreateInput {
+  create: [SocialGroupCreateInput!]
+  connect: [SocialGroupWhereUniqueInput!]
 }
 
-type DiscriminationGroup {
+type SocialGroup {
   id: ID!
   name: String
-  reviews(where: ReviewWhereInput! = {}, orderBy: [ReviewOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewWhereUniqueInput): [Review!]
-  reviewsCount(where: ReviewWhereInput! = {}): Int
   recommendedByReviews(where: ReviewWhereInput! = {}, orderBy: [ReviewOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewWhereUniqueInput): [Review!]
   recommendedByReviewsCount(where: ReviewWhereInput! = {}): Int
 }
 
-input DiscriminationGroupWhereUniqueInput {
+input SocialGroupWhereUniqueInput {
   id: ID
   name: String
 }
 
-input DiscriminationGroupWhereInput {
-  AND: [DiscriminationGroupWhereInput!]
-  OR: [DiscriminationGroupWhereInput!]
-  NOT: [DiscriminationGroupWhereInput!]
+input SocialGroupWhereInput {
+  AND: [SocialGroupWhereInput!]
+  OR: [SocialGroupWhereInput!]
+  NOT: [SocialGroupWhereInput!]
   id: IDFilter
   name: StringFilter
-  reviews: ReviewManyRelationFilter
   recommendedByReviews: ReviewManyRelationFilter
 }
 
-input DiscriminationGroupOrderByInput {
+input SocialGroupOrderByInput {
   id: OrderDirection
   name: OrderDirection
 }
 
-input DiscriminationGroupUpdateInput {
+input SocialGroupUpdateInput {
   name: String
-  reviews: ReviewRelateToManyForUpdateInput
   recommendedByReviews: ReviewRelateToManyForUpdateInput
 }
 
-input DiscriminationGroupUpdateArgs {
-  where: DiscriminationGroupWhereUniqueInput!
-  data: DiscriminationGroupUpdateInput!
+input SocialGroupUpdateArgs {
+  where: SocialGroupWhereUniqueInput!
+  data: SocialGroupUpdateInput!
 }
 
-input DiscriminationGroupCreateInput {
+input SocialGroupCreateInput {
   name: String
-  reviews: ReviewRelateToManyForCreateInput
   recommendedByReviews: ReviewRelateToManyForCreateInput
 }
 
@@ -694,12 +684,12 @@ type Mutation {
   updateReviews(data: [ReviewUpdateArgs!]!): [Review]
   deleteReview(where: ReviewWhereUniqueInput!): Review
   deleteReviews(where: [ReviewWhereUniqueInput!]!): [Review]
-  createDiscriminationGroup(data: DiscriminationGroupCreateInput!): DiscriminationGroup
-  createDiscriminationGroups(data: [DiscriminationGroupCreateInput!]!): [DiscriminationGroup]
-  updateDiscriminationGroup(where: DiscriminationGroupWhereUniqueInput!, data: DiscriminationGroupUpdateInput!): DiscriminationGroup
-  updateDiscriminationGroups(data: [DiscriminationGroupUpdateArgs!]!): [DiscriminationGroup]
-  deleteDiscriminationGroup(where: DiscriminationGroupWhereUniqueInput!): DiscriminationGroup
-  deleteDiscriminationGroups(where: [DiscriminationGroupWhereUniqueInput!]!): [DiscriminationGroup]
+  createSocialGroup(data: SocialGroupCreateInput!): SocialGroup
+  createSocialGroups(data: [SocialGroupCreateInput!]!): [SocialGroup]
+  updateSocialGroup(where: SocialGroupWhereUniqueInput!, data: SocialGroupUpdateInput!): SocialGroup
+  updateSocialGroups(data: [SocialGroupUpdateArgs!]!): [SocialGroup]
+  deleteSocialGroup(where: SocialGroupWhereUniqueInput!): SocialGroup
+  deleteSocialGroups(where: [SocialGroupWhereUniqueInput!]!): [SocialGroup]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -738,9 +728,9 @@ type Query {
   review(where: ReviewWhereUniqueInput!): Review
   reviews(where: ReviewWhereInput! = {}, orderBy: [ReviewOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewWhereUniqueInput): [Review!]
   reviewsCount(where: ReviewWhereInput! = {}): Int
-  discriminationGroup(where: DiscriminationGroupWhereUniqueInput!): DiscriminationGroup
-  discriminationGroups(where: DiscriminationGroupWhereInput! = {}, orderBy: [DiscriminationGroupOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: DiscriminationGroupWhereUniqueInput): [DiscriminationGroup!]
-  discriminationGroupsCount(where: DiscriminationGroupWhereInput! = {}): Int
+  socialGroup(where: SocialGroupWhereUniqueInput!): SocialGroup
+  socialGroups(where: SocialGroupWhereInput! = {}, orderBy: [SocialGroupOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: SocialGroupWhereUniqueInput): [SocialGroup!]
+  socialGroupsCount(where: SocialGroupWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

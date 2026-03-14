@@ -15,12 +15,12 @@ async function getOrCreateByName(context: any, entity: string, data: any, queryF
 
 import { getContext } from '@keystone-6/core/context';
 import config from './keystone';import * as PrismaModule from '.prisma/client';
-import { create_discrimination_groups } from './discrimination_groups_seed_data';
+import { create_social_groups } from './social_groups_seed_data';
 import { password } from '@keystone-6/core/fields';
 import { lists } from './schema';
 import { ListsWithResolvedRelations } from '@keystone-6/core/dist/declarations/src/lib/core/resolve-relationships';
 export async function main() {
-  await create_discrimination_groups();
+  await create_social_groups();
   const context = getContext(config, PrismaModule)
 
   console.log(`🌱 Inserting sample seed data`);

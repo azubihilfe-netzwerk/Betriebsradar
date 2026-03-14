@@ -59,43 +59,41 @@ model TrainingModel {
 }
 
 model Review {
-  id                     String                @id @default(cuid())
-  name                   String                @default("")
-  reviewer               Reviewer?             @relation("Review_reviewer", fields: [reviewerId], references: [id])
-  reviewerId             String?               @map("reviewer")
-  company                Company?              @relation("Review_company", fields: [companyId], references: [id])
-  companyId              String?               @map("company")
+  id                     String        @id @default(cuid())
+  name                   String        @default("")
+  reviewer               Reviewer?     @relation("Review_reviewer", fields: [reviewerId], references: [id])
+  reviewerId             String?       @map("reviewer")
+  company                Company?      @relation("Review_company", fields: [companyId], references: [id])
+  companyId              String?       @map("company")
   ageAtEmployment        Int
-  genderOuted            Boolean               @default(false)
+  genderOuted            Boolean       @default(false)
   position               String
   duration               String
-  yearOfHiring           String                @default("")
-  listenedTo             Boolean               @default(false)
+  yearOfHiring           String        @default("")
+  listenedTo             Boolean       @default(false)
   tone                   String?
   explained              String?
-  canAskColleagues       Boolean               @default(false)
-  canAskBoss             Boolean               @default(false)
+  canAskColleagues       Boolean       @default(false)
+  canAskBoss             Boolean       @default(false)
   proximity              String?
-  boundariesRespected    Boolean               @default(false)
+  boundariesRespected    Boolean       @default(false)
   appreciated            String?
-  experienceText         String                @default("")
-  groupsInCompany        DiscriminationGroup[] @relation("DiscriminationGroup_reviews")
-  languages              String                @default("")
-  discriminationGroups   DiscriminationGroup[] @relation("DiscriminationGroup_recommendedByReviews")
+  experienceText         String        @default("")
+  languages              String        @default("")
+  socialGroups           SocialGroup[] @relation("Review_socialGroups")
   sharedWithCompany      String?
   feltComfortableSharing String?
   needsRespected         String?
-  feedback               String                @default("")
-  moreWishes             String                @default("")
-  status                 String?               @default("draft")
+  feedback               String        @default("")
+  moreWishes             String        @default("")
+  status                 String?       @default("draft")
 
   @@index([reviewerId])
   @@index([companyId])
 }
 
-model DiscriminationGroup {
+model SocialGroup {
   id                   String   @id @default(cuid())
   name                 String   @unique @default("")
-  reviews              Review[] @relation("DiscriminationGroup_reviews")
-  recommendedByReviews Review[] @relation("DiscriminationGroup_recommendedByReviews")
+  recommendedByReviews Review[] @relation("Review_socialGroups")
 }

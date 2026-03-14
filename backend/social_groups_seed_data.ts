@@ -3,7 +3,7 @@ import config from './keystone';
 import * as PrismaModule from '.prisma/client';
 
 
-export const discriminationGroups = [
+export const socialGroups = [
   'Autismus-Spektrum',
   'Autoimmunerkrankung (z.B. HIV)',
   'blinde und sehbehinderte Personen',
@@ -41,24 +41,24 @@ export const discriminationGroups = [
   'weiß',
 ];
 
-export async function create_discrimination_groups() {
+export async function create_social_groups() {
   const context = getContext(config, PrismaModule)
 
-   console.log(` Inserting seed data for discrimination groups 🌍♿️👱🏻‍♀️👩🏻‍🦰👩🏻👧🏽👧🏾🏳️‍🌈 `);
+   console.log(` Inserting seed data for social groups 🌍♿️👱🏻‍♀️👩🏻‍🦰👩🏻👧🏽👧🏾🏳️‍🌈 `);
    
-   for (const group of discriminationGroups) {
+   for (const group of socialGroups) {
     
-    let existing = await context.query.DiscriminationGroup.findOne({
+    let existing = await context.query.SocialGroup.findOne({
         where: { name: group },
         query: 'id',
       });
 
         if (!existing) {
-            await context.query.DiscriminationGroup.createOne({
+            await context.query.SocialGroup.createOne({
                 data: { name: group },
                 query: 'id',
             });
         }
    }
-   console.log(`✅ Seed data for discrimination groups inserted successfully!`);
+   console.log(`✅ Seed data for social groups inserted successfully!`);
 }
