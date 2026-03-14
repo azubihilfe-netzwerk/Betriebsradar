@@ -99,7 +99,7 @@ export async function main() {
 
   const theCompany = await getOrCreateByName(context, 'Company', company);
 
-  const annasReview = await getOrCreateByName(context, 'Review', {
+  const lucasReview = await getOrCreateByName(context, 'Review', {
      name : 'Lucas Erfahrungsbericht',
      reviewer: { connect: { id: luca.id } },
       company: { connect: { id: theCompany.id } },
@@ -120,7 +120,7 @@ export async function main() {
       languages: 'Deutsch',
       status: 'published',});
 
- const maxsReview = await getOrCreateByName(context, 'Review', {
+ const joelsReview = await getOrCreateByName(context, 'Review', {
         name : 'Joels Erfahrungsbericht',
         reviewer: { connect: { id: joel.id } },
         company: { connect: { id: theCompany.id } },

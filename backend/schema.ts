@@ -1,14 +1,15 @@
 import { list } from '@keystone-6/core';
-import { text, relationship, select, integer, checkbox, timestamp, password, email, multiselect } from '@keystone-6/core/fields';
+import { text, relationship, select, integer, checkbox, timestamp, password, multiselect } from '@keystone-6/core/fields';
 import { document } from '@keystone-6/fields-document';
 import { allowAll } from '@keystone-6/core/access';
 
 export const lists = {
-   User: list({
+  User: list({
     access: allowAll,
     fields: {
-      name: text({ 
-        validation: { isRequired: true } }),
+      name: text({
+        validation: { isRequired: true }
+      }),
       email: text({
         validation: { isRequired: true },
         isIndexed: 'unique',
@@ -21,7 +22,8 @@ export const lists = {
           { label: 'Admin', value: 'admin' },
           { label: 'Autor*in', value: 'reviewer' },
           { label: 'Editor*in', value: 'editor' },
-        ]}),
+        ]
+      }),
       createdAt: timestamp({
         defaultValue: { kind: 'now' },
       }),
@@ -92,30 +94,34 @@ export const lists = {
   }),
 
   Review: list({
-    access: {   
-      filter: 
-        {
-          query: ({ session, context, listKey, operation }) => {
-            //If logged in as author, I can only see my own reviews, otherwise I can see all published reviews
-            if (session?.data?.roles?.includes('author')) {
-              return { reviewer: { user: { id: context.session?.data?.id } } };
-            } else {
-              return { status:  {
-                equals: 'published'
-               }};
+    access: {
+      filter: {
+        query: ({ session, context, listKey, operation }) => {
+          let roles = session?.data?.roles || [];
+          if (roles.includes('editor') || roles.includes('admin')) {
+            //as editor or admin see all reviews
+            return {};
+          }
+          // If logged in as author, see all published reviews or own reviews
+          if (roles.includes('reviewer')) {
+            return {
+              OR: [
+                { status: { equals: 'published' } },
+                { reviewer: { user: { id: { equals: context.session?.data?.id } } } }
+              ]
             }
-          },
-          update: ({ session, context, listKey, operation }) => {
-            return { reviewer: { user: { id: context.session?.data.id } } };
-          },
-          delete: ({ session, context, listKey, operation }) => {
-            return { reviewer: { user: { id: context.session?.data.id } } };
-          },
+          }
+          return { status: { equals: 'published' } };
         },
-        operation: allowAll,
-       
-      
-      }      ,
+        update: ({ session, context, listKey, operation }) => {
+          return { reviewer: { user: { id: context.session?.data.id } } };
+        },
+        delete: ({ session, context, listKey, operation }) => {
+          return { reviewer: { user: { id: context.session?.data.id } } };
+        },
+      },
+      operation: allowAll,
+    },
     fields: {
       name: text({ label: 'Titel des Erfahrungsberichts', validation: { isRequired: true } }),
       reviewer: relationship({ ref: 'Reviewer.reviews', label: 'Reviewer' }),
@@ -240,7 +246,7 @@ export const lists = {
     access: allowAll,
     fields: {
       //make name uniique
-      name: text({ label: 'Name der Personengruppe', validation: { isRequired: true } , isIndexed: 'unique'}),
+      name: text({ label: 'Name der Personengruppe', validation: { isRequired: true }, isIndexed: 'unique' }),
       recommendedByReviews: relationship({ ref: 'Review.socialGroups', many: true, label: 'Empfohlen von Berichten' }),
     },
   }),
