@@ -7,6 +7,7 @@ import Footer from "./Component/Footer";
 import Kontakt from "./Pages/Kontakt";
 import Datenschutz from "./Pages/Datenschutz";
 import Karte from "./Pages/Karte";
+import Login from "./Pages/Login";
 import UnternehmenEintragen from "./Pages/UnternehmenEintragen";
 import UnternehmenSuchen from "./Pages/UnternehmenSuchen";
 import UnternehmenDetail from "./Pages/UnternehmenDetail";
@@ -25,6 +26,7 @@ function App() {
                 <main className="pt-28 max-w-screen-2xl mx-auto w-full px-4 py-8 flex flex-col mt-8">
                     <Routes>
                         <Route path="/" element={<Dashboard />} />
+                        <Route path="/login" element={<Login />} />
                         <Route path="/impressum" element={<Impressum />} />
                         <Route path="/kontakt" element={<Kontakt />} />
                         <Route path="/datenschutz" element={<Datenschutz />} />

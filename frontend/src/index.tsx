@@ -7,12 +7,13 @@ import './index.css';
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
 import { HttpLink } from '@apollo/client';
+import { AuthProvider } from './context/AuthContext';
 
 //create an Apollo Client instance
 const client = new ApolloClient({
     link: new HttpLink({
         uri: "/api/graphql",
-        credentials: "same-origin",
+        credentials: "include",
     }),
     cache: new InMemoryCache(),
 });
@@ -24,7 +25,9 @@ const root = ReactDOM.createRoot(
 root.render(
     <BrowserRouter basename={process.env.NODE_ENV === 'production' ? "/liste" : "/"} >
         <ApolloProvider client={client}>
-            <App />
+            <AuthProvider>
+                <App />
+            </AuthProvider>
         </ApolloProvider>
     </BrowserRouter>
 );
