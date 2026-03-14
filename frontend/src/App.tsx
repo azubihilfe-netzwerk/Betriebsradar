@@ -9,6 +9,7 @@ import Datenschutz from "./Pages/Datenschutz";
 import Karte from "./Pages/Karte";
 import UnternehmenEintragen from "./Pages/UnternehmenEintragen";
 import UnternehmenSuchen from "./Pages/UnternehmenSuchen";
+import UnternehmenDetail from "./Pages/UnternehmenDetail";
 
 // 📥 Bild importieren
 import backgroundImage from "./images/Webseite-Hintergrund.png";
@@ -21,7 +22,7 @@ function App() {
         >
             <Navbar />
             <div className="flex-1 bg-white/80">
-                <main className="pt-28 max-w-screen-2xl mx-auto w-full px-4 py-8">
+                <main className="pt-28 max-w-screen-2xl mx-auto w-full px-4 py-8 flex flex-col mt-8">
                     <Routes>
                         <Route path="/" element={<Dashboard />} />
                         <Route path="/impressum" element={<Impressum />} />
@@ -30,6 +31,7 @@ function App() {
                         <Route path="/karte" element={<Karte />} />
                         <Route path="unternehmeneintragen" element={<UnternehmenEintragen />} />
                         <Route path="unternehmensuchen" element={<UnternehmenSuchen />} />
+                        <Route path="unternehmen/:id" element={<UnternehmenDetail />} />
                     </Routes>
                 </main>
             </div>

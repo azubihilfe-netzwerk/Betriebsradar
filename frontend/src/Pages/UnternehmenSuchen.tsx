@@ -1,6 +1,7 @@
 import { gql } from 'graphql-tag';
 import React, { FC } from 'react';
 import { useQuery } from '@apollo/client/react';
+import { Link } from 'react-router-dom';
 
 type Company = {
     id: string;
@@ -31,7 +32,7 @@ const CompanyTable: FC = () => {
     if (error) return <p>Error : {error.message}</p>;
 
     return (
-        <div className="flex flex-col max-w-4xl mt-8">
+        <div>
              <h1 className="text-2xl font-bold text-navbar-blue py-4" text-navbar-blue>Unternehmen finden</h1>
             <p className="mb-6 text-gray-700 max-w-2xl">
                 Hier kannst Du nach Unternehmen suchen und sehen, welche Berichte bereits zu jedem Unternehmen vorliegen.
@@ -49,7 +50,11 @@ const CompanyTable: FC = () => {
                     <tbody>
                         {data?.companies.map((company) => (
                             <tr key={company.id} className="hover:bg-gray-50">
-                                <td className="px-4 py-2 border-b">{company.name}</td>
+                                <td className="px-4 py-2 border-b">
+                                    <Link to={`/unternehmen/${company.id}`} className="text-blue-600 hover:text-blue-800 hover:underline">
+                                        {company.name}
+                                    </Link>
+                                </td>
                                 <td className="px-4 py-2 border-b">{company.trade}</td>
                                 <td className="px-4 py-2 border-b">{company.locations}</td>
                                 <td className="px-4 py-2 border-b text-center">{company.reviewsCount}</td>
