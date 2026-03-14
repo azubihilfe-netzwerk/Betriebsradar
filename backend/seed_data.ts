@@ -1,17 +1,3 @@
-// Generic function to get or create an entity by name
-async function getOrCreateByName(context: any, entity: string, data: any, queryField: string = 'name') {
-  const existing = await context.query[entity].findMany({
-    where: { [queryField]: { equals: data[queryField] } },
-  });
-  if (existing.length === 0) {
-    let created = await context.query[entity].createOne({ data });
-    console.log(`Created ${entity}: ${data[queryField]}`);
-    return created;
-  } else {
-    console.log(`${entity} already exists: ${data[queryField]}`);
-    return existing[0];
-  }
-}
 
 import { getContext } from '@keystone-6/core/context';
 import config from './keystone';import * as PrismaModule from '.prisma/client';
@@ -19,8 +5,25 @@ import { create_social_groups } from './social_groups_seed_data';
 import { password } from '@keystone-6/core/fields';
 import { lists } from './schema';
 import { ListsWithResolvedRelations } from '@keystone-6/core/dist/declarations/src/lib/core/resolve-relationships';
+import { resolveTripleslashReference } from 'typescript';
+
+// Generic function to get or create an entity by name
+async function getOrCreateByName(context: any, entity: string, data: any, queryField: string = 'name') {
+  const existing = await context.query[entity].findMany({
+    where: { [queryField]: { equals: data[queryField] } },
+  });
+  if (existing.length === 0) {
+    let created = await context.query[entity].createOne({ data });
+    console.log(`Created ${entity}: ${data[queryField]} with ID ${created.id}`);
+    return created;
+  } else {
+    console.log(`${entity} already exists: ${data[queryField]} with ID ${existing[0].id}`);
+    return existing[0];
+  }
+}
+
 export async function main() {
-  await create_social_groups();
+  await create_social_groups(); 
   const context = getContext(config, PrismaModule)
 
   console.log(`🌱 Inserting sample seed data`);
@@ -29,14 +32,29 @@ export async function main() {
     name: 'Admin User',
     email: 'admin@example.com',
     password: 'test1234',
+    roles: ['admin'],
   };
   // Use getOrCreateByName for User (by name)
   await getOrCreateByName(context, 'User', adminUser);
   
 
-  const annaUser = getOrCreateByName(context, 'User', {
+  const annaUser = await getOrCreateByName(context, 'User', {
     name: 'Anna Mustermann',
     email: 'anna@example.com',
+    password: "test1234",
+    roles: ['editor'],
+  }, "email");
+
+  const lucaUser = await getOrCreateByName(context, 'User', {
+    name: 'Luca Meyer',
+    email: 'luca.meyer42@hotmail.com',
+    password: "test1234",
+    roles: ['reviewer'],
+  }, "email");
+
+  const joelUser = await getOrCreateByName(context, 'User', {
+    name: 'Joel Schmidt',
+    email: 'joel.schmidt42@gmail.com',
     password: "test1234",
     roles: ['reviewer'],
   }, "email");
@@ -44,21 +62,21 @@ export async function main() {
   // Seed 2 reviewers
   const reviewers = [
     {
-      name: 'Anna Mustermann',
+      name: 'Luca Meyer',
       publishName: true,
-      gender: 'cis_female',
-      user: { connect: { id: annaUser.id } },
+      gender: 'diverse',
+      user: { connect: { id: lucaUser.id } },
     },
     {
-      name: 'Max Beispiel',
+      name: 'Joel Schmidt',
       publishName: false,
-      gender: 'cis_male',
+      gender: 'enby',
+      user: { connect: { id: joelUser.id } },
     },
   ];
 
-
-  const anna = await getOrCreateByName(context, 'Reviewer', reviewers[0]);
-  const max = await getOrCreateByName(context, 'Reviewer', reviewers[1]);
+  const luca = await getOrCreateByName(context, 'Reviewer', reviewers[0]);
+  const joel = await getOrCreateByName(context, 'Reviewer', reviewers[1]);
 
 
   // Seed 1 company
@@ -74,7 +92,7 @@ export async function main() {
     hoursPerWeek: 38,
     trainingShortenable: true,
     partTime: false,
-    locations: 'Berlin',
+    locations: 'Dürkheimer Str. 27 \n 76185 Karlsruhe',
     link: 'https://beispiel-gmbh.de',
   };
 
@@ -82,8 +100,8 @@ export async function main() {
   const theCompany = await getOrCreateByName(context, 'Company', company);
 
   const annasReview = await getOrCreateByName(context, 'Review', {
-     name : 'Annas Erfahrungsbericht',
-     reviewer: { connect: { id: anna.id } },
+     name : 'Lucas Erfahrungsbericht',
+     reviewer: { connect: { id: luca.id } },
       company: { connect: { id: theCompany.id } },
       ageAtEmployment: 22,
       genderOuted: true,
@@ -103,8 +121,8 @@ export async function main() {
       status: 'published',});
 
  const maxsReview = await getOrCreateByName(context, 'Review', {
-        name : 'Maxs Erfahrungsbericht',
-        reviewer: { connect: { id: max.id } },
+        name : 'Joels Erfahrungsbericht',
+        reviewer: { connect: { id: joel.id } },
         company: { connect: { id: theCompany.id } },
         ageAtEmployment: 25,
         genderOuted: false,

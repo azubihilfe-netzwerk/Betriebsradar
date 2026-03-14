@@ -14,6 +14,7 @@ type Company = {
     id: string;
     name: string;
     trade: string;
+    size: string;
     locations: string;
     reviewsCount: number;
     industry: string;
@@ -44,6 +45,7 @@ const UnternehmenDetail: FC = () => {
                     hoursPerWeek
                     trainingShortenable
                     partTime
+                    size
                     reviewsCount
                     reviews {
                         id
@@ -79,6 +81,10 @@ const UnternehmenDetail: FC = () => {
                     <div>
                         <p className="font-semibold">Branche:</p>
                         <p>{company.industry}</p>
+                    </div>
+                    <div>
+                        <p className="font-semibold">Betriebsgröße:</p>
+                        <p>{company.size} Mitarbeitende</p>
                     </div>
                     <div>
                         <p className="font-semibold">Kollektiv:</p>
