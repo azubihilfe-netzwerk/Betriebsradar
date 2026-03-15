@@ -32,6 +32,7 @@ const { withAuth } = createAuth({
   sessionData: 'id name createdAt roles',
   secretField: 'password',
 
+
   // WARNING: remove initFirstItem functionality in production
   //   see https://keystonejs.com/docs/config/auth#init-first-item for more
   initFirstItem: {
@@ -54,6 +55,7 @@ const sessionMaxAge = 60 * 60 * 24 * 30
 const session = statelessSessions({
   maxAge: sessionMaxAge,
   secret: process.env.SESSION_SECRET,
+  sameSite: false, //this is required as long as the frontend is hosted under a different dominain (i.e. github pages)
 })
 
 export { withAuth, session }
