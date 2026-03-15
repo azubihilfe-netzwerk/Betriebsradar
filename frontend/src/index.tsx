@@ -10,9 +10,10 @@ import { HttpLink } from '@apollo/client';
 import { AuthProvider } from './context/AuthContext';
 
 //create an Apollo Client instance
+const GRAPHQL_URI = process.env.REACT_APP_GRAPHQL_URI || 'http://localhost:3010/api/graphql';
 const client = new ApolloClient({
     link: new HttpLink({
-        uri: "/api/graphql",
+        uri: GRAPHQL_URI,
         credentials: "include",
     }),
     cache: new InMemoryCache(),

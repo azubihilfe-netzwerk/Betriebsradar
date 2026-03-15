@@ -2,7 +2,6 @@
   "name": "azubihilfe-netzwerk",
   "version": "0.1.0",
   "homepage": "https://azubihilfe-netzwerk.github.io/Betriebsradar",
-  "proxy": "http://localhost:3010",
   "private": true,
   "dependencies": {
     "@apollo/client": "^4.1.6",
