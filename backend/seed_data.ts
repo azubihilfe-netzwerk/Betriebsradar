@@ -59,25 +59,6 @@ export async function main() {
     roles: ['reviewer'],
   }, "email");
 
-  // Seed 2 reviewers
-  const reviewers = [
-    {
-      name: 'Luca Meyer',
-      publishName: true,
-      gender: 'diverse',
-      user: { connect: { id: lucaUser.id } },
-    },
-    {
-      name: 'Joel Schmidt',
-      publishName: false,
-      gender: 'enby',
-      user: { connect: { id: joelUser.id } },
-    },
-  ];
-
-  const luca = await getOrCreateByName(context, 'Reviewer', reviewers[0]);
-  const joel = await getOrCreateByName(context, 'Reviewer', reviewers[1]);
-
 
   // Seed 1 company
   const company = 
@@ -101,8 +82,10 @@ export async function main() {
 
   const lucasReview = await getOrCreateByName(context, 'Review', {
      name : 'Lucas Erfahrungsbericht',
-     reviewer: { connect: { id: luca.id } },
+     user: { connect: { id: lucaUser.id } },
       company: { connect: { id: theCompany.id } },
+      publishName: true,
+      gender: 'diverse',
       ageAtEmployment: 22,
       genderOuted: true,
       position: 'apprentice',
@@ -122,8 +105,10 @@ export async function main() {
 
  const joelsReview = await getOrCreateByName(context, 'Review', {
         name : 'Joels Erfahrungsbericht',
-        reviewer: { connect: { id: joel.id } },
+        user: { connect: { id: joelUser.id } },
         company: { connect: { id: theCompany.id } },
+        publishName: false,
+        gender: 'enby',
         ageAtEmployment: 25,
         genderOuted: false,
       position: 'intern',

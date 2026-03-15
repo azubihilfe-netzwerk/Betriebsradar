@@ -12,25 +12,13 @@ generator client {
 }
 
 model User {
-  id                 Int        @id @default(autoincrement())
-  name               String     @default("")
-  email              String     @unique @default("")
-  password           String
-  roles              String     @default("[]")
-  createdAt          DateTime?  @default(now())
-  from_Reviewer_user Reviewer[] @relation("Reviewer_user")
-}
-
-model Reviewer {
-  id          Int      @id @default(autoincrement())
-  name        String   @default("")
-  publishName Boolean  @default(false)
-  gender      String?
-  user        User?    @relation("Reviewer_user", fields: [userId], references: [id])
-  userId      Int?     @map("user")
-  reviews     Review[] @relation("Review_reviewer")
-
-  @@index([userId])
+  id               Int       @id @default(autoincrement())
+  name             String    @default("")
+  email            String    @unique @default("")
+  password         String
+  roles            String    @default("[]")
+  createdAt        DateTime? @default(now())
+  from_Review_user Review[]  @relation("Review_user")
 }
 
 model Company {
@@ -61,8 +49,10 @@ model TrainingModel {
 model Review {
   id                     Int           @id @default(autoincrement())
   name                   String        @default("")
-  reviewer               Reviewer?     @relation("Review_reviewer", fields: [reviewerId], references: [id])
-  reviewerId             Int?          @map("reviewer")
+  user                   User?         @relation("Review_user", fields: [userId], references: [id])
+  userId                 Int?          @map("user")
+  publishName            Boolean       @default(false)
+  gender                 String?
   company                Company?      @relation("Review_company", fields: [companyId], references: [id])
   companyId              Int?          @map("company")
   ageAtEmployment        Int
@@ -88,7 +78,7 @@ model Review {
   moreWishes             String        @default("")
   status                 String?       @default("draft")
 
-  @@index([reviewerId])
+  @@index([userId])
   @@index([companyId])
 }
 

@@ -120,108 +120,6 @@ input UserCreateInput {
   createdAt: DateTime
 }
 
-type Reviewer {
-  id: ID!
-  name: String
-  publishName: Boolean
-  gender: String
-  user: User
-  reviews(where: ReviewWhereInput! = {}, orderBy: [ReviewOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewWhereUniqueInput): [Review!]
-  reviewsCount(where: ReviewWhereInput! = {}): Int
-}
-
-input ReviewerWhereUniqueInput {
-  id: ID
-}
-
-input ReviewerWhereInput {
-  AND: [ReviewerWhereInput!]
-  OR: [ReviewerWhereInput!]
-  NOT: [ReviewerWhereInput!]
-  id: IDFilter
-  name: StringFilter
-  publishName: BooleanFilter
-  gender: StringNullableFilter
-  user: UserWhereInput
-  reviews: ReviewManyRelationFilter
-}
-
-input BooleanFilter {
-  equals: Boolean
-  not: BooleanFilter
-}
-
-input StringNullableFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  not: StringNullableFilter
-}
-
-input ReviewManyRelationFilter {
-  every: ReviewWhereInput
-  some: ReviewWhereInput
-  none: ReviewWhereInput
-}
-
-input ReviewerOrderByInput {
-  id: OrderDirection
-  name: OrderDirection
-  publishName: OrderDirection
-  gender: OrderDirection
-}
-
-input ReviewerUpdateInput {
-  name: String
-  publishName: Boolean
-  gender: String
-  user: UserRelateToOneForUpdateInput
-  reviews: ReviewRelateToManyForUpdateInput
-}
-
-input UserRelateToOneForUpdateInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
-  disconnect: Boolean
-}
-
-input ReviewRelateToManyForUpdateInput {
-  disconnect: [ReviewWhereUniqueInput!]
-  set: [ReviewWhereUniqueInput!]
-  create: [ReviewCreateInput!]
-  connect: [ReviewWhereUniqueInput!]
-}
-
-input ReviewerUpdateArgs {
-  where: ReviewerWhereUniqueInput!
-  data: ReviewerUpdateInput!
-}
-
-input ReviewerCreateInput {
-  name: String
-  publishName: Boolean
-  gender: String
-  user: UserRelateToOneForCreateInput
-  reviews: ReviewRelateToManyForCreateInput
-}
-
-input UserRelateToOneForCreateInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
-}
-
-input ReviewRelateToManyForCreateInput {
-  create: [ReviewCreateInput!]
-  connect: [ReviewWhereUniqueInput!]
-}
-
 type Company {
   id: ID!
   name: String
@@ -267,6 +165,11 @@ input CompanyWhereInput {
   link: StringFilter
 }
 
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
+}
+
 input IntFilter {
   equals: Int
   in: [Int!]
@@ -282,6 +185,12 @@ input TrainingModelManyRelationFilter {
   every: TrainingModelWhereInput
   some: TrainingModelWhereInput
   none: TrainingModelWhereInput
+}
+
+input ReviewManyRelationFilter {
+  every: ReviewWhereInput
+  some: ReviewWhereInput
+  none: ReviewWhereInput
 }
 
 input CompanyOrderByInput {
@@ -324,6 +233,13 @@ input TrainingModelRelateToManyForUpdateInput {
   connect: [TrainingModelWhereUniqueInput!]
 }
 
+input ReviewRelateToManyForUpdateInput {
+  disconnect: [ReviewWhereUniqueInput!]
+  set: [ReviewWhereUniqueInput!]
+  create: [ReviewCreateInput!]
+  connect: [ReviewWhereUniqueInput!]
+}
+
 input CompanyUpdateArgs {
   where: CompanyWhereUniqueInput!
   data: CompanyUpdateInput!
@@ -349,6 +265,11 @@ input CompanyCreateInput {
 input TrainingModelRelateToManyForCreateInput {
   create: [TrainingModelCreateInput!]
   connect: [TrainingModelWhereUniqueInput!]
+}
+
+input ReviewRelateToManyForCreateInput {
+  create: [ReviewCreateInput!]
+  connect: [ReviewWhereUniqueInput!]
 }
 
 type TrainingModel {
@@ -417,7 +338,9 @@ input CompanyRelateToManyForCreateInput {
 type Review {
   id: ID!
   name: String
-  reviewer: Reviewer
+  user: User
+  publishName: Boolean
+  gender: String
   company: Company
   ageAtEmployment: Int
   genderOuted: Boolean
@@ -454,7 +377,9 @@ input ReviewWhereInput {
   NOT: [ReviewWhereInput!]
   id: IDFilter
   name: StringFilter
-  reviewer: ReviewerWhereInput
+  user: UserWhereInput
+  publishName: BooleanFilter
+  gender: StringNullableFilter
   company: CompanyWhereInput
   ageAtEmployment: IntFilter
   genderOuted: BooleanFilter
@@ -480,6 +405,20 @@ input ReviewWhereInput {
   status: StringNullableFilter
 }
 
+input StringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: StringNullableFilter
+}
+
 input SocialGroupManyRelationFilter {
   every: SocialGroupWhereInput
   some: SocialGroupWhereInput
@@ -489,6 +428,8 @@ input SocialGroupManyRelationFilter {
 input ReviewOrderByInput {
   id: OrderDirection
   name: OrderDirection
+  publishName: OrderDirection
+  gender: OrderDirection
   ageAtEmployment: OrderDirection
   genderOuted: OrderDirection
   position: OrderDirection
@@ -514,7 +455,9 @@ input ReviewOrderByInput {
 
 input ReviewUpdateInput {
   name: String
-  reviewer: ReviewerRelateToOneForUpdateInput
+  user: UserRelateToOneForUpdateInput
+  publishName: Boolean
+  gender: String
   company: CompanyRelateToOneForUpdateInput
   ageAtEmployment: Int
   genderOuted: Boolean
@@ -540,9 +483,9 @@ input ReviewUpdateInput {
   status: String
 }
 
-input ReviewerRelateToOneForUpdateInput {
-  create: ReviewerCreateInput
-  connect: ReviewerWhereUniqueInput
+input UserRelateToOneForUpdateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
   disconnect: Boolean
 }
 
@@ -566,7 +509,9 @@ input ReviewUpdateArgs {
 
 input ReviewCreateInput {
   name: String
-  reviewer: ReviewerRelateToOneForCreateInput
+  user: UserRelateToOneForCreateInput
+  publishName: Boolean
+  gender: String
   company: CompanyRelateToOneForCreateInput
   ageAtEmployment: Int
   genderOuted: Boolean
@@ -592,9 +537,9 @@ input ReviewCreateInput {
   status: String
 }
 
-input ReviewerRelateToOneForCreateInput {
-  create: ReviewerCreateInput
-  connect: ReviewerWhereUniqueInput
+input UserRelateToOneForCreateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
 }
 
 input CompanyRelateToOneForCreateInput {
@@ -660,12 +605,6 @@ type Mutation {
   updateUsers(data: [UserUpdateArgs!]!): [User]
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUsers(where: [UserWhereUniqueInput!]!): [User]
-  createReviewer(data: ReviewerCreateInput!): Reviewer
-  createReviewers(data: [ReviewerCreateInput!]!): [Reviewer]
-  updateReviewer(where: ReviewerWhereUniqueInput!, data: ReviewerUpdateInput!): Reviewer
-  updateReviewers(data: [ReviewerUpdateArgs!]!): [Reviewer]
-  deleteReviewer(where: ReviewerWhereUniqueInput!): Reviewer
-  deleteReviewers(where: [ReviewerWhereUniqueInput!]!): [Reviewer]
   createCompany(data: CompanyCreateInput!): Company
   createCompanies(data: [CompanyCreateInput!]!): [Company]
   updateCompany(where: CompanyWhereUniqueInput!, data: CompanyUpdateInput!): Company
@@ -716,9 +655,6 @@ type Query {
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   usersCount(where: UserWhereInput! = {}): Int
-  reviewer(where: ReviewerWhereUniqueInput!): Reviewer
-  reviewers(where: ReviewerWhereInput! = {}, orderBy: [ReviewerOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewerWhereUniqueInput): [Reviewer!]
-  reviewersCount(where: ReviewerWhereInput! = {}): Int
   company(where: CompanyWhereUniqueInput!): Company
   companies(where: CompanyWhereInput! = {}, orderBy: [CompanyOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CompanyWhereUniqueInput): [Company!]
   companiesCount(where: CompanyWhereInput! = {}): Int

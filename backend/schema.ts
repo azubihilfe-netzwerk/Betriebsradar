@@ -30,28 +30,6 @@ export const lists = {
     },
   }),
 
-  Reviewer: list({
-    access: allowAll,
-    fields: {
-      name: text({ label: 'Name (Anonym möglich)', validation: { isRequired: true } }),
-      publishName: checkbox({ label: 'Name veröffentlichen?' }),
-      gender: select({
-        label: 'Geschlecht',
-        options: [
-          { label: 'cis-männlich', value: 'cis_male' },
-          { label: 'cis-weiblich', value: 'cis_female' },
-          { label: 'nichtbinär', value: 'enby' },
-          { label: 'trans', value: 'trans' },
-          { label: 'divers', value: 'diverse' },
-          { label: 'offen', value: 'other' },
-        ],
-        ui: { displayMode: 'select' },
-      }),
-      user: relationship({ ref: 'User', label: 'User Account' }),
-      reviews: relationship({ ref: 'Review.reviewer', many: true, label: 'Erfahrungsberichte' }),
-    },
-  }),
-
   Company: list({
     access: allowAll,
     description: 'Betriebe, in denen Erfahrungen gemacht wurden',
@@ -107,24 +85,37 @@ export const lists = {
             return {
               OR: [
                 { status: { equals: 'published' } },
-                { reviewer: { user: { id: { equals: context.session?.data?.id } } } }
+                { user: { id: { equals: context.session?.data?.id } } }
               ]
             }
           }
           return { status: { equals: 'published' } };
         },
         update: ({ session, context, listKey, operation }) => {
-          return { reviewer: { user: { id: context.session?.data.id } } };
+          return { user: { id: context.session?.data.id } };
         },
         delete: ({ session, context, listKey, operation }) => {
-          return { reviewer: { user: { id: context.session?.data.id } } };
+          return { user: { id: context.session?.data.id } };
         },
       },
       operation: allowAll,
     },
     fields: {
       name: text({ label: 'Titel des Erfahrungsberichts', validation: { isRequired: true } }),
-      reviewer: relationship({ ref: 'Reviewer.reviews', label: 'Reviewer' }),
+      user: relationship({ ref: 'User', label: 'User Account' }),
+      publishName: checkbox({ label: 'Name veröffentlichen?' }),
+      gender: select({
+        label: 'Geschlecht',
+        options: [
+          { label: 'cis-männlich', value: 'cis_male' },
+          { label: 'cis-weiblich', value: 'cis_female' },
+          { label: 'nichtbinär', value: 'enby' },
+          { label: 'trans', value: 'trans' },
+          { label: 'divers', value: 'diverse' },
+          { label: 'offen', value: 'other' },
+        ],
+        ui: { displayMode: 'select' },
+      }),
       company: relationship({ ref: 'Company.reviews', label: 'Betrieb' }),
       ageAtEmployment: integer({ label: 'Alter zum Zeitpunkt der Anstellung', validation: { isRequired: true } }),
       genderOuted: checkbox({ label: 'Geschlechtl. Identität geoutet im Betrieb' }),
