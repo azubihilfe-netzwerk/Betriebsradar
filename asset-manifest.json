@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/Betriebsradar/static/css/main.44813434.css",
-    "main.js": "/Betriebsradar/static/js/main.5ced50c2.js",
+    "main.js": "/Betriebsradar/static/js/main.fb80a1bd.js",
     "static/js/453.edbf7199.chunk.js": "/Betriebsradar/static/js/453.edbf7199.chunk.js",
     "static/media/Logo_schwarz-2048x2048.png": "/Betriebsradar/static/media/Logo_schwarz-2048x2048.bbd623003cbd1f39a1d2.png",
     "static/media/Webseite-Hintergrund.png": "/Betriebsradar/static/media/Webseite-Hintergrund.b64c5baddc2540addca9.png",
     "index.html": "/Betriebsradar/index.html",
     "main.44813434.css.map": "/Betriebsradar/static/css/main.44813434.css.map",
-    "main.5ced50c2.js.map": "/Betriebsradar/static/js/main.5ced50c2.js.map",
+    "main.fb80a1bd.js.map": "/Betriebsradar/static/js/main.fb80a1bd.js.map",
     "453.edbf7199.chunk.js.map": "/Betriebsradar/static/js/453.edbf7199.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.44813434.css",
-    "static/js/main.5ced50c2.js"
+    "static/js/main.fb80a1bd.js"
   ]
 }
