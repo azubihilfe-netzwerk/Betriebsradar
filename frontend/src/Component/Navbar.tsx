@@ -29,18 +29,11 @@ const Navbar: React.FC = () => {
                 {/* Desktop Links */}
                 <div className="hidden md:flex space-x-6 items-center">
                     <Link to="/" className="text-gray-700 hover:text-navbar-blue  text-lg uppercase font-semibold">Home</Link>
-                    <Link to="/karte" className="text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Karte</Link>
 
                     {/* Unternehmen mit Dropdown */}
-                    <div className="relative group">
-                        <button className="flex items-center text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">
-                            Unternehmen <ChevronDown className="ml-1 w-4 h-4" />
-                        </button>
-                        <div className="absolute left-0 mt-2 w-48 bg-white border rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20">
-                            <Link to="/unternehmeneintragen" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">Eintragen</Link>
-                            <Link to="/unternehmensuchen" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">Suchen</Link>
-                        </div>
-                    </div>
+                    <Link to="/unternehmensuchen" className="text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Suchen</Link>
+
+                    <Link to="/berichte" className="text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Berichten</Link>
 
                     <Link to="/kontakt" className="text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Kontakt</Link>
 
@@ -76,24 +69,9 @@ const Navbar: React.FC = () => {
             {menuOpen && (
                 <div className="md:hidden bg-white px-4 pb-4 space-y-2">
                     <Link to="/" className="block text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Home</Link>
-                    <Link to="/karte" className="block text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Karte</Link>
+                    <Link to="/unternehmensuchen" className="block text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Suchen</Link>
 
-                    {/* Mobile Untermenü Toggle */}
-                    <div>
-                        <button
-                            className="w-full text-left text-gray-700 hover:text-navbar-blue flex justify-between items-center text-lg uppercase font-semibold"
-                            onClick={() => setShowUnternehmenSubmenu(!showUnternehmenSubmenu)}
-                        >
-                            Unternehmen
-                            <ChevronDown className={`w-4 h-4 transform transition-transform ${showUnternehmenSubmenu ? "rotate-180" : ""}`} />
-                        </button>
-                        {showUnternehmenSubmenu && (
-                            <div className="ml-4 mt-2 space-y-1">
-                                <Link to="/unternehmeneintragen" className="block text-sm text-gray-700 hover:text-navbar-blue">Eintragen</Link>
-                                <Link to="/unternehmensuchen" className="block text-sm text-gray-700 hover:text-navbar-blue">Suchen</Link>
-                            </div>
-                        )}
-                    </div>
+                    <Link to="/berichte" className="block text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Berichten</Link>
 
                     <Link to="/kontakt" className="block text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Kontakt</Link>
 

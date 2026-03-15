@@ -33,7 +33,7 @@ const CompanyTable: FC = () => {
 
     return (
         <div>
-             <h1 className="text-2xl font-bold text-navbar-blue py-4" text-navbar-blue>Unternehmen finden</h1>
+            <h1 className="text-2xl font-bold text-navbar-blue py-4" text-navbar-blue>Unternehmen finden</h1>
             <p className="mb-6 text-gray-700 max-w-2xl">
                 Hier kannst Du nach Unternehmen suchen und sehen, welche Berichte bereits zu jedem Unternehmen vorliegen.
             </p>
@@ -63,6 +63,7 @@ const CompanyTable: FC = () => {
                     </tbody>
                 </table>
             </div>
+            <h2 className='text-l font-bold text-navbar-blue py-4'>Karte</h2>
         </div>);
 
 }
