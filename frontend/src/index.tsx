@@ -2,15 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, HashRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import './index.css';
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
 import { HttpLink } from '@apollo/client';
 import { AuthProvider } from './context/AuthContext';
 
-//create an Apollo Client instance
-const GRAPHQL_URI = process.env.REACT_APP_GRAPHQL_URI || 'http://localhost:3010/api/graphql';
+//create an Apollo Client instance that is use to access the Graphql backend
+const GRAPHQL_URI = process.env.REACT_APP_BACKEND_URL;
+if (!GRAPHQL_URI) {
+    console.error("REACT_APP_BACKEND_URL is not defined in the environment variables");
+}
 const client = new ApolloClient({
     link: new HttpLink({
         uri: GRAPHQL_URI,

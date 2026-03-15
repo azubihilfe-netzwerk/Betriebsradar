@@ -1,21 +1,42 @@
-# Azubihilfe Netzwerk
-## Installieren der App
-`yarn install`
+# Betriebsradar Frontend
 
-## Funktionen der App
-
-## Add
-### react router dom
+Eine aktuelle Version der App ist unter [https://azubihilfe-netzwerk.github.io/Betriebsradar/](https://azubihilfe-netzwerk.github.io/Betriebsradar/) verfügbar.
 
 
-## Starten development mode
-`yarn start`
+## Entwickeln
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Installieren der Abhängigkeiten:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```
+yarn install
+```
 
-## Deployment
-Auf https://azubihilfe-netzwerk.netlify.app/ ist eine aktuelle und stabile Version der Seite zum testen bereit. (Ist die noch aktuell?)
+Starten des Frontends im development mode.
+
+```
+yarn start
+```
+
+Öffne [http://localhost:3000](http://localhost:3000), um die App im Browser zu testen.
+
+### Entwickeln mit lokalem Backend
+
+Um sich mit dem lokalen Backend zu verbinden, muss die backend URL geändert werden. Lege dazu eine Datei `.env.local` mit folgendem Inhalt an:
+
+```
+REACT_APP_BACKEND_URL=http://localhost:3010/api/graphql //hier url des lokalen backends eintragen
+```
+
+Starte anschließend das Frontend neu (`yarn start`).
+
+## Deployen
+
+Das frontend wird akutell auf Github pages deployed. Das geht sehr convenient mit dem `gh-pages` Skript. Um den aktuellen (lokalen) Stand zu deployen, führe folgendes Kommando aus:
+
+```
+npm run deploy
+```
+
+> **Hinweis**: Wenn `.env.local` vorhanden ist, wird das frontend mit den Variablen aus env.local deployed.
+
+Die App ist dann unter [https://azubihilfe-netzwerk.github.io/Betriebsradar/](https://azubihilfe-netzwerk.github.io/Betriebsradar/) deployed.
