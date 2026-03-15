@@ -81,6 +81,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 // Store in localStorage
                 localStorage.setItem('sessionToken', result.sessionToken);
                 localStorage.setItem('user', JSON.stringify(result.item));
+
+                // Invalidate Apollo cache to fetch fresh user-specific data
+                client.clearStore();
             } else if (result?.__typename === 'UserAuthenticationWithPasswordFailure') {
                 throw new Error(result.message || 'Login failed');
             } else {
@@ -95,9 +98,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
-    const logout = () => {
+    const logout = async () => {
+        await client.mutate({
+            mutation: gql`
+                mutation {
+                    endSession
+                }
+            `,
+        });
         setUser(null);
         localStorage.removeItem('user');
+
+        // Invalidate Apollo cache on logout
+        client.clearStore();
     };
 
     const value: AuthContextType = {
