@@ -30,3 +30,6 @@ out/
 
 #yarn
 .yarn/install-state.gz
+
+#Generated files
+src/api/__generated__/

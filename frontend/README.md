@@ -11,6 +11,12 @@ Installieren der Abhängigkeiten:
 yarn install
 ```
 
+Generieren der Api-Types:
+
+```
+npm run codegen
+```
+
 Starten des Frontends im development mode.
 
 ```

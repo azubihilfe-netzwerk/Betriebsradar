@@ -2,21 +2,10 @@ import { gql } from 'graphql-tag';
 import React, { FC } from 'react';
 import { useQuery } from '@apollo/client/react';
 import { Link } from 'react-router-dom';
-
-type Company = {
-    id: string;
-    name: string;
-    trade: string;
-    locations: string;
-    reviewsCount: number;
-};
-
-type GetCompaniesData = {
-    companies: Company[];
-};
+import { GetCompaniesQuery } from '../api/__generated__/graphql';
 
 const CompanyTable: FC = () => {
-    const { loading, error, data } = useQuery<GetCompaniesData>(gql`
+    const { loading, error, data } = useQuery<GetCompaniesQuery>(gql`
                         query GetCompanies {
                             companies {
                                 id
@@ -48,7 +37,7 @@ const CompanyTable: FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {data?.companies.map((company) => (
+                        {data?.companies?.map((company) => (
                             <tr key={company.id} className="hover:bg-gray-50">
                                 <td className="px-4 py-2 border-b">
                                     <Link to={`/unternehmen/${company.id}`} className="text-blue-600 hover:text-blue-800 hover:underline">

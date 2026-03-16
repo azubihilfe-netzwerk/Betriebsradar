@@ -1,36 +1,12 @@
 import { gql } from 'graphql-tag';
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { useQuery } from '@apollo/client/react';
 import { useParams } from 'react-router-dom';
-
-type Review = {
-    id: string;
-    name: string;
-    yearOfHiring: number;
-    experienceText: string;
-};
-
-type Company = {
-    id: string;
-    name: string;
-    trade: string;
-    size: string;
-    locations: string;
-    reviewsCount: number;
-    industry: string;
-    collective: boolean;
-    hoursPerWeek: number;
-    trainingShortenable: boolean;
-    partTime: boolean;
-};
-
-type GetCompanyDetailData = {
-    company: Company & { reviews: Review[] };
-};
+import { GetCompanyDetailQuery } from '../api/__generated__/graphql';
 
 const UnternehmenDetail: FC = () => {
     const { id } = useParams<{ id: string }>();
-    const { loading, error, data } = useQuery<GetCompanyDetailData>(
+    const { loading, error, data } = useQuery<GetCompanyDetailQuery>(
         gql`
            query GetCompanyDetail($id: ID!) {
                 company(where:  {
@@ -106,12 +82,12 @@ const UnternehmenDetail: FC = () => {
             </div>
 
             <div>
-                <h2 className="text-1xl font-bold text-navbar-blue mb-4">Berichte ({company.reviews.length})</h2>
-                {company.reviews.length === 0 ? (
+                <h2 className="text-1xl font-bold text-navbar-blue mb-4">Berichte ({company.reviews?.length})</h2>
+                {company.reviews?.length === 0 ? (
                     <p className="text-gray-600">Noch keine Berichte vorhanden.</p>
                 ) : (
                     <div className="space-y-4">
-                        {company.reviews.map((review) => (
+                        {company.reviews?.map((review) => (
                             <div key={review.id} className="bg-white rounded-lg shadow p-4 border-l-4 border-navbar-blue">
                                 <div className="flex justify-between items-start mb-2">
                                     <h3 className="text-lg font-semibold">{review.name}</h3>
