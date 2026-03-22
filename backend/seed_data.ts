@@ -128,7 +128,6 @@ export async function main() {
  });
 
   console.log(`✅ Seed data inserted`);
-  console.log(`👋 Please start the process with \`npm run dev\``);
 }
 
 main()
