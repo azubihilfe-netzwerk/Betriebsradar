@@ -6,7 +6,10 @@ SERVICE_NAME=betriebsradar-backend-test
 ## This wipes the test database and replaces it with the seed data, so use with caution!
 
 
-echo "🚀 Starting deployment for test environment to $SERVER..."
+echo "🚀 Starting deployment for test environment to $SERVER:$PATH_ON_SERVER..."
+
+npm run build > /dev/null 2>&1 && echo "✓ KeystoneJS build complete"
+
 # copy files to server
 rsync -avrz --exclude 'node_modules' --exclude '.git' --exclude 'dist' --exclude 'build' --exclude 'keystone.db' ./ $SERVER:$PATH_ON_SERVER > /dev/null 2>&1 && echo "✓ Files synced"
 
