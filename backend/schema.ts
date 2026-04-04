@@ -2,6 +2,10 @@ import { list } from '@keystone-6/core';
 import { text, relationship, select, integer, checkbox, timestamp, password, multiselect } from '@keystone-6/core/fields';
 import { document } from '@keystone-6/fields-document';
 import { allowAll } from '@keystone-6/core/access';
+import { randomBytes } from 'crypto';
+
+const generateAccessKey = () => randomBytes(32).toString('hex');
+
 
 export const lists = {
   User: list({
@@ -40,11 +44,12 @@ export const lists = {
       trade: text({ label: 'Gewerk', validation: { isRequired: true } }),
       size: select({
         label: 'Größe',
+        type: 'enum',
         options: [
-          { label: '1-10', value: '1-10' },
-          { label: '10-50', value: '10-50' },
-          { label: '50-250', value: '50-250' },
-          { label: 'ab 250', value: '250+' },
+          { label: '1-10', value: '_1to10' },
+          { label: '10-50', value: '_10to50' },
+          { label: '50-250', value: '_50to250' },
+          { label: 'ab 250', value: '_250plus' },
         ],
         ui: { displayMode: 'select' },
         validation: { isRequired: true },
@@ -102,10 +107,11 @@ export const lists = {
     },
     fields: {
       name: text({ label: 'Titel des Erfahrungsberichts', validation: { isRequired: true } }),
-      user: relationship({ ref: 'User', label: 'User Account' }),
+      email: text({ label: 'E-Mail-Adresse', validation: { isRequired: true } }),
       publishName: checkbox({ label: 'Name veröffentlichen?' }),
       gender: select({
         label: 'Geschlecht',
+        type: 'enum',
         options: [
           { label: 'cis-männlich', value: 'cis_male' },
           { label: 'cis-weiblich', value: 'cis_female' },
@@ -113,6 +119,7 @@ export const lists = {
           { label: 'trans', value: 'trans' },
           { label: 'divers', value: 'diverse' },
           { label: 'offen', value: 'other' },
+          { label: 'keine Angabe', value: 'prefer_not_to_say'},
         ],
         ui: { displayMode: 'select' },
       }),
@@ -121,6 +128,7 @@ export const lists = {
       genderOuted: checkbox({ label: 'Geschlechtl. Identität geoutet im Betrieb' }),
       position: select({
         label: 'Position',
+        type: 'enum',
         options: [
           { label: 'Praktikant*in', value: 'intern' },
           { label: 'Azubi', value: 'apprentice' },
@@ -134,10 +142,11 @@ export const lists = {
       }),
       duration: select({
         label: 'Dauer',
+        type: 'enum',
         options: [
-          { label: '1-3 Wochen', value: '1-3w' },
-          { label: '1-4 Monate', value: '1-4m' },
-          { label: '1-3 Jahre', value: '1-3y' },
+          { label: '1-3 Wochen', value: '_1to3weeks' },
+          { label: '1-4 Monate', value: '_1to4months' },
+          { label: '1-3 Jahre', value: '_1to3years' },
         ],
         ui: { displayMode: 'select' },
         validation: { isRequired: true },
@@ -147,6 +156,7 @@ export const lists = {
       listenedTo: checkbox({ label: 'Wurde dir zugehört?' }),
       tone: select({
         label: 'Wie war der Umgangston?',
+          type: 'enum',
         options: [
           { label: 'sehr angenehm', value: 'very_good' },
           { label: 'angenehm', value: 'good' },
@@ -158,6 +168,7 @@ export const lists = {
       }),
       explained: select({
         label: 'Wurde dir alles erklärt?',
+           type: 'enum',
         options: [
           { label: 'zu viel', value: 'too_much' },
           { label: 'genau richtig', value: 'just_right' },
@@ -181,6 +192,7 @@ export const lists = {
       boundariesRespected: checkbox({ label: 'Wurden deine kommunizierten Grenzen berücksichtigt?' }),
       appreciated: select({
         label: 'Hast du dich wertgeschätzt gefühlt?',
+           type: 'enum',
         options: [
           { label: 'ja', value: 'yes' },
           { label: 'teilweise', value: 'partly' },
@@ -193,6 +205,7 @@ export const lists = {
       socialGroups: relationship({ ref: 'SocialGroup.recommendedByReviews', many: true, label: 'Würdest du den Betrieb Menschen aus einer dieser Gruppen empfehlen?' }),
       sharedWithCompany: select({
         label: 'Hast du diese Informationen mit dem Betrieb geteilt?',
+           type: 'enum',  
         options: [
           { label: 'ja', value: 'yes' },
           { label: 'teilweise', value: 'partly' },
@@ -202,6 +215,7 @@ export const lists = {
       }),
       feltComfortableSharing: select({
         label: 'Hast du dich wohl gefühlt diese Informationen zu teilen?',
+        type: 'enum',
         options: [
           { label: 'ja', value: 'yes' },
           { label: 'teilweise', value: 'partly' },
@@ -211,6 +225,7 @@ export const lists = {
       }),
       needsRespected: select({
         label: 'Wurde auf deine Bedürfnisse & Grenzen Rücksicht genommen?',
+           type: 'enum',
         options: [
           { label: 'ja', value: 'yes' },
           { label: 'teilweise', value: 'partly' },
@@ -220,8 +235,11 @@ export const lists = {
       }),
       feedback: text({ label: 'Hast du Feedback zu unserem Fragebogen?', ui: { displayMode: 'textarea' } }),
       moreWishes: text({ label: 'Wünschst du dir die Möglichkeit weitere Dinge angeben zu können?', ui: { displayMode: 'textarea' } }),
+
+      /**Internal fields -> cannot be updated by reviewing person*/
       status: select({
         label: 'Zustand des Berichts',
+           type: 'enum',
         options: [
           { label: 'Entwurf', value: 'draft' },
           { label: 'In Review', value: 'in_review' },
@@ -229,7 +247,30 @@ export const lists = {
         ],
         defaultValue: 'draft',
         ui: { displayMode: 'segmented-control' },
+        access: {
+          update: ({ session, context, listKey, operation }) =>  session?.data?.roles.includes('editor') || false,
+          create: ({ session, context, listKey, operation }) =>  false, //no one can set this field on creation, it will be set to 'draft' by default
+        },         
       }),
+      emailVerified: checkbox({ label: 'E-Mail verifiziert', defaultValue: false }),
+      accessKey: text({
+        label: 'Zugriffsschlüssel',
+        isIndexed: 'unique',
+        db: { isNullable: true },
+        access: {
+          read: ({ session }) => session?.data?.roles?.includes('editor') || session?.data?.roles?.includes('admin') || true,
+          create: () => true,
+          update: () => false,
+        },
+        hooks: {
+          resolveInput: async ({ resolvedData, operation }) => {
+            if (operation === 'create' && !resolvedData.accessKey) {
+              return generateAccessKey();
+            }
+            return resolvedData.accessKey;
+          },
+        },
+      }), // for email verification and edit links
     },
   }),
 

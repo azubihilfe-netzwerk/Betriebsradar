@@ -12,13 +12,12 @@ generator client {
 }
 
 model User {
-  id               Int       @id @default(autoincrement())
-  name             String    @default("")
-  email            String    @unique @default("")
-  password         String
-  roles            String    @default("[]")
-  createdAt        DateTime? @default(now())
-  from_Review_user Review[]  @relation("Review_user")
+  id        Int       @id @default(autoincrement())
+  name      String    @default("")
+  email     String    @unique @default("")
+  password  String
+  roles     String    @default("[]")
+  createdAt DateTime? @default(now())
 }
 
 model Company {
@@ -49,8 +48,7 @@ model TrainingModel {
 model Review {
   id                     Int           @id @default(autoincrement())
   name                   String        @default("")
-  user                   User?         @relation("Review_user", fields: [userId], references: [id])
-  userId                 Int?          @map("user")
+  email                  String        @default("")
   publishName            Boolean       @default(false)
   gender                 String?
   company                Company?      @relation("Review_company", fields: [companyId], references: [id])
@@ -77,8 +75,9 @@ model Review {
   feedback               String        @default("")
   moreWishes             String        @default("")
   status                 String?       @default("draft")
+  emailVerified          Boolean       @default(false)
+  accessKey              String?       @unique
 
-  @@index([userId])
   @@index([companyId])
 }
 

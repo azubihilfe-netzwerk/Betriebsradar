@@ -2,10 +2,6 @@
 import { getContext } from '@keystone-6/core/context';
 import config from './keystone';import * as PrismaModule from '.prisma/client';
 import { create_social_groups } from './social_groups_seed_data';
-import { password } from '@keystone-6/core/fields';
-import { lists } from './schema';
-import { ListsWithResolvedRelations } from '@keystone-6/core/dist/declarations/src/lib/core/resolve-relationships';
-import { resolveTripleslashReference } from 'typescript';
 
 // Generic function to get or create an entity by name
 async function getOrCreateByName(context: any, entity: string, data: any, queryField: string = 'name') {
@@ -24,7 +20,7 @@ async function getOrCreateByName(context: any, entity: string, data: any, queryF
 
 export async function main() {
   await create_social_groups(); 
-  const context = getContext(config, PrismaModule)
+  const context = getContext(config, PrismaModule).sudo()
 
   console.log(`🌱 Inserting sample seed data`);
 
@@ -67,7 +63,7 @@ export async function main() {
     description: 'Ein Ausbildungsbetrieb für Handwerk und Technik.',
     industry: 'Handwerk',
     trade: 'Elektronik',
-    size: '10-50',
+    size: '_10to50',
     collective: false,
     contact: 'info@beispiel-gmbh.de',
     hoursPerWeek: 38,
@@ -82,14 +78,14 @@ export async function main() {
 
   const lucasReview = await getOrCreateByName(context, 'Review', {
      name : 'Lucas Erfahrungsbericht',
-     user: { connect: { id: lucaUser.id } },
+     email: 'luca@example.com',
       company: { connect: { id: theCompany.id } },
       publishName: true,
       gender: 'diverse',
       ageAtEmployment: 22,
       genderOuted: true,
       position: 'apprentice',
-      duration: '1-3y',
+      duration: '_1to3years',
       yearOfHiring: '2022',
       listenedTo: true,
       tone: 'good',
@@ -105,14 +101,14 @@ export async function main() {
 
  const joelsReview = await getOrCreateByName(context, 'Review', {
         name : 'Joels Erfahrungsbericht',
-        user: { connect: { id: joelUser.id } },
+        email: 'joel@example.com',
         company: { connect: { id: theCompany.id } },
         publishName: false,
         gender: 'enby',
         ageAtEmployment: 25,
         genderOuted: false,
       position: 'intern',
-      duration: '1-4m',
+      duration: '_1to4months',
       yearOfHiring: '2023',
       listenedTo: false,
       tone: 'ok',

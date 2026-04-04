@@ -126,7 +126,7 @@ type Company {
   description: String
   industry: String
   trade: String
-  size: String
+  size: CompanySizeType
   collective: Boolean
   contact: String
   hoursPerWeek: Int
@@ -138,6 +138,13 @@ type Company {
   reviewsCount(where: ReviewWhereInput! = {}): Int
   locations: String
   link: String
+}
+
+enum CompanySizeType {
+  _1to10
+  _10to50
+  _50to250
+  _250plus
 }
 
 input CompanyWhereUniqueInput {
@@ -153,7 +160,7 @@ input CompanyWhereInput {
   description: StringFilter
   industry: StringFilter
   trade: StringFilter
-  size: StringFilter
+  size: CompanySizeTypeNullableFilter
   collective: BooleanFilter
   contact: StringFilter
   hoursPerWeek: IntFilter
@@ -163,6 +170,13 @@ input CompanyWhereInput {
   reviews: ReviewManyRelationFilter
   locations: StringFilter
   link: StringFilter
+}
+
+input CompanySizeTypeNullableFilter {
+  equals: CompanySizeType
+  in: [CompanySizeType!]
+  notIn: [CompanySizeType!]
+  not: CompanySizeTypeNullableFilter
 }
 
 input BooleanFilter {
@@ -214,7 +228,7 @@ input CompanyUpdateInput {
   description: String
   industry: String
   trade: String
-  size: String
+  size: CompanySizeType
   collective: Boolean
   contact: String
   hoursPerWeek: Int
@@ -250,7 +264,7 @@ input CompanyCreateInput {
   description: String
   industry: String
   trade: String
-  size: String
+  size: CompanySizeType
   collective: Boolean
   contact: String
   hoursPerWeek: Int
@@ -338,37 +352,110 @@ input CompanyRelateToManyForCreateInput {
 type Review {
   id: ID!
   name: String
-  user: User
+  email: String
   publishName: Boolean
-  gender: String
+  gender: ReviewGenderType
   company: Company
   ageAtEmployment: Int
   genderOuted: Boolean
-  position: String
-  duration: String
+  position: ReviewPositionType
+  duration: ReviewDurationType
   yearOfHiring: String
   listenedTo: Boolean
-  tone: String
-  explained: String
+  tone: ReviewToneType
+  explained: ReviewExplainedType
   canAskColleagues: Boolean
   canAskBoss: Boolean
   proximity: String
   boundariesRespected: Boolean
-  appreciated: String
+  appreciated: ReviewAppreciatedType
   experienceText: String
   languages: String
   socialGroups(where: SocialGroupWhereInput! = {}, orderBy: [SocialGroupOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: SocialGroupWhereUniqueInput): [SocialGroup!]
   socialGroupsCount(where: SocialGroupWhereInput! = {}): Int
-  sharedWithCompany: String
-  feltComfortableSharing: String
-  needsRespected: String
+  sharedWithCompany: ReviewSharedWithCompanyType
+  feltComfortableSharing: ReviewFeltComfortableSharingType
+  needsRespected: ReviewNeedsRespectedType
   feedback: String
   moreWishes: String
-  status: String
+  status: ReviewStatusType
+  emailVerified: Boolean
+  accessKey: String
+}
+
+enum ReviewGenderType {
+  cis_male
+  cis_female
+  enby
+  trans
+  diverse
+  other
+  prefer_not_to_say
+}
+
+enum ReviewPositionType {
+  intern
+  apprentice
+  journey
+  master
+  helper
+  other
+}
+
+enum ReviewDurationType {
+  _1to3weeks
+  _1to4months
+  _1to3years
+}
+
+enum ReviewToneType {
+  very_good
+  good
+  ok
+  bad
+  awful
+}
+
+enum ReviewExplainedType {
+  too_much
+  just_right
+  enough
+  too_little
+}
+
+enum ReviewAppreciatedType {
+  yes
+  partly
+  no
+}
+
+enum ReviewSharedWithCompanyType {
+  yes
+  partly
+  no
+}
+
+enum ReviewFeltComfortableSharingType {
+  yes
+  partly
+  no
+}
+
+enum ReviewNeedsRespectedType {
+  yes
+  partly
+  no
+}
+
+enum ReviewStatusType {
+  draft
+  in_review
+  published
 }
 
 input ReviewWhereUniqueInput {
   id: ID
+  accessKey: String
 }
 
 input ReviewWhereInput {
@@ -377,32 +464,69 @@ input ReviewWhereInput {
   NOT: [ReviewWhereInput!]
   id: IDFilter
   name: StringFilter
-  user: UserWhereInput
+  email: StringFilter
   publishName: BooleanFilter
-  gender: StringNullableFilter
+  gender: ReviewGenderTypeNullableFilter
   company: CompanyWhereInput
   ageAtEmployment: IntFilter
   genderOuted: BooleanFilter
-  position: StringFilter
-  duration: StringFilter
+  position: ReviewPositionTypeNullableFilter
+  duration: ReviewDurationTypeNullableFilter
   yearOfHiring: StringFilter
   listenedTo: BooleanFilter
-  tone: StringNullableFilter
-  explained: StringNullableFilter
+  tone: ReviewToneTypeNullableFilter
+  explained: ReviewExplainedTypeNullableFilter
   canAskColleagues: BooleanFilter
   canAskBoss: BooleanFilter
   proximity: StringNullableFilter
   boundariesRespected: BooleanFilter
-  appreciated: StringNullableFilter
+  appreciated: ReviewAppreciatedTypeNullableFilter
   experienceText: StringFilter
   languages: StringFilter
   socialGroups: SocialGroupManyRelationFilter
-  sharedWithCompany: StringNullableFilter
-  feltComfortableSharing: StringNullableFilter
-  needsRespected: StringNullableFilter
+  sharedWithCompany: ReviewSharedWithCompanyTypeNullableFilter
+  feltComfortableSharing: ReviewFeltComfortableSharingTypeNullableFilter
+  needsRespected: ReviewNeedsRespectedTypeNullableFilter
   feedback: StringFilter
   moreWishes: StringFilter
-  status: StringNullableFilter
+  status: ReviewStatusTypeNullableFilter
+  emailVerified: BooleanFilter
+  accessKey: StringNullableFilter
+}
+
+input ReviewGenderTypeNullableFilter {
+  equals: ReviewGenderType
+  in: [ReviewGenderType!]
+  notIn: [ReviewGenderType!]
+  not: ReviewGenderTypeNullableFilter
+}
+
+input ReviewPositionTypeNullableFilter {
+  equals: ReviewPositionType
+  in: [ReviewPositionType!]
+  notIn: [ReviewPositionType!]
+  not: ReviewPositionTypeNullableFilter
+}
+
+input ReviewDurationTypeNullableFilter {
+  equals: ReviewDurationType
+  in: [ReviewDurationType!]
+  notIn: [ReviewDurationType!]
+  not: ReviewDurationTypeNullableFilter
+}
+
+input ReviewToneTypeNullableFilter {
+  equals: ReviewToneType
+  in: [ReviewToneType!]
+  notIn: [ReviewToneType!]
+  not: ReviewToneTypeNullableFilter
+}
+
+input ReviewExplainedTypeNullableFilter {
+  equals: ReviewExplainedType
+  in: [ReviewExplainedType!]
+  notIn: [ReviewExplainedType!]
+  not: ReviewExplainedTypeNullableFilter
 }
 
 input StringNullableFilter {
@@ -419,15 +543,51 @@ input StringNullableFilter {
   not: StringNullableFilter
 }
 
+input ReviewAppreciatedTypeNullableFilter {
+  equals: ReviewAppreciatedType
+  in: [ReviewAppreciatedType!]
+  notIn: [ReviewAppreciatedType!]
+  not: ReviewAppreciatedTypeNullableFilter
+}
+
 input SocialGroupManyRelationFilter {
   every: SocialGroupWhereInput
   some: SocialGroupWhereInput
   none: SocialGroupWhereInput
 }
 
+input ReviewSharedWithCompanyTypeNullableFilter {
+  equals: ReviewSharedWithCompanyType
+  in: [ReviewSharedWithCompanyType!]
+  notIn: [ReviewSharedWithCompanyType!]
+  not: ReviewSharedWithCompanyTypeNullableFilter
+}
+
+input ReviewFeltComfortableSharingTypeNullableFilter {
+  equals: ReviewFeltComfortableSharingType
+  in: [ReviewFeltComfortableSharingType!]
+  notIn: [ReviewFeltComfortableSharingType!]
+  not: ReviewFeltComfortableSharingTypeNullableFilter
+}
+
+input ReviewNeedsRespectedTypeNullableFilter {
+  equals: ReviewNeedsRespectedType
+  in: [ReviewNeedsRespectedType!]
+  notIn: [ReviewNeedsRespectedType!]
+  not: ReviewNeedsRespectedTypeNullableFilter
+}
+
+input ReviewStatusTypeNullableFilter {
+  equals: ReviewStatusType
+  in: [ReviewStatusType!]
+  notIn: [ReviewStatusType!]
+  not: ReviewStatusTypeNullableFilter
+}
+
 input ReviewOrderByInput {
   id: OrderDirection
   name: OrderDirection
+  email: OrderDirection
   publishName: OrderDirection
   gender: OrderDirection
   ageAtEmployment: OrderDirection
@@ -451,42 +611,40 @@ input ReviewOrderByInput {
   feedback: OrderDirection
   moreWishes: OrderDirection
   status: OrderDirection
+  emailVerified: OrderDirection
+  accessKey: OrderDirection
 }
 
 input ReviewUpdateInput {
   name: String
-  user: UserRelateToOneForUpdateInput
+  email: String
   publishName: Boolean
-  gender: String
+  gender: ReviewGenderType
   company: CompanyRelateToOneForUpdateInput
   ageAtEmployment: Int
   genderOuted: Boolean
-  position: String
-  duration: String
+  position: ReviewPositionType
+  duration: ReviewDurationType
   yearOfHiring: String
   listenedTo: Boolean
-  tone: String
-  explained: String
+  tone: ReviewToneType
+  explained: ReviewExplainedType
   canAskColleagues: Boolean
   canAskBoss: Boolean
   proximity: String
   boundariesRespected: Boolean
-  appreciated: String
+  appreciated: ReviewAppreciatedType
   experienceText: String
   languages: String
   socialGroups: SocialGroupRelateToManyForUpdateInput
-  sharedWithCompany: String
-  feltComfortableSharing: String
-  needsRespected: String
+  sharedWithCompany: ReviewSharedWithCompanyType
+  feltComfortableSharing: ReviewFeltComfortableSharingType
+  needsRespected: ReviewNeedsRespectedType
   feedback: String
   moreWishes: String
-  status: String
-}
-
-input UserRelateToOneForUpdateInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
-  disconnect: Boolean
+  status: ReviewStatusType
+  emailVerified: Boolean
+  accessKey: String
 }
 
 input CompanyRelateToOneForUpdateInput {
@@ -509,37 +667,34 @@ input ReviewUpdateArgs {
 
 input ReviewCreateInput {
   name: String
-  user: UserRelateToOneForCreateInput
+  email: String
   publishName: Boolean
-  gender: String
+  gender: ReviewGenderType
   company: CompanyRelateToOneForCreateInput
   ageAtEmployment: Int
   genderOuted: Boolean
-  position: String
-  duration: String
+  position: ReviewPositionType
+  duration: ReviewDurationType
   yearOfHiring: String
   listenedTo: Boolean
-  tone: String
-  explained: String
+  tone: ReviewToneType
+  explained: ReviewExplainedType
   canAskColleagues: Boolean
   canAskBoss: Boolean
   proximity: String
   boundariesRespected: Boolean
-  appreciated: String
+  appreciated: ReviewAppreciatedType
   experienceText: String
   languages: String
   socialGroups: SocialGroupRelateToManyForCreateInput
-  sharedWithCompany: String
-  feltComfortableSharing: String
-  needsRespected: String
+  sharedWithCompany: ReviewSharedWithCompanyType
+  feltComfortableSharing: ReviewFeltComfortableSharingType
+  needsRespected: ReviewNeedsRespectedType
   feedback: String
   moreWishes: String
-  status: String
-}
-
-input UserRelateToOneForCreateInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
+  status: ReviewStatusType
+  emailVerified: Boolean
+  accessKey: String
 }
 
 input CompanyRelateToOneForCreateInput {
