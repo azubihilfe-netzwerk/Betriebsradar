@@ -37,11 +37,7 @@ Starte anschließend das Frontend neu (`yarn start`).
 
 ## Deployen
 
-Das frontend wird akutell auf Github pages deployed. Das geht sehr convenient mit dem `gh-pages` Skript. Um den aktuellen (lokalen) Stand zu deployen, führe folgendes Kommando aus:
-
-```
-npm run deploy
-```
+Das frontend kann auf den uberspace server deployed werden, indem man das `./deploy.sh` Skript ausführt. Das baut die Reat App und kopiert die Files auf den Server.
 
 > **Hinweis**: Wenn `.env.local` vorhanden ist, wird das frontend mit den Variablen aus env.local deployed.
 
