@@ -40,9 +40,10 @@ export const lists = {
     fields: {
       name: text({ label: 'Name', validation: { isRequired: true } }),
       description: text({ label: 'Beschreibung', validation: { isRequired: true } }),
-      industry: text({ label: 'Branche', validation: { isRequired: true } }),
       trade: text({ label: 'Gewerk', validation: { isRequired: true } }),
-      size: select({
+      address: text({ label: 'Adresse', validation: { isRequired: true } }),
+      contact: text({ label: 'Kontaktdaten', validation: { isRequired: true } }),
+        size: select({
         label: 'Größe',
         type: 'enum',
         options: [
@@ -54,25 +55,8 @@ export const lists = {
         ui: { displayMode: 'select' },
         validation: { isRequired: true },
       }),
-      collective: checkbox({ label: 'Kollektiv', defaultValue: false }),
-      contact: text({ label: 'Kontaktdaten', validation: { isRequired: true } }),
-      hoursPerWeek: integer({ label: 'h/Woche', validation: { isRequired: true } }),
-      trainingShortenable: checkbox({ label: 'Ausbildung verkürzbar' }),
-      partTime: checkbox({ label: 'Teilzeit' }),
-      trainingModels: relationship({ ref: 'TrainingModel.companies', many: true, label: 'Ausbildungsmodell' }),
+      //Relationships
       reviews: relationship({ ref: 'Review.company', many: true, label: 'Anzahl Berichte' }),
-      locations: text({ label: 'Standort(e)', validation: { isRequired: true } }),
-      link: text({ label: 'Link', validation: { isRequired: true } }),
-    },
-  }),
-
-  TrainingModel: list({
-    access: allowAll,
-    fields: {
-      title: text({ label: 'Berufsbezeichnung', validation: { isRequired: true } }),
-      duration: text({ label: 'Dauer der Ausbildung', validation: { isRequired: true } }),
-      companies: relationship({ ref: 'Company.trainingModels', many: true, label: 'Betriebe' }),
-      // TODO: Arbeitsrecht (optional, not yet finished)
     },
   }),
 
@@ -124,7 +108,23 @@ export const lists = {
         ui: { displayMode: 'select' },
       }),
       company: relationship({ ref: 'Company.reviews', label: 'Betrieb' }),
+      collective: checkbox({ label: 'Kollektiv', defaultValue: false }),
+      hoursPerWeek: integer({ label: 'h/Woche', validation: { isRequired: true } }),
+      trainingShortenable: checkbox({ label: 'Ausbildung verkürzbar' }),
+      partTime: checkbox({ label: 'Teilzeit' }),
       ageAtEmployment: integer({ label: 'Alter zum Zeitpunkt der Anstellung', validation: { isRequired: true } }),
+      duration: select({
+        label: 'Dauer',
+        type: 'enum',
+        options: [
+          { label: '1-3 Wochen', value: '_1to3weeks' },
+          { label: '1-4 Monate', value: '_1to4months' },
+          { label: '1-3 Jahre', value: '_1to3years' },
+        ],
+        ui: { displayMode: 'select' },
+        validation: { isRequired: true },
+      }),
+      yearOfHiring: text({ label: 'Einstellungsjahr', validation: { isRequired: true } }),
       genderOuted: checkbox({ label: 'Geschlechtl. Identität geoutet im Betrieb' }),
       position: select({
         label: 'Position',
@@ -140,18 +140,6 @@ export const lists = {
         ui: { displayMode: 'select' },
         validation: { isRequired: true },
       }),
-      duration: select({
-        label: 'Dauer',
-        type: 'enum',
-        options: [
-          { label: '1-3 Wochen', value: '_1to3weeks' },
-          { label: '1-4 Monate', value: '_1to4months' },
-          { label: '1-3 Jahre', value: '_1to3years' },
-        ],
-        ui: { displayMode: 'select' },
-        validation: { isRequired: true },
-      }),
-      yearOfHiring: text({ label: 'Einstellungsjahr', validation: { isRequired: true } }),
       // Erfahrungen
       listenedTo: checkbox({ label: 'Wurde dir zugehört?' }),
       tone: select({
@@ -253,6 +241,7 @@ export const lists = {
         },         
       }),
       emailVerified: checkbox({ label: 'E-Mail verifiziert', defaultValue: false }),
+      //the access key is generated on creation and cannot be updated, it is used to allow users to edit their review without having an account
       accessKey: text({
         label: 'Zugriffsschlüssel',
         isIndexed: 'unique',
@@ -270,7 +259,7 @@ export const lists = {
             return resolvedData.accessKey;
           },
         },
-      }), // for email verification and edit links
+      }),
     },
   }),
 

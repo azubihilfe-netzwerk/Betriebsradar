@@ -124,20 +124,12 @@ type Company {
   id: ID!
   name: String
   description: String
-  industry: String
   trade: String
-  size: CompanySizeType
-  collective: Boolean
+  address: String
   contact: String
-  hoursPerWeek: Int
-  trainingShortenable: Boolean
-  partTime: Boolean
-  trainingModels(where: TrainingModelWhereInput! = {}, orderBy: [TrainingModelOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TrainingModelWhereUniqueInput): [TrainingModel!]
-  trainingModelsCount(where: TrainingModelWhereInput! = {}): Int
+  size: CompanySizeType
   reviews(where: ReviewWhereInput! = {}, orderBy: [ReviewOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewWhereUniqueInput): [Review!]
   reviewsCount(where: ReviewWhereInput! = {}): Int
-  locations: String
-  link: String
 }
 
 enum CompanySizeType {
@@ -158,18 +150,11 @@ input CompanyWhereInput {
   id: IDFilter
   name: StringFilter
   description: StringFilter
-  industry: StringFilter
   trade: StringFilter
-  size: CompanySizeTypeNullableFilter
-  collective: BooleanFilter
+  address: StringFilter
   contact: StringFilter
-  hoursPerWeek: IntFilter
-  trainingShortenable: BooleanFilter
-  partTime: BooleanFilter
-  trainingModels: TrainingModelManyRelationFilter
+  size: CompanySizeTypeNullableFilter
   reviews: ReviewManyRelationFilter
-  locations: StringFilter
-  link: StringFilter
 }
 
 input CompanySizeTypeNullableFilter {
@@ -177,28 +162,6 @@ input CompanySizeTypeNullableFilter {
   in: [CompanySizeType!]
   notIn: [CompanySizeType!]
   not: CompanySizeTypeNullableFilter
-}
-
-input BooleanFilter {
-  equals: Boolean
-  not: BooleanFilter
-}
-
-input IntFilter {
-  equals: Int
-  in: [Int!]
-  notIn: [Int!]
-  lt: Int
-  lte: Int
-  gt: Int
-  gte: Int
-  not: IntFilter
-}
-
-input TrainingModelManyRelationFilter {
-  every: TrainingModelWhereInput
-  some: TrainingModelWhereInput
-  none: TrainingModelWhereInput
 }
 
 input ReviewManyRelationFilter {
@@ -211,40 +174,20 @@ input CompanyOrderByInput {
   id: OrderDirection
   name: OrderDirection
   description: OrderDirection
-  industry: OrderDirection
   trade: OrderDirection
-  size: OrderDirection
-  collective: OrderDirection
+  address: OrderDirection
   contact: OrderDirection
-  hoursPerWeek: OrderDirection
-  trainingShortenable: OrderDirection
-  partTime: OrderDirection
-  locations: OrderDirection
-  link: OrderDirection
+  size: OrderDirection
 }
 
 input CompanyUpdateInput {
   name: String
   description: String
-  industry: String
   trade: String
-  size: CompanySizeType
-  collective: Boolean
+  address: String
   contact: String
-  hoursPerWeek: Int
-  trainingShortenable: Boolean
-  partTime: Boolean
-  trainingModels: TrainingModelRelateToManyForUpdateInput
+  size: CompanySizeType
   reviews: ReviewRelateToManyForUpdateInput
-  locations: String
-  link: String
-}
-
-input TrainingModelRelateToManyForUpdateInput {
-  disconnect: [TrainingModelWhereUniqueInput!]
-  set: [TrainingModelWhereUniqueInput!]
-  create: [TrainingModelCreateInput!]
-  connect: [TrainingModelWhereUniqueInput!]
 }
 
 input ReviewRelateToManyForUpdateInput {
@@ -262,91 +205,16 @@ input CompanyUpdateArgs {
 input CompanyCreateInput {
   name: String
   description: String
-  industry: String
   trade: String
-  size: CompanySizeType
-  collective: Boolean
+  address: String
   contact: String
-  hoursPerWeek: Int
-  trainingShortenable: Boolean
-  partTime: Boolean
-  trainingModels: TrainingModelRelateToManyForCreateInput
+  size: CompanySizeType
   reviews: ReviewRelateToManyForCreateInput
-  locations: String
-  link: String
-}
-
-input TrainingModelRelateToManyForCreateInput {
-  create: [TrainingModelCreateInput!]
-  connect: [TrainingModelWhereUniqueInput!]
 }
 
 input ReviewRelateToManyForCreateInput {
   create: [ReviewCreateInput!]
   connect: [ReviewWhereUniqueInput!]
-}
-
-type TrainingModel {
-  id: ID!
-  title: String
-  duration: String
-  companies(where: CompanyWhereInput! = {}, orderBy: [CompanyOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CompanyWhereUniqueInput): [Company!]
-  companiesCount(where: CompanyWhereInput! = {}): Int
-}
-
-input TrainingModelWhereUniqueInput {
-  id: ID
-}
-
-input TrainingModelWhereInput {
-  AND: [TrainingModelWhereInput!]
-  OR: [TrainingModelWhereInput!]
-  NOT: [TrainingModelWhereInput!]
-  id: IDFilter
-  title: StringFilter
-  duration: StringFilter
-  companies: CompanyManyRelationFilter
-}
-
-input CompanyManyRelationFilter {
-  every: CompanyWhereInput
-  some: CompanyWhereInput
-  none: CompanyWhereInput
-}
-
-input TrainingModelOrderByInput {
-  id: OrderDirection
-  title: OrderDirection
-  duration: OrderDirection
-}
-
-input TrainingModelUpdateInput {
-  title: String
-  duration: String
-  companies: CompanyRelateToManyForUpdateInput
-}
-
-input CompanyRelateToManyForUpdateInput {
-  disconnect: [CompanyWhereUniqueInput!]
-  set: [CompanyWhereUniqueInput!]
-  create: [CompanyCreateInput!]
-  connect: [CompanyWhereUniqueInput!]
-}
-
-input TrainingModelUpdateArgs {
-  where: TrainingModelWhereUniqueInput!
-  data: TrainingModelUpdateInput!
-}
-
-input TrainingModelCreateInput {
-  title: String
-  duration: String
-  companies: CompanyRelateToManyForCreateInput
-}
-
-input CompanyRelateToManyForCreateInput {
-  create: [CompanyCreateInput!]
-  connect: [CompanyWhereUniqueInput!]
 }
 
 type Review {
@@ -356,11 +224,15 @@ type Review {
   publishName: Boolean
   gender: ReviewGenderType
   company: Company
+  collective: Boolean
+  hoursPerWeek: Int
+  trainingShortenable: Boolean
+  partTime: Boolean
   ageAtEmployment: Int
-  genderOuted: Boolean
-  position: ReviewPositionType
   duration: ReviewDurationType
   yearOfHiring: String
+  genderOuted: Boolean
+  position: ReviewPositionType
   listenedTo: Boolean
   tone: ReviewToneType
   explained: ReviewExplainedType
@@ -393,6 +265,12 @@ enum ReviewGenderType {
   prefer_not_to_say
 }
 
+enum ReviewDurationType {
+  _1to3weeks
+  _1to4months
+  _1to3years
+}
+
 enum ReviewPositionType {
   intern
   apprentice
@@ -400,12 +278,6 @@ enum ReviewPositionType {
   master
   helper
   other
-}
-
-enum ReviewDurationType {
-  _1to3weeks
-  _1to4months
-  _1to3years
 }
 
 enum ReviewToneType {
@@ -468,11 +340,15 @@ input ReviewWhereInput {
   publishName: BooleanFilter
   gender: ReviewGenderTypeNullableFilter
   company: CompanyWhereInput
+  collective: BooleanFilter
+  hoursPerWeek: IntFilter
+  trainingShortenable: BooleanFilter
+  partTime: BooleanFilter
   ageAtEmployment: IntFilter
-  genderOuted: BooleanFilter
-  position: ReviewPositionTypeNullableFilter
   duration: ReviewDurationTypeNullableFilter
   yearOfHiring: StringFilter
+  genderOuted: BooleanFilter
+  position: ReviewPositionTypeNullableFilter
   listenedTo: BooleanFilter
   tone: ReviewToneTypeNullableFilter
   explained: ReviewExplainedTypeNullableFilter
@@ -494,6 +370,11 @@ input ReviewWhereInput {
   accessKey: StringNullableFilter
 }
 
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
+}
+
 input ReviewGenderTypeNullableFilter {
   equals: ReviewGenderType
   in: [ReviewGenderType!]
@@ -501,11 +382,15 @@ input ReviewGenderTypeNullableFilter {
   not: ReviewGenderTypeNullableFilter
 }
 
-input ReviewPositionTypeNullableFilter {
-  equals: ReviewPositionType
-  in: [ReviewPositionType!]
-  notIn: [ReviewPositionType!]
-  not: ReviewPositionTypeNullableFilter
+input IntFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntFilter
 }
 
 input ReviewDurationTypeNullableFilter {
@@ -513,6 +398,13 @@ input ReviewDurationTypeNullableFilter {
   in: [ReviewDurationType!]
   notIn: [ReviewDurationType!]
   not: ReviewDurationTypeNullableFilter
+}
+
+input ReviewPositionTypeNullableFilter {
+  equals: ReviewPositionType
+  in: [ReviewPositionType!]
+  notIn: [ReviewPositionType!]
+  not: ReviewPositionTypeNullableFilter
 }
 
 input ReviewToneTypeNullableFilter {
@@ -590,11 +482,15 @@ input ReviewOrderByInput {
   email: OrderDirection
   publishName: OrderDirection
   gender: OrderDirection
+  collective: OrderDirection
+  hoursPerWeek: OrderDirection
+  trainingShortenable: OrderDirection
+  partTime: OrderDirection
   ageAtEmployment: OrderDirection
-  genderOuted: OrderDirection
-  position: OrderDirection
   duration: OrderDirection
   yearOfHiring: OrderDirection
+  genderOuted: OrderDirection
+  position: OrderDirection
   listenedTo: OrderDirection
   tone: OrderDirection
   explained: OrderDirection
@@ -621,11 +517,15 @@ input ReviewUpdateInput {
   publishName: Boolean
   gender: ReviewGenderType
   company: CompanyRelateToOneForUpdateInput
+  collective: Boolean
+  hoursPerWeek: Int
+  trainingShortenable: Boolean
+  partTime: Boolean
   ageAtEmployment: Int
-  genderOuted: Boolean
-  position: ReviewPositionType
   duration: ReviewDurationType
   yearOfHiring: String
+  genderOuted: Boolean
+  position: ReviewPositionType
   listenedTo: Boolean
   tone: ReviewToneType
   explained: ReviewExplainedType
@@ -671,11 +571,15 @@ input ReviewCreateInput {
   publishName: Boolean
   gender: ReviewGenderType
   company: CompanyRelateToOneForCreateInput
+  collective: Boolean
+  hoursPerWeek: Int
+  trainingShortenable: Boolean
+  partTime: Boolean
   ageAtEmployment: Int
-  genderOuted: Boolean
-  position: ReviewPositionType
   duration: ReviewDurationType
   yearOfHiring: String
+  genderOuted: Boolean
+  position: ReviewPositionType
   listenedTo: Boolean
   tone: ReviewToneType
   explained: ReviewExplainedType
@@ -766,12 +670,6 @@ type Mutation {
   updateCompanies(data: [CompanyUpdateArgs!]!): [Company]
   deleteCompany(where: CompanyWhereUniqueInput!): Company
   deleteCompanies(where: [CompanyWhereUniqueInput!]!): [Company]
-  createTrainingModel(data: TrainingModelCreateInput!): TrainingModel
-  createTrainingModels(data: [TrainingModelCreateInput!]!): [TrainingModel]
-  updateTrainingModel(where: TrainingModelWhereUniqueInput!, data: TrainingModelUpdateInput!): TrainingModel
-  updateTrainingModels(data: [TrainingModelUpdateArgs!]!): [TrainingModel]
-  deleteTrainingModel(where: TrainingModelWhereUniqueInput!): TrainingModel
-  deleteTrainingModels(where: [TrainingModelWhereUniqueInput!]!): [TrainingModel]
   createReview(data: ReviewCreateInput!): Review
   createReviews(data: [ReviewCreateInput!]!): [Review]
   updateReview(where: ReviewWhereUniqueInput!, data: ReviewUpdateInput!): Review
@@ -813,9 +711,6 @@ type Query {
   company(where: CompanyWhereUniqueInput!): Company
   companies(where: CompanyWhereInput! = {}, orderBy: [CompanyOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CompanyWhereUniqueInput): [Company!]
   companiesCount(where: CompanyWhereInput! = {}): Int
-  trainingModel(where: TrainingModelWhereUniqueInput!): TrainingModel
-  trainingModels(where: TrainingModelWhereInput! = {}, orderBy: [TrainingModelOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TrainingModelWhereUniqueInput): [TrainingModel!]
-  trainingModelsCount(where: TrainingModelWhereInput! = {}): Int
   review(where: ReviewWhereUniqueInput!): Review
   reviews(where: ReviewWhereInput! = {}, orderBy: [ReviewOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewWhereUniqueInput): [Review!]
   reviewsCount(where: ReviewWhereInput! = {}): Int

@@ -21,28 +21,14 @@ model User {
 }
 
 model Company {
-  id                  Int             @id @default(autoincrement())
-  name                String          @default("")
-  description         String          @default("")
-  industry            String          @default("")
-  trade               String          @default("")
-  size                String
-  collective          Boolean         @default(false)
-  contact             String          @default("")
-  hoursPerWeek        Int
-  trainingShortenable Boolean         @default(false)
-  partTime            Boolean         @default(false)
-  trainingModels      TrainingModel[] @relation("Company_trainingModels")
-  reviews             Review[]        @relation("Review_company")
-  locations           String          @default("")
-  link                String          @default("")
-}
-
-model TrainingModel {
-  id        Int       @id @default(autoincrement())
-  title     String    @default("")
-  duration  String    @default("")
-  companies Company[] @relation("Company_trainingModels")
+  id          Int      @id @default(autoincrement())
+  name        String   @default("")
+  description String   @default("")
+  trade       String   @default("")
+  address     String   @default("")
+  contact     String   @default("")
+  size        String
+  reviews     Review[] @relation("Review_company")
 }
 
 model Review {
@@ -53,11 +39,15 @@ model Review {
   gender                 String?
   company                Company?      @relation("Review_company", fields: [companyId], references: [id])
   companyId              Int?          @map("company")
+  collective             Boolean       @default(false)
+  hoursPerWeek           Int
+  trainingShortenable    Boolean       @default(false)
+  partTime               Boolean       @default(false)
   ageAtEmployment        Int
-  genderOuted            Boolean       @default(false)
-  position               String
   duration               String
   yearOfHiring           String        @default("")
+  genderOuted            Boolean       @default(false)
+  position               String
   listenedTo             Boolean       @default(false)
   tone                   String?
   explained              String?
