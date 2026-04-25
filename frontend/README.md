@@ -11,7 +11,7 @@ Installieren der Abhängigkeiten:
 yarn install
 ```
 
-Generieren der Api-Types:
+Generieren der Api-Types (nach Änderung des backend-Schemas oder nach Änderung eines `gql` query strings im frontend):
 
 ```
 npm run codegen

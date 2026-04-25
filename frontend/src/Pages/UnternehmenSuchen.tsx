@@ -11,7 +11,7 @@ const CompanyTable: FC = () => {
                                 id
                                 name
                                 trade
-                                locations
+                                address
                                 reviewsCount
                             }
     }`
@@ -45,7 +45,7 @@ const CompanyTable: FC = () => {
                                     </Link>
                                 </td>
                                 <td className="px-4 py-2 border-b">{company.trade}</td>
-                                <td className="px-4 py-2 border-b">{company.locations}</td>
+                                <td className="px-4 py-2 border-b">{company.address}</td>
                                 <td className="px-4 py-2 border-b text-center">{company.reviewsCount}</td>
                             </tr>
                         ))}

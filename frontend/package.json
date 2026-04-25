@@ -1,7 +1,7 @@
 {
   "name": "azubihilfe-netzwerk",
   "version": "0.1.0",
-  "homepage": "https://azubihilfe-netzwerk.github.io/Betriebsradar",
+  "homepage": "https://betriebsradar.org",
   "private": true,
   "dependencies": {
     "@apollo/client": "^4.1.6",

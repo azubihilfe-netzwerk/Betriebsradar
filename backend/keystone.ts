@@ -29,7 +29,7 @@ export default withAuth(
     server: {
       port: Number(process.env.PORT) || 3010,
       cors: {
-        origin: ['https://azubihilfe-netzwerk.github.io', 'http://localhost:3000'],
+        origin: ['https://azubihilfe-netzwerk.github.io', 'http://localhost:3000', 'https://betriebsradar.org'],
         credentials: true,
         methods: ['GET', 'POST', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization'],

@@ -15,12 +15,8 @@ const UnternehmenDetail: FC = () => {
                     id
                     name
                     trade
-                    locations
-                    industry
-                    collective
-                    hoursPerWeek
-                    trainingShortenable
-                    partTime
+                    address
+                    contact
                     size
                     reviewsCount
                     reviews {
@@ -52,31 +48,11 @@ const UnternehmenDetail: FC = () => {
                     </div>
                     <div>
                         <p className="font-semibold">Adresse:</p>
-                        <p>{company.locations}</p>
-                    </div>
-                    <div>
-                        <p className="font-semibold">Branche:</p>
-                        <p>{company.industry}</p>
+                        <p>{company.address}</p>
                     </div>
                     <div>
                         <p className="font-semibold">Betriebsgröße:</p>
                         <p>{company.size} Mitarbeitende</p>
-                    </div>
-                    <div>
-                        <p className="font-semibold">Kollektiv:</p>
-                        <p>{company.collective ? 'Ja' : 'Nein'}</p>
-                    </div>
-                    <div>
-                        <p className="font-semibold">h/Woche:</p>
-                        <p>{company.hoursPerWeek}</p>
-                    </div>
-                    <div>
-                        <p className="font-semibold">Ausbildung verkürzbar:</p>
-                        <p>{company.trainingShortenable ? 'Ja' : 'Nein'}</p>
-                    </div>
-                    <div>
-                        <p className="font-semibold">Teilzeit:</p>
-                        <p>{company.partTime ? 'Ja' : 'Nein'}</p>
                     </div>
                 </div>
             </div>
