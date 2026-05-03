@@ -27,13 +27,7 @@ yarn start
 
 ### Entwickeln mit lokalem Backend
 
-Um sich mit dem lokalen Backend zu verbinden, muss die backend URL geändert werden. Lege dazu eine Datei `.env.local` mit folgendem Inhalt an:
-
-```
-REACT_APP_BACKEND_URL=http://localhost:3010/api/graphql //hier url des lokalen backends eintragen
-```
-
-Starte anschließend das Frontend neu (`yarn start`).
+Die Settings fürs lokale Entwickeln sind in `.env.development`.
 
 ## Deployen
 
