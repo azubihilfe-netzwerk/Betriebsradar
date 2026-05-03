@@ -10,8 +10,8 @@ import Login from "./Pages/Login";
 import UnternehmenEintragen from "./Pages/UnternehmenEintragen";
 import UnternehmenSuchen from "./Pages/UnternehmenSuchen";
 import UnternehmenDetail from "./Pages/UnternehmenDetail";
-import Berichte from "./Pages/Berichte";
 import BerichtDetail from "./Pages/BerichtDetail";
+import BerichtSchreiben from './Pages/BerichtSchreiben';
 
 // 📥 Bild importieren
 import backgroundImage from "./images/Webseite-Hintergrund.png";
@@ -34,7 +34,7 @@ function App() {
                         <Route path="/unternehmeneintragen" element={<UnternehmenEintragen />} />
                         <Route path="/unternehmensuchen" element={<UnternehmenSuchen />} />
                         <Route path="/unternehmen/:id" element={<UnternehmenDetail />} />
-                        <Route path="/berichte" element={<Berichte />} />
+                        <Route path="/berichte" element={<BerichtSchreiben/>} />
                         <Route path="/berichte/:id" element={<BerichtDetail />} />
                     </Routes>
                 </main>

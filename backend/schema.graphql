@@ -266,9 +266,10 @@ enum ReviewGenderType {
 }
 
 enum ReviewDurationType {
-  _1to3weeks
-  _1to4months
-  _1to3years
+  OneToThreeweeks
+  OneToFourMonths
+  FiveToTwelveMonths
+  OneToThreeYears
 }
 
 enum ReviewPositionType {

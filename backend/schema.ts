@@ -117,9 +117,10 @@ export const lists = {
         label: 'Dauer',
         type: 'enum',
         options: [
-          { label: '1-3 Wochen', value: '_1to3weeks' },
-          { label: '1-4 Monate', value: '_1to4months' },
-          { label: '1-3 Jahre', value: '_1to3years' },
+          { label: '1-3 Wochen', value: 'OneToThreeweeks' },
+          { label: '1-4 Monate', value: 'OneToFourMonths' },
+          { label: '5-12 Monate', value: 'FiveToTwelveMonths' },
+          { label: '1-3 Jahre', value: 'OneToThreeYears' },
         ],
         ui: { displayMode: 'select' },
         validation: { isRequired: true },
