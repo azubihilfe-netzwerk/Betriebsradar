@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useMutation } from '@apollo/client/react';
 import { gql } from 'graphql-tag';
+import { useNavigate } from 'react-router-dom';
 import { ReviewForm, ReviewFormData } from '../components/ReviewForm';
 import { CreateReviewMutation, CreateReviewMutationVariables } from '../api/__generated__/graphql';
 
@@ -18,6 +19,7 @@ const CREATE_REVIEW = gql`
 const FIXED_COMPANY_ID = '1';
 
 const BerichtSchreiben: FC = () => {
+  const navigate = useNavigate();
   const [createReview, { loading: isSubmitting, error }] = useMutation<
     CreateReviewMutation,
     CreateReviewMutationVariables
@@ -63,7 +65,7 @@ const BerichtSchreiben: FC = () => {
         },
       } as const);
 
-      alert('Bericht erfolgreich eingereicht!');
+      navigate('/bericht-eingereicht');
     } catch (err) {
       console.error('Fehler beim Einreichen des Berichts:', err);
     }

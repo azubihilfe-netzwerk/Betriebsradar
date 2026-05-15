@@ -3,6 +3,9 @@ import { SampleData } from '../seed_data';
 import { graphql } from './gql';
 import { ReviewDurationType, ReviewPositionType, ReviewStatusType } from './gql/graphql';
 import { context as publicContext, contextAs, execute, resetAndSeed } from './setup';
+import { setTransporter } from '../mailer';
+import { parse } from 'graphql';
+import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
 
 // ---------------------------------------------------------------------------
 // Typed document nodes — graphql-codegen infers request/response types from
@@ -37,6 +40,15 @@ const GET_REVIEW_BY_ID = graphql(`
     }
   }`);
 
+const GET_REVIEW_ACCESS_KEY = parse(`
+  query GetReviewAccessKey($id: ID!) {
+    review(where: { id: $id }) {
+      id
+      accessKey
+    }
+  }
+`) as TypedDocumentNode<{ review: { id: string; accessKey: string | null } | null }, { id: string }>;
+
 const GET_ALL_REVIEWS = graphql(
   `query GetReviews {
       reviews {
@@ -58,10 +70,14 @@ const GET_REVIEWS_BY_EMAIL = graphql(`
 var sampleData: SampleData;
 var adminContext: KeystoneContext;
 var editorContext: KeystoneContext;
+
+const mockSendMail = jest.fn().mockResolvedValue({ messageId: 'test-message-id' });
+
 // ---------------------------------------------------------------------------
 
 
 beforeAll(async () => {
+  setTransporter({ sendMail: mockSendMail } as any);
   sampleData = await resetAndSeed();
   adminContext = await contextAs('admin@example.com');
   editorContext = await contextAs(sampleData.editorAnna.email);
@@ -95,19 +111,64 @@ describe("Given a submitted Review", () => {
     expect(data?.review?.emailVerified).toBeFalsy();
   })
 
-
-
-
 });
 
-async function submitReview(): Promise<string> {
+describe("Email Verification", () => {
+  let reviewId: string;
+  let accessKey: string;
+
+  beforeAll(async () => {
+    mockSendMail.mockClear();
+    reviewId = await submitReview('verify-test@example.com');
+    const { data } = await execute(adminContext, GET_REVIEW_ACCESS_KEY, { id: reviewId });
+    accessKey = data!.review!.accessKey!;
+  });
+
+  it("sends a verification email to the review's email address on creation", () => {
+    expect(mockSendMail).toHaveBeenCalledWith(
+      expect.objectContaining({ to: 'verify-test@example.com' })
+    );
+  });
+
+  it("the verification email contains the access token in a URL", () => {
+    const mailArgs = mockSendMail.mock.calls[0][0];
+    expect(mailArgs.html).toContain(accessKey);
+  });
+
+  it("verifying with the correct token sets emailVerified to true", async () => {
+    const result = await (publicContext as any).graphql.raw({
+      query: `mutation VerifyReviewEmail($accessKey: String!) {
+        verifyReviewEmail(accessKey: $accessKey)
+      }`,
+      variables: { accessKey },
+    }) as { data: { verifyReviewEmail: boolean | null } };
+
+    expect(result.data?.verifyReviewEmail).toBe(true);
+
+    const { data } = await execute(adminContext, GET_REVIEW_BY_ID, { id: reviewId });
+    expect(data?.review?.emailVerified).toBe(true);
+  });
+
+  it("verifying with an invalid token returns false", async () => {
+    const result = await (publicContext as any).graphql.raw({
+      query: `mutation VerifyReviewEmail($accessKey: String!) {
+        verifyReviewEmail(accessKey: $accessKey)
+      }`,
+      variables: { accessKey: 'invalid-token-xyz-000' },
+    }) as { data: { verifyReviewEmail: boolean | null } };
+
+    expect(result.data?.verifyReviewEmail).toBe(false);
+  });
+});
+
+async function submitReview(email = 'new-test@example.com'): Promise<string> {
   const companyId = sampleData.theCompany.id;
 
   // Submit a review without any session — context has no session attached
   const { data, errors } = await execute(publicContext, CREATE_REVIEW, {
     data: {
       name: 'Test Review',
-      email: 'new-test@example.com',
+      email,
       hoursPerWeek: 40,
       ageAtEmployment: 20,
       duration: ReviewDurationType.OneToFourMonths,

@@ -13,16 +13,19 @@
     "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
-    "@keystone-6/auth": "^8.0.0",
-    "@keystone-6/core": "^6.0.0",
-    "@keystone-6/fields-document": "^9.0.0",
+    "@keystone-6/auth": "^8.1.0",
+    "@keystone-6/core": "^6.5.2",
+    "@keystone-6/fields-document": "^9.1.1",
+    "dotenv": "^17.4.2",
+    "nodemailer": "^8.0.7",
     "tsx": "^4.21.0",
     "typescript": "^5.5.0"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^5.0.0",
-    "@graphql-codegen/client-preset": "^4.0.0",
+    "@graphql-codegen/cli": "^7.0.0",
+    "@graphql-codegen/client-preset": "^6.0.0",
     "@types/jest": "^30.0.0",
+    "@types/nodemailer": "^8.0.0",
     "graphql": "^16.0.0",
     "jest": "^30.3.0",
     "ts-jest": "^29.4.9"

@@ -1,9 +1,9 @@
 import { list } from '@keystone-6/core';
 import { text, relationship, select, integer, checkbox, timestamp, password, multiselect } from '@keystone-6/core/fields';
-import { document } from '@keystone-6/fields-document';
 import { allowAll } from '@keystone-6/core/access';
 import { randomBytes } from 'crypto';
 import { ReviewStatusType } from './tests/gql/graphql';
+import { sendVerificationEmail } from './mailer';
 
 const generateAccessKey = () => randomBytes(32).toString('hex');
 
@@ -262,6 +262,13 @@ export const lists = {
           },
         },
       }),
+    },
+    hooks: {
+      afterOperation: async ({ operation, item }) => {
+        if (operation === 'create' && item?.email && item?.accessKey) {
+          await sendVerificationEmail(String(item.email), String(item.accessKey), String(item.name));
+        }
+      },
     },
   }),
 

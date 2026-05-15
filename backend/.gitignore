@@ -3,5 +3,8 @@ node_modules
 keystone.db
 *.log
 
+#config file containing secrets
+.env
+
 #generated code
 tests/gql/*

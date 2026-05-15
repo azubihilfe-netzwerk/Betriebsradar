@@ -54,7 +54,7 @@ const sessionMaxAge = 60 * 60 * 24 * 30
 // you can find out more at https://keystonejs.com/docs/apis/session#session-api
 const session = statelessSessions({
   maxAge: sessionMaxAge,
-  secret: process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET || "my-secret daskfhaksdhf28z qojfp2jö3j24j2l",
   sameSite: false, //this is required as long as the frontend is hosted under a different dominain (i.e. github pages)
 })
 

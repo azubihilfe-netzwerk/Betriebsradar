@@ -1,24 +1,12 @@
-// Welcome to Keystone!
-//
-// This file is what Keystone uses as the entry-point to your headless backend
-//
-// Keystone imports the default export of this file, expecting a Keystone configuration object
-//   you can find out more at https://keystonejs.com/docs/apis/config
-
 import { config } from '@keystone-6/core'
-
-// to keep this file tidy, we define our schema in a different file
+import { mergeSchemas } from '@graphql-tools/schema'
+import type { KeystoneContext } from '@keystone-6/core/types'
 import { lists } from './schema'
-
-// authentication is configured separately here too, but you might move this elsewhere
-// when you write your list-level access control functions, as they typically rely on session data
 import { withAuth, session } from './auth'
-
-let isProd = process.env.NODE_ENV === 'production'
+require('dotenv').config();
 
 export default withAuth(
   config({
-
     db: {
       provider: 'sqlite',
       url: 'file:./keystone.db',
@@ -35,5 +23,38 @@ export default withAuth(
         allowedHeaders: ['Content-Type', 'Authorization'],
       },
     },
-  })
+    graphql: {
+      extendGraphqlSchema: (schema) =>
+        mergeSchemas({
+          schemas: [schema],
+          typeDefs: `
+            type Mutation {
+              verifyReviewEmail(accessKey: String!): Boolean
+            }
+          `,
+          resolvers: {
+            Mutation: {
+              verifyReviewEmail: async (
+                _root: unknown,
+                { accessKey }: { accessKey: string },
+                context: KeystoneContext
+              ) => {
+                const review = await context.sudo().query.Review.findOne({
+                  where: { accessKey },
+                  query: 'id',
+                });
+                if (!review) return false;
+                await context.sudo().query.Review.updateOne({
+                  where: { id: review.id },
+                  data: { emailVerified: true },
+                  query: 'id',
+                });
+                return true;
+              },
+            },
+          },
+        })
+    },
+  },
+  )
 )

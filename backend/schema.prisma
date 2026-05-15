@@ -64,7 +64,7 @@ model Review {
   needsRespected         String?
   feedback               String        @default("")
   moreWishes             String        @default("")
-  status                 String?       @default("draft")
+  status                 String?       @default("awaitingReview")
   emailVerified          Boolean       @default(false)
   accessKey              String?       @unique
 

@@ -12,6 +12,8 @@ import UnternehmenSuchen from "./Pages/UnternehmenSuchen";
 import UnternehmenDetail from "./Pages/UnternehmenDetail";
 import BerichtDetail from "./Pages/BerichtDetail";
 import BerichtSchreiben from './Pages/BerichtSchreiben';
+import EmailBestaetigen from './Pages/EmailBestaetigen';
+import BerichtEingereicht from './Pages/BerichtEingereicht';
 
 // 📥 Bild importieren
 import backgroundImage from "./images/Webseite-Hintergrund.png";
@@ -36,6 +38,8 @@ function App() {
                         <Route path="/unternehmen/:id" element={<UnternehmenDetail />} />
                         <Route path="/berichte" element={<BerichtSchreiben/>} />
                         <Route path="/berichte/:id" element={<BerichtDetail />} />
+                        <Route path="/verify-email" element={<EmailBestaetigen />} />
+                        <Route path="/bericht-eingereicht" element={<BerichtEingereicht />} />
                     </Routes>
                 </main>
             </div>

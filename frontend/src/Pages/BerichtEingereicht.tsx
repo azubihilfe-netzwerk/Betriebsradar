@@ -1,0 +1,63 @@
+import React, { FC } from 'react';
+import { Link } from 'react-router-dom';
+
+const BerichtEingereicht: FC = () => {
+  return (
+    <div className="max-w-2xl mx-auto py-12 px-4">
+      <h1 className="text-4xl font-bold text-navbar-blue mb-4">
+        Vielen Dank für deinen Bericht!
+      </h1>
+
+      <p className="text-gray-700 mb-8">
+        Dein Erfahrungsbericht ist bei uns eingegangen. Damit er veröffentlicht werden kann, sind
+        noch zwei kurze Schritte nötig:
+      </p>
+
+      <ol className="space-y-6 mb-10">
+        <li className="flex gap-4">
+          <span className="flex-shrink-0 w-8 h-8 rounded-full bg-navbar-blue text-white flex items-center justify-center font-bold">
+            1
+          </span>
+          <div>
+            <p className="font-semibold text-gray-800">E-Mail bestätigen</p>
+            <p className="text-gray-600 text-sm mt-1">
+              Wir haben dir eine E-Mail mit einem Bestätigungslink geschickt. Bitte klicke auf
+              diesen Link, damit wir wissen, dass die Adresse dir gehört. Schau auch im
+              Spam-Ordner nach, falls du nichts siehst.
+            </p>
+          </div>
+        </li>
+
+        <li className="flex gap-4">
+          <span className="flex-shrink-0 w-8 h-8 rounded-full bg-navbar-blue text-white flex items-center justify-center font-bold">
+            2
+          </span>
+          <div>
+            <p className="font-semibold text-gray-800">Redaktionelle Prüfung</p>
+            <p className="text-gray-600 text-sm mt-1">
+              Nach der E-Mail-Bestätigung liest unser Team deinen Bericht durch und veröffentlicht
+              ihn, sobald er unsere Richtlinien erfüllt. Das dauert in der Regel ein paar Tage.
+            </p>
+          </div>
+        </li>
+      </ol>
+
+      <p className="text-gray-600 text-sm mb-8">
+        Fragen? Schreib uns an{' '}
+        <a href="mailto:kontakt@betriebsradar.org" className="text-navbar-blue hover:underline">
+          kontakt@betriebsradar.org
+        </a>
+        .
+      </p>
+
+      <Link
+        to="/"
+        className="inline-block bg-navbar-blue text-white font-semibold px-6 py-3 rounded-lg hover:opacity-90 transition-opacity"
+      >
+        Zur Startseite
+      </Link>
+    </div>
+  );
+};
+
+export default BerichtEingereicht;
