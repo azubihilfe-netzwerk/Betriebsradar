@@ -2,9 +2,10 @@
 import { getContext } from '@keystone-6/core/context';
 import config from './keystone';import * as PrismaModule from '.prisma/client';
 import { create_social_groups } from './social_groups_seed_data';
+import { ReviewStatusType } from './tests/gql/graphql';
 
 // Generic function to get or create an entity by name
-async function getOrCreateByName(context: any, entity: string, data: any, queryField: string = 'name') {
+async function getOrCreateEntityByName(context: any, entity: string, data: any, queryField: string = 'name') {
   const existing = await context.query[entity].findMany({
     where: { [queryField]: { equals: data[queryField] } },
   });
@@ -18,9 +19,17 @@ async function getOrCreateByName(context: any, entity: string, data: any, queryF
   }
 }
 
-export async function main() {
-  await create_social_groups(); 
-  const context = getContext(config, PrismaModule).sudo()
+
+export interface SampleData {
+  theCompany: { id: string };
+  editorAnna: {email: string};
+  aReview: { id: string };
+  anotherReview: { id: string };
+}
+
+export async function createSampleData(ctx?: any): Promise<SampleData> {
+  const context = ctx ?? getContext(config, PrismaModule).sudo();
+  await create_social_groups(context);
 
   console.log(`🌱 Inserting sample seed data`);
 
@@ -31,33 +40,19 @@ export async function main() {
     roles: ['admin'],
   };
   // Use getOrCreateByName for User (by name)
-  await getOrCreateByName(context, 'User', adminUser);
-  
+  await getOrCreateEntityByName(context, 'User', adminUser);
 
-  const annaUser = await getOrCreateByName(context, 'User', {
+
+  const annaEditor = await getOrCreateEntityByName(context, 'User', {
     name: 'Anna Mustermann',
     email: 'anna@example.com',
     password: "test1234",
     roles: ['editor'],
   }, "email");
 
-  const lucaUser = await getOrCreateByName(context, 'User', {
-    name: 'Luca Meyer',
-    email: 'luca.meyer42@hotmail.com',
-    password: "test1234",
-    roles: ['reviewer'],
-  }, "email");
-
-  const joelUser = await getOrCreateByName(context, 'User', {
-    name: 'Joel Schmidt',
-    email: 'joel.schmidt42@gmail.com',
-    password: "test1234",
-    roles: ['reviewer'],
-  }, "email");
-
 
   // Seed 1 company
-  const company = 
+  const company =
     {
     name: 'Beispiel GmbH',
     description: 'Ein Ausbildungsbetrieb für Handwerk und Technik.',
@@ -68,9 +63,9 @@ export async function main() {
   };
 
 
-  const theCompany = await getOrCreateByName(context, 'Company', company);
+  const theCompany = await getOrCreateEntityByName(context, 'Company', company);
 
-  const lucasReview = await getOrCreateByName(context, 'Review', {
+  const lucasReview = await getOrCreateEntityByName(context, 'Review', {
      name : 'Lucas Erfahrungsbericht',
      email: 'luca@example.com',
       company: { connect: { id: theCompany.id } },
@@ -83,7 +78,7 @@ export async function main() {
       partTime: false,
       genderOuted: true,
       position: 'apprentice',
-      duration: '_1to3years',
+      duration: 'OneToThreeYears',
       yearOfHiring: '2022',
       listenedTo: true,
       tone: 'good',
@@ -97,7 +92,7 @@ export async function main() {
       languages: 'Deutsch',
       status: 'published',});
 
- const joelsReview = await getOrCreateByName(context, 'Review', {
+ const joelsReview = await getOrCreateEntityByName(context, 'Review', {
         name : 'Joels Erfahrungsbericht',
         email: 'joel@example.com',
         company: { connect: { id: theCompany.id } },
@@ -110,7 +105,7 @@ export async function main() {
         partTime: false,
         genderOuted: false,
       position: 'intern',
-      duration: '_1to4months',
+      duration: 'OneToFourMonths',
       yearOfHiring: '2023',
       listenedTo: false,
       tone: 'ok',
@@ -122,10 +117,19 @@ export async function main() {
       appreciated: 'partly',
       experienceText: 'Durchwachsene Erfahrung.',
       languages: 'Deutsch, Englisch',
-      status: 'in_review',
+      status: ReviewStatusType.AwaitingReview,
  });
 
   console.log(`✅ Seed data inserted`);
+  return {
+    "theCompany" : theCompany,
+    "aReview": lucasReview,
+    "anotherReview" : joelsReview,
+    "editorAnna": {email : "anna@example.com"}
+  }
 }
 
-main()
+// Only run automatically when not in a Jest worker
+if (!process.env.JEST_WORKER_ID) {
+  createSampleData();
+}

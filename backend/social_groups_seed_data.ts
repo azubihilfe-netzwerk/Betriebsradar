@@ -41,13 +41,13 @@ export const socialGroups = [
   'weiß',
 ];
 
-export async function create_social_groups() {
-  const context = getContext(config, PrismaModule)
+export async function create_social_groups(ctx?: any) {
+  const context = ctx ?? getContext(config, PrismaModule);
 
    console.log(` Inserting seed data for social groups 🌍♿️👱🏻‍♀️👩🏻‍🦰👩🏻👧🏽👧🏾🏳️‍🌈 `);
-   
+
    for (const group of socialGroups) {
-    
+
     let existing = await context.query.SocialGroup.findOne({
         where: { name: group },
         query: 'id',

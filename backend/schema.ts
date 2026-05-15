@@ -3,6 +3,7 @@ import { text, relationship, select, integer, checkbox, timestamp, password, mul
 import { document } from '@keystone-6/fields-document';
 import { allowAll } from '@keystone-6/core/access';
 import { randomBytes } from 'crypto';
+import { ReviewStatusType } from './tests/gql/graphql';
 
 const generateAccessKey = () => randomBytes(32).toString('hex');
 
@@ -230,11 +231,11 @@ export const lists = {
         label: 'Zustand des Berichts',
            type: 'enum',
         options: [
-          { label: 'Entwurf', value: 'draft' },
-          { label: 'In Review', value: 'in_review' },
+          { label: 'Ready for Review', value: 'awaitingReview' },
+          { label: 'Änderungen erwünscht', value: 'changesRequested'},
           { label: 'Veröffentlicht', value: 'published' },
         ],
-        defaultValue: 'draft',
+        defaultValue: ReviewStatusType.AwaitingReview,
         ui: { displayMode: 'segmented-control' },
         access: {
           update: ({ session, context, listKey, operation }) =>  session?.data?.roles.includes('editor') || false,
