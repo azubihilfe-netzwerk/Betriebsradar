@@ -1,9 +1,13 @@
 import { list } from '@keystone-6/core';
-import { text, relationship, select, integer, checkbox, timestamp, password, multiselect } from '@keystone-6/core/fields';
+import { text, relationship, select, integer, float, checkbox, timestamp, password, multiselect } from '@keystone-6/core/fields';
 import { allowAll } from '@keystone-6/core/access';
 import { randomBytes } from 'crypto';
 import { ReviewStatusType } from './tests/gql/graphql';
 import { sendVerificationEmail } from './mailer';
+import { geocodeAddress } from './geocoder';
+
+const isEditorOrAdmin = (session: any) =>
+  session?.data?.roles?.includes('editor') || session?.data?.roles?.includes('admin') || false;
 
 const generateAccessKey = () => randomBytes(32).toString('hex');
 
@@ -36,15 +40,27 @@ export const lists = {
   }),
 
   Company: list({
-    access: allowAll,
+    access: {
+      operation: {
+        create: () => true,
+        query: () => true,
+        update: ({ session }) => isEditorOrAdmin(session),
+        delete: ({ session }) => isEditorOrAdmin(session),
+      },
+      filter: {
+        query: ({ session }) => {
+          if (isEditorOrAdmin(session)) return {};
+          return { verified: { equals: true } };
+        },
+      },
+    },
     description: 'Betriebe, in denen Erfahrungen gemacht wurden',
     fields: {
       name: text({ label: 'Name', validation: { isRequired: true } }),
-      description: text({ label: 'Beschreibung', validation: { isRequired: true } }),
       trade: text({ label: 'Gewerk', validation: { isRequired: true } }),
       address: text({ label: 'Adresse', validation: { isRequired: true } }),
       contact: text({ label: 'Kontaktdaten', validation: { isRequired: true } }),
-        size: select({
+      size: select({
         label: 'Größe',
         type: 'enum',
         options: [
@@ -56,8 +72,22 @@ export const lists = {
         ui: { displayMode: 'select' },
         validation: { isRequired: true },
       }),
+      verified: checkbox({ label: 'Verifiziert', defaultValue: false }),
+      latitude: float({ label: 'Breitengrad', db: { isNullable: true } }),
+      longitude: float({ label: 'Längengrad', db: { isNullable: true } }),
       //Relationships
       reviews: relationship({ ref: 'Review.company', many: true, label: 'Anzahl Berichte' }),
+    },
+    hooks: {
+      resolveInput: async ({ resolvedData, operation }) => {
+        if (operation === 'create' && resolvedData.address) {
+          const coords = await geocodeAddress(String(resolvedData.address));
+          if (coords) {
+            return { ...resolvedData, latitude: coords.lat, longitude: coords.lon };
+          }
+        }
+        return resolvedData;
+      },
     },
   }),
 

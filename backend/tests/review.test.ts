@@ -1,3 +1,7 @@
+jest.mock('../geocoder', () => ({
+  geocodeAddress: jest.fn().mockResolvedValue({ lat: 49.0069, lon: 8.4037 }),
+}));
+
 import { KeystoneContext } from '@keystone-6/core/types';
 import { SampleData } from '../seed_data';
 import { graphql } from './gql';

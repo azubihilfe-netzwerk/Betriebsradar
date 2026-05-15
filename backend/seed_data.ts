@@ -52,14 +52,13 @@ export async function createSampleData(ctx?: any): Promise<SampleData> {
 
 
   // Seed 1 company
-  const company =
-    {
+  const company = {
     name: 'Beispiel GmbH',
-    description: 'Ein Ausbildungsbetrieb für Handwerk und Technik.',
     trade: 'Elektronik',
     contact: 'info@beispiel-gmbh.de',
-    address: 'Dürkheimer Str. 27 \n 76185 Karlsruhe',
+    address: 'Dürkheimer Str. 27, 76185 Karlsruhe',
     size: '_10to50',
+    verified: true,
   };
 
 

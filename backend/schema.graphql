@@ -123,11 +123,13 @@ input UserCreateInput {
 type Company {
   id: ID!
   name: String
-  description: String
   trade: String
   address: String
   contact: String
   size: CompanySizeType
+  verified: Boolean
+  latitude: Float
+  longitude: Float
   reviews(where: ReviewWhereInput! = {}, orderBy: [ReviewOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewWhereUniqueInput): [Review!]
   reviewsCount(where: ReviewWhereInput! = {}): Int
 }
@@ -149,11 +151,13 @@ input CompanyWhereInput {
   NOT: [CompanyWhereInput!]
   id: IDFilter
   name: StringFilter
-  description: StringFilter
   trade: StringFilter
   address: StringFilter
   contact: StringFilter
   size: CompanySizeTypeNullableFilter
+  verified: BooleanFilter
+  latitude: FloatNullableFilter
+  longitude: FloatNullableFilter
   reviews: ReviewManyRelationFilter
 }
 
@@ -162,6 +166,22 @@ input CompanySizeTypeNullableFilter {
   in: [CompanySizeType!]
   notIn: [CompanySizeType!]
   not: CompanySizeTypeNullableFilter
+}
+
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
+}
+
+input FloatNullableFilter {
+  equals: Float
+  in: [Float!]
+  notIn: [Float!]
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: FloatNullableFilter
 }
 
 input ReviewManyRelationFilter {
@@ -173,20 +193,24 @@ input ReviewManyRelationFilter {
 input CompanyOrderByInput {
   id: OrderDirection
   name: OrderDirection
-  description: OrderDirection
   trade: OrderDirection
   address: OrderDirection
   contact: OrderDirection
   size: OrderDirection
+  verified: OrderDirection
+  latitude: OrderDirection
+  longitude: OrderDirection
 }
 
 input CompanyUpdateInput {
   name: String
-  description: String
   trade: String
   address: String
   contact: String
   size: CompanySizeType
+  verified: Boolean
+  latitude: Float
+  longitude: Float
   reviews: ReviewRelateToManyForUpdateInput
 }
 
@@ -204,11 +228,13 @@ input CompanyUpdateArgs {
 
 input CompanyCreateInput {
   name: String
-  description: String
   trade: String
   address: String
   contact: String
   size: CompanySizeType
+  verified: Boolean
+  latitude: Float
+  longitude: Float
   reviews: ReviewRelateToManyForCreateInput
 }
 
@@ -369,11 +395,6 @@ input ReviewWhereInput {
   status: ReviewStatusTypeNullableFilter
   emailVerified: BooleanFilter
   accessKey: StringNullableFilter
-}
-
-input BooleanFilter {
-  equals: Boolean
-  not: BooleanFilter
 }
 
 input ReviewGenderTypeNullableFilter {
