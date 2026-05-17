@@ -1,9 +1,14 @@
 import React, { FC } from 'react';
-import { useMutation } from '@apollo/client/react';
+import { useMutation, useQuery } from '@apollo/client/react';
 import { gql } from 'graphql-tag';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { ReviewForm, ReviewFormData } from '../components/ReviewForm';
-import { CreateReviewMutation, CreateReviewMutationVariables } from '../api/__generated__/graphql';
+import {
+  CreateReviewMutation,
+  CreateReviewMutationVariables,
+  GetCompanyDetailQuery,
+
+} from '../api/__generated__/graphql';
 
 const CREATE_REVIEW = gql`
   mutation CreateReview($data: ReviewCreateInput!) {
@@ -15,15 +20,36 @@ const CREATE_REVIEW = gql`
   }
 `;
 
-// TODO: Replace with actual company ID from query parameter or context
-const FIXED_COMPANY_ID = '1';
+const GET_COMPANY_NAME = gql`
+  query GetCompanyDetail($id: ID!) {
+    company(where: { id: $id }) {
+      id
+      name
+    }
+  }
+`;
 
 const BerichtSchreiben: FC = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const companyId = searchParams.get('companyId');
+
+  const { data: companyData, loading: companyLoading, error: companyError } = useQuery<GetCompanyDetailQuery>(
+    GET_COMPANY_NAME,
+    { variables: { id: companyId }, skip: !companyId }
+  );
+
   const [createReview, { loading: isSubmitting, error }] = useMutation<
     CreateReviewMutation,
     CreateReviewMutationVariables
   >(CREATE_REVIEW);
+
+  if (!companyId) {
+    navigate('/betriebauswaehlen');
+    return null;
+  }
+
+  const companyName = companyData?.company?.name;
 
   const handleSubmit = async (formData: ReviewFormData) => {
     try {
@@ -33,7 +59,7 @@ const BerichtSchreiben: FC = () => {
             name: formData.name,
             email: formData.email || '',
             company: {
-              connect: { id: FIXED_COMPANY_ID },
+              connect: { id: companyId },
             },
             publishName: formData.publishName,
             gender: formData.gender,
@@ -71,23 +97,37 @@ const BerichtSchreiben: FC = () => {
     }
   };
 
-  return (
-    <>
+  if (companyError || companyName == null) {
+
+    return (
       <div className="min-h-screen bg-gray-50 py-8 px-4">
         <div className="max-w-2xl mx-auto mb-8">
-          <h1 className="text-4xl font-bold text-navbar-blue mb-2">Schreib deinen Erfahrungsbericht</h1>
-          <p className="text-gray-600">
-            Teile deine Erfahrung mit deinem Ausbildungsbetrieb. Deine offene Rückmeldung hilft anderen Auszubildenden, die richtige Wahl zu treffen.
-          </p>
+          <p>Betrieb {companyId} nicht gefunden!</p>
+           <Link
+        to="/"
+        className="inline-block bg-navbar-blue text-white font-semibold px-6 py-3 rounded-lg hover:opacity-90 transition-opacity"
+      >
+        Zur Startseite
+      </Link>
         </div>
+      </div>)
+  }
 
-        <ReviewForm
-          onSubmit={handleSubmit}
-          isSubmitting={isSubmitting}
-          submitError={error?.message}
-        />
+  return companyLoading ? <i>Lädt...</i> : (
+    <div className="min-h-screen bg-gray-50 py-8 px-4">
+      <div className="max-w-2xl mx-auto mb-8">
+        <h1 className="text-2xl font-bold text-navbar-blue mb-2">Schreib deinen Erfahrungsbericht</h1>
+        <p className="text-gray-600 mt-1">
+          Teile deine Erfahrung in dem Betrieb <b className="text-bold">{companyName}</b>. Deine offene Rückmeldung hilft anderen Auszubildenden, die richtige Wahl zu treffen.
+        </p>
       </div>
-    </>
+
+      <ReviewForm
+        onSubmit={handleSubmit}
+        isSubmitting={isSubmitting}
+        submitError={error?.message}
+      />
+    </div>
   );
 };
 

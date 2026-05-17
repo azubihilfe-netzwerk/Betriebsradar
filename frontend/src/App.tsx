@@ -1,4 +1,3 @@
-import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './Component/Navbar';
 import Dashboard from './Pages/Dashboard';
@@ -12,6 +11,7 @@ import UnternehmenSuchen from "./Pages/UnternehmenSuchen";
 import UnternehmenDetail from "./Pages/UnternehmenDetail";
 import BerichtDetail from "./Pages/BerichtDetail";
 import BerichtSchreiben from './Pages/BerichtSchreiben';
+import UnternehmenAuswaehlen from './Pages/UnternehmenAuswaehlen';
 import EmailBestaetigen from './Pages/EmailBestaetigen';
 import BerichtEingereicht from './Pages/BerichtEingereicht';
 
@@ -36,7 +36,8 @@ function App() {
                         <Route path="/unternehmeneintragen" element={<UnternehmenEintragen />} />
                         <Route path="/unternehmensuchen" element={<UnternehmenSuchen />} />
                         <Route path="/unternehmen/:id" element={<UnternehmenDetail />} />
-                        <Route path="/berichte" element={<BerichtSchreiben/>} />
+                        <Route path="/betriebauswaehlen" element={<UnternehmenAuswaehlen />} />
+                        <Route path="/berichtschreiben" element={<BerichtSchreiben/>} />
                         <Route path="/berichte/:id" element={<BerichtDetail />} />
                         <Route path="/verify-email" element={<EmailBestaetigen />} />
                         <Route path="/bericht-eingereicht" element={<BerichtEingereicht />} />

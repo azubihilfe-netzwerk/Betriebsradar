@@ -11,7 +11,7 @@ echo "🚀 Starting deployment for test environment to $SERVER:$PATH_ON_SERVER..
 npm run build > /dev/null 2>&1 && echo "✓ KeystoneJS build complete"
 
 # copy files to server
-rsync -avrz --exclude 'node_modules' --exclude '.git' --exclude 'dist' --exclude 'build' --exclude 'keystone.db' ./ $SERVER:$PATH_ON_SERVER > /dev/null 2>&1 && echo "✓ Files synced"
+rsync -avrz --exclude 'node_modules' --exclude '.git' --exclude 'dist' --exclude 'build' --exclude 'keystone.db' --exclude '.env' ./ $SERVER:$PATH_ON_SERVER > /dev/null 2>&1 && echo "✓ Files synced"
 
 # install dependencies and build on server
 ssh -q $SERVER <<EOF
@@ -19,8 +19,9 @@ ssh -q $SERVER <<EOF
   cd $PATH_ON_SERVER
   npm install > /dev/null 2>&1 && echo "✓ Dependencies installed"
   systemctl --user stop ${SERVICE_NAME} && echo "✓ Service stopped"
-  npx keystone prisma db push --force-reset > /dev/null 2>&1 && echo "✓ Database reset"
-  npm run seed_data > /dev/null 2>&1 && echo "✓ Database seeded"
+  npx keystone prisma db push --force-reset  && echo "✓ Database reset"
+  npm run codegen && echo "Codegen completed"
+  npm run seed_data && echo "✓ Database seeded"
   systemctl --user start ${SERVICE_NAME} && echo "✓ Service started"
   echo ""
   echo "✨ Deployment complete!"

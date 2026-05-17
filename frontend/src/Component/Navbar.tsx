@@ -33,7 +33,7 @@ const Navbar: React.FC = () => {
                     {/* Unternehmen mit Dropdown */}
                     <Link to="/unternehmensuchen" className="text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Suchen</Link>
 
-                    <Link to="/berichte" className="text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Berichten</Link>
+                    <Link to="/betriebauswaehlen" className="text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Berichten</Link>
 
                     <Link to="/kontakt" className="text-gray-700 hover:text-navbar-blue text-lg uppercase font-semibold">Kontakt</Link>
 

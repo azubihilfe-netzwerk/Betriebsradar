@@ -89,7 +89,7 @@ describe('Company visibility', () => {
     expect(data?.companies?.[0].name).toBe('Beispiel GmbH');
   });
 
-  it('public user does not see unverified companies', async () => {
+  it('public user does see unverified companies', async () => {
     const { data } = await execute(editorContext, CREATE_COMPANY, {
       data: { name: 'Unverifiziert GmbH', trade: 'Tischlerei', address: 'Musterstraße 1, 10115 Berlin', contact: 'x@x.de', size: '_1to10' },
     });
@@ -97,7 +97,7 @@ describe('Company visibility', () => {
 
     const { data: pub } = await execute(publicContext, GET_COMPANIES);
     const ids = pub?.companies?.map((c) => c.id) ?? [];
-    expect(ids).not.toContain(unverifiedId);
+    expect(ids).toContain(unverifiedId);
   });
 
   it('editor sees both verified and unverified companies', async () => {

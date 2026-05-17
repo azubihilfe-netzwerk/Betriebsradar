@@ -41,18 +41,12 @@ export const lists = {
 
   Company: list({
     access: {
-      operation: {
-        create: () => true,
-        query: () => true,
+      filter: {
+        query: ({ session }) => true,
         update: ({ session }) => isEditorOrAdmin(session),
         delete: ({ session }) => isEditorOrAdmin(session),
       },
-      filter: {
-        query: ({ session }) => {
-          if (isEditorOrAdmin(session)) return {};
-          return { verified: { equals: true } };
-        },
-      },
+      operation: allowAll
     },
     description: 'Betriebe, in denen Erfahrungen gemacht wurden',
     fields: {
@@ -265,7 +259,7 @@ export const lists = {
           { label: 'Änderungen erwünscht', value: 'changesRequested'},
           { label: 'Veröffentlicht', value: 'published' },
         ],
-        defaultValue: ReviewStatusType.AwaitingReview,
+        defaultValue: 'awaitingReview',
         ui: { displayMode: 'segmented-control' },
         access: {
           update: ({ session, context, listKey, operation }) =>  session?.data?.roles.includes('editor') || false,

@@ -116,7 +116,7 @@ export async function createSampleData(ctx?: any): Promise<SampleData> {
       appreciated: 'partly',
       experienceText: 'Durchwachsene Erfahrung.',
       languages: 'Deutsch, Englisch',
-      status: ReviewStatusType.AwaitingReview,
+      status: 'awaitingReview',
  });
 
   console.log(`✅ Seed data inserted`);
