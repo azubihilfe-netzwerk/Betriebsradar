@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 
 const BerichtEingereicht: FC = () => {
@@ -23,7 +23,7 @@ const BerichtEingereicht: FC = () => {
             <p className="text-gray-600 text-sm mt-1">
               Wir haben dir eine E-Mail mit einem Bestätigungslink geschickt. Bitte klicke auf
               diesen Link, damit wir wissen, dass die Adresse dir gehört. Schau auch im
-              Spam-Ordner nach, falls du nichts siehst.
+              Spamordner nach, wenn du nichts siehst.
             </p>
           </div>
         </li>
@@ -36,7 +36,8 @@ const BerichtEingereicht: FC = () => {
             <p className="font-semibold text-gray-800">Redaktionelle Prüfung</p>
             <p className="text-gray-600 text-sm mt-1">
               Nach der E-Mail-Bestätigung liest unser Team deinen Bericht durch und veröffentlicht
-              ihn, sobald er unsere Richtlinien erfüllt. Das dauert in der Regel ein paar Tage.
+              ihn, wenn er unsere Richtlinien erfüllt. Falls nicht, melden wir uns bei dir per
+              Mail. Das dauert in der Regel ein paar Tage.
             </p>
           </div>
         </li>

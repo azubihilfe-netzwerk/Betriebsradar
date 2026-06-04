@@ -7,7 +7,6 @@ import {
   CreateReviewMutation,
   CreateReviewMutationVariables,
   GetCompanyDetailQuery,
-
 } from '../api/__generated__/graphql';
 
 const CREATE_REVIEW = gql`
@@ -21,7 +20,7 @@ const CREATE_REVIEW = gql`
 `;
 
 const GET_COMPANY_NAME = gql`
-  query GetCompanyDetail($id: ID!) {
+  query GetCompanyName($id: ID!) {
     company(where: { id: $id }) {
       id
       name
@@ -61,32 +60,40 @@ const BerichtSchreiben: FC = () => {
             company: {
               connect: { id: companyId },
             },
-            publishName: formData.publishName,
             gender: formData.gender,
+            genderIdentityRespected: formData.genderIdentityRespected,
             ageAtEmployment: formData.ageAtEmployment ? parseInt(formData.ageAtEmployment) : undefined,
-            genderOuted: formData.genderOuted,
             position: formData.position,
-            duration: formData.duration,
             yearOfHiring: formData.yearOfHiring,
+            yearOfLeaving: formData.yearOfLeaving || undefined,
+            ongoing: formData.ongoing,
             listenedTo: formData.listenedTo,
             tone: formData.tone,
             explained: formData.explained,
             canAskColleagues: formData.canAskColleagues,
             canAskBoss: formData.canAskBoss,
-            proximity: formData.proximity,
-            boundariesRespected: formData.boundariesRespected,
+            proximity: formData.proximity || undefined,
+            boundariesRespected: formData.boundariesRespected?.length ? formData.boundariesRespected : undefined,
             appreciated: formData.appreciated,
-            experienceText: formData.experienceText,
-            languages: formData.languages,
+            experienceText: formData.experienceText || undefined,
+            languages: formData.languages || undefined,
             collective: formData.collective,
             hoursPerWeek: formData.hoursPerWeek ? parseInt(formData.hoursPerWeek) : undefined,
+            overtimePerMonth: formData.overtimePerMonth ? parseInt(formData.overtimePerMonth) : undefined,
             trainingShortenable: formData.trainingShortenable,
             partTime: formData.partTime,
+            specialtiesOther: formData.specialtiesOther || undefined,
             sharedWithCompany: formData.sharedWithCompany,
             feltComfortableSharing: formData.feltComfortableSharing,
+            disabilityTypes: formData.disabilityTypes?.length ? formData.disabilityTypes : undefined,
+            disabilitySharedWithCompany: formData.disabilitySharedWithCompany,
+            disabilityFeltComfortableSharing: formData.disabilityFeltComfortableSharing,
+            ethnicityTypes: formData.ethnicityTypes?.length ? formData.ethnicityTypes : undefined,
+            ethnicitySharedWithCompany: formData.ethnicitySharedWithCompany,
+            ethnicityFeltComfortableSharing: formData.ethnicityFeltComfortableSharing,
             needsRespected: formData.needsRespected,
-            feedback: formData.feedback,
-            moreWishes: formData.moreWishes,
+            feedback: formData.feedback || undefined,
+            moreWishes: formData.moreWishes || undefined,
           },
         },
       } as const);
@@ -98,19 +105,19 @@ const BerichtSchreiben: FC = () => {
   };
 
   if (companyError || companyName == null) {
-
     return (
       <div className="min-h-screen bg-gray-50 py-8 px-4">
         <div className="max-w-2xl mx-auto mb-8">
           <p>Betrieb {companyId} nicht gefunden!</p>
-           <Link
-        to="/"
-        className="inline-block bg-navbar-blue text-white font-semibold px-6 py-3 rounded-lg hover:opacity-90 transition-opacity"
-      >
-        Zur Startseite
-      </Link>
+          <Link
+            to="/"
+            className="inline-block bg-navbar-blue text-white font-semibold px-6 py-3 rounded-lg hover:opacity-90 transition-opacity"
+          >
+            Zur Startseite
+          </Link>
         </div>
-      </div>)
+      </div>
+    );
   }
 
   return companyLoading ? <i>Lädt...</i> : (
@@ -118,7 +125,7 @@ const BerichtSchreiben: FC = () => {
       <div className="max-w-2xl mx-auto mb-8">
         <h1 className="text-2xl font-bold text-navbar-blue mb-2">Schreib deinen Erfahrungsbericht</h1>
         <p className="text-gray-600 mt-1">
-          Teile deine Erfahrung in dem Betrieb <b className="text-bold">{companyName}</b>. Deine offene Rückmeldung hilft anderen Auszubildenden, die richtige Wahl zu treffen.
+          Teile deine Erfahrung in dem Betrieb <b className="text-bold">{companyName}</b>. Deine offene Rückmeldung hilft anderen, die richtige Wahl zu treffen.
         </p>
       </div>
 

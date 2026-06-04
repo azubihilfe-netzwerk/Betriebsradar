@@ -10,35 +10,52 @@ import {
   ReviewSharedWithCompanyType,
   ReviewNeedsRespectedType,
   ReviewPositionType,
-  ReviewDurationType,
+  ReviewListenedToType,
+  ReviewCanAskBossType,
+  ReviewCanAskColleagueType,
+  ReviewBoundariesRespectedType,
+  ReviewDisabilityTypeType,
+  ReviewDisabilitySharedWithCompanyType,
+  ReviewDisabilityFeltComfortableSharingType,
+  ReviewEthnicityTypeType,
+  ReviewEthnicitySharedWithCompanyType,
+  ReviewEthnicityFeltComfortableSharingType,
 } from '../../api/__generated__/graphql';
 
 export interface ReviewFormData {
   name: string;
   email: string;
-  publishName: boolean;
   gender: ReviewGenderType;
-  genderOuted: boolean;
+  genderIdentityRespected: boolean;
   ageAtEmployment: string;
   position?: ReviewPositionType;
-  duration?: ReviewDurationType;
   yearOfHiring: string;
-  listenedTo: boolean;
+  yearOfLeaving: string;
+  ongoing: boolean;
+  listenedTo?: ReviewListenedToType;
   tone?: ReviewToneType;
   explained?: ReviewExplainedType;
-  canAskColleagues: boolean;
-  canAskBoss: boolean;
+  canAskColleagues?: ReviewCanAskColleagueType;
+  canAskBoss?: ReviewCanAskBossType;
   proximity: string;
-  boundariesRespected: boolean;
+  boundariesRespected: ReviewBoundariesRespectedType[];
   appreciated?: ReviewAppreciatedType;
   experienceText: string;
   languages: string;
   collective: boolean;
   hoursPerWeek: string;
+  overtimePerMonth: string;
   trainingShortenable: boolean;
   partTime: boolean;
+  specialtiesOther: string;
   sharedWithCompany?: ReviewSharedWithCompanyType;
   feltComfortableSharing?: ReviewFeltComfortableSharingType;
+  disabilityTypes: ReviewDisabilityTypeType[];
+  disabilitySharedWithCompany?: ReviewDisabilitySharedWithCompanyType;
+  disabilityFeltComfortableSharing?: ReviewDisabilityFeltComfortableSharingType;
+  ethnicityTypes: ReviewEthnicityTypeType[];
+  ethnicitySharedWithCompany?: ReviewEthnicitySharedWithCompanyType;
+  ethnicityFeltComfortableSharing?: ReviewEthnicityFeltComfortableSharingType;
   needsRespected?: ReviewNeedsRespectedType;
   feedback: string;
   moreWishes: string;
@@ -54,29 +71,37 @@ export interface ReviewFormProps {
 const defaultFormData: ReviewFormData = {
   name: '',
   email: '',
-  publishName: false,
   gender: ReviewGenderType.PreferNotToSay,
+  genderIdentityRespected: false,
   ageAtEmployment: '',
-  genderOuted: false,
   position: undefined,
-  duration: undefined,
   yearOfHiring: new Date().getFullYear().toString(),
-  listenedTo: false,
+  yearOfLeaving: '',
+  ongoing: false,
+  listenedTo: undefined,
   tone: undefined,
   explained: undefined,
-  canAskColleagues: false,
-  canAskBoss: false,
+  canAskColleagues: undefined,
+  canAskBoss: undefined,
   proximity: '',
-  boundariesRespected: false,
+  boundariesRespected: [],
   appreciated: undefined,
   experienceText: '',
   languages: '',
   collective: false,
   hoursPerWeek: '',
+  overtimePerMonth: '',
   trainingShortenable: false,
   partTime: false,
+  specialtiesOther: '',
   sharedWithCompany: undefined,
   feltComfortableSharing: undefined,
+  disabilityTypes: [],
+  disabilitySharedWithCompany: undefined,
+  disabilityFeltComfortableSharing: undefined,
+  ethnicityTypes: [],
+  ethnicitySharedWithCompany: undefined,
+  ethnicityFeltComfortableSharing: undefined,
   needsRespected: undefined,
   feedback: '',
   moreWishes: '',
@@ -87,7 +112,8 @@ const genderOptions = [
   { label: 'cis-männlich', value: ReviewGenderType.CisMale },
   { label: 'cis-weiblich', value: ReviewGenderType.CisFemale },
   { label: 'nichtbinär', value: ReviewGenderType.Enby },
-  { label: 'trans', value: ReviewGenderType.Trans },
+  { label: 'transmännlich', value: ReviewGenderType.TransMale },
+  { label: 'transweiblich', value: ReviewGenderType.TransFemale },
   { label: 'divers', value: ReviewGenderType.Diverse },
   { label: 'offen', value: ReviewGenderType.Other },
 ];
@@ -102,14 +128,32 @@ const positionOptions = [
   { label: 'Andere', value: ReviewPositionType.Other },
 ];
 
+const listenedToOptions = [
+  { value: undefined, label: 'Bitte wählen' },
+  { value: ReviewListenedToType.Always, label: 'immer' },
+  { value: ReviewListenedToType.Mostly, label: 'meistens' },
+  { value: ReviewListenedToType.Sometimes, label: 'ab und zu' },
+  { value: ReviewListenedToType.Rarely, label: 'selten' },
+  { value: ReviewListenedToType.Never, label: 'niemals' },
+];
 
-const durationOptions = [
-                { value: undefined, label: 'Bitte wählen' },
-                { value: ReviewDurationType.OneToThreeweeks, label: '1-3 Wochen' },
-                { value: ReviewDurationType.FiveToTwelveMonths, label: '5-12 Monate' },
-                { value: ReviewDurationType.OneToFourMonths, label: '1-4 Monate' },
-                { value: ReviewDurationType.OneToThreeYears, label: '1-3 Jahre' },
-              ];
+const canAskBossOptions = [
+  { value: undefined, label: 'Bitte wählen' },
+  { value: ReviewCanAskBossType.Always, label: 'immer' },
+  { value: ReviewCanAskBossType.Mostly, label: 'meistens' },
+  { value: ReviewCanAskBossType.Sometimes, label: 'ab und zu' },
+  { value: ReviewCanAskBossType.Rarely, label: 'selten' },
+  { value: ReviewCanAskBossType.Never, label: 'niemals' },
+];
+
+const canAskColleaguesOptions = [
+  { value: undefined, label: 'Bitte wählen' },
+  { value: ReviewCanAskColleagueType.Always, label: 'immer' },
+  { value: ReviewCanAskColleagueType.Mostly, label: 'meistens' },
+  { value: ReviewCanAskColleagueType.Sometimes, label: 'ab und zu' },
+  { value: ReviewCanAskColleagueType.Rarely, label: 'selten' },
+  { value: ReviewCanAskColleagueType.Never, label: 'niemals' },
+];
 
 const toneOptions = [
   { value: undefined, label: 'Bitte wählen' },
@@ -143,6 +187,13 @@ const appreciatedOptions = [
   { value: ReviewAppreciatedType.No, label: 'nein' },
 ];
 
+const sharedWithCompanyOptions = [
+  { value: undefined, label: 'Bitte wählen' },
+  { value: ReviewSharedWithCompanyType.Yes, label: 'ja' },
+  { value: ReviewSharedWithCompanyType.Partly, label: 'teilweise' },
+  { value: ReviewSharedWithCompanyType.No, label: 'nein' },
+];
+
 const feltComfortableSharingOptions = [
   { value: undefined, label: 'Bitte wählen' },
   { value: ReviewFeltComfortableSharingType.Yes, label: 'ja' },
@@ -150,11 +201,32 @@ const feltComfortableSharingOptions = [
   { value: ReviewFeltComfortableSharingType.No, label: 'nein' },
 ];
 
-const sharedWithCompanyOptions = [
+const disabilitySharedOptions = [
   { value: undefined, label: 'Bitte wählen' },
-  { value: ReviewSharedWithCompanyType.Yes, label: 'ja' },
-  { value: ReviewSharedWithCompanyType.Partly, label: 'teilweise' },
-  { value: ReviewSharedWithCompanyType.No, label: 'nein' },
+  { value: ReviewDisabilitySharedWithCompanyType.Yes, label: 'ja' },
+  { value: ReviewDisabilitySharedWithCompanyType.Partly, label: 'teilweise' },
+  { value: ReviewDisabilitySharedWithCompanyType.No, label: 'nein' },
+];
+
+const disabilityFeltOptions = [
+  { value: undefined, label: 'Bitte wählen' },
+  { value: ReviewDisabilityFeltComfortableSharingType.Yes, label: 'ja' },
+  { value: ReviewDisabilityFeltComfortableSharingType.Partly, label: 'teilweise' },
+  { value: ReviewDisabilityFeltComfortableSharingType.No, label: 'nein' },
+];
+
+const ethnicitySharedOptions = [
+  { value: undefined, label: 'Bitte wählen' },
+  { value: ReviewEthnicitySharedWithCompanyType.Yes, label: 'ja' },
+  { value: ReviewEthnicitySharedWithCompanyType.Partly, label: 'teilweise' },
+  { value: ReviewEthnicitySharedWithCompanyType.No, label: 'nein' },
+];
+
+const ethnicityFeltOptions = [
+  { value: undefined, label: 'Bitte wählen' },
+  { value: ReviewEthnicityFeltComfortableSharingType.Yes, label: 'ja' },
+  { value: ReviewEthnicityFeltComfortableSharingType.Partly, label: 'teilweise' },
+  { value: ReviewEthnicityFeltComfortableSharingType.No, label: 'nein' },
 ];
 
 const needsRespectedOptions = [
@@ -164,13 +236,53 @@ const needsRespectedOptions = [
   { value: ReviewNeedsRespectedType.No, label: 'nein' },
 ];
 
+const boundaryTypes: { value: ReviewBoundariesRespectedType; label: string }[] = [
+  { value: ReviewBoundariesRespectedType.PhysicalStrength, label: 'körperlich-kräftetechnisch' },
+  { value: ReviewBoundariesRespectedType.Emotional, label: 'emotional' },
+  { value: ReviewBoundariesRespectedType.Responsibility, label: 'verantwortungstechnisch' },
+  { value: ReviewBoundariesRespectedType.PhysicalDistance, label: 'körperlich-distanztechnisch' },
+];
+
+const disabilityTypeOptions: { value: ReviewDisabilityTypeType; label: string }[] = [
+  { value: ReviewDisabilityTypeType.AutismSpectrum, label: 'Autismus-Spektrum' },
+  { value: ReviewDisabilityTypeType.Autoimmune, label: 'Autoimmunerkrankung' },
+  { value: ReviewDisabilityTypeType.BlindVisuallyImpaired, label: 'blind/sehbehindert' },
+  { value: ReviewDisabilityTypeType.DeafHearingImpaired, label: 'gehörlos/hörbehindert' },
+  { value: ReviewDisabilityTypeType.PhysicallyDisabled, label: 'körperlich behindert' },
+  { value: ReviewDisabilityTypeType.MentalIllness, label: 'psychische Erkrankung' },
+  { value: ReviewDisabilityTypeType.ChronicIllness, label: 'chronische Erkrankung' },
+  { value: ReviewDisabilityTypeType.Cardiovascular, label: 'Herz-Kreislauf-Erkrankung' },
+  { value: ReviewDisabilityTypeType.Musculoskeletal, label: 'Skelett-/Muskelerkrankung' },
+  { value: ReviewDisabilityTypeType.Metabolic, label: 'Stoffwechselerkrankung' },
+  { value: ReviewDisabilityTypeType.Digestive, label: 'Erkrankung des Verdauungssystems' },
+  { value: ReviewDisabilityTypeType.Spasticity, label: 'Spastik' },
+  { value: ReviewDisabilityTypeType.LearningDisability, label: 'Lernschwierigkeiten / sog. geistige Behinderung' },
+  { value: ReviewDisabilityTypeType.Neurodivergent, label: 'neurodivergent' },
+  { value: ReviewDisabilityTypeType.WheelchairMobility, label: 'Rollstuhlnutzend / Mobilitätseinschränkung' },
+  { value: ReviewDisabilityTypeType.DrugUse, label: 'Drogenkonsument*in' },
+  { value: ReviewDisabilityTypeType.SexualViolence, label: 'Erfahrung sexualisierter Gewalt' },
+  { value: ReviewDisabilityTypeType.Overweight, label: 'mehrgewichtig/hochgewichtig' },
+  { value: ReviewDisabilityTypeType.Underweight, label: 'wenigergewichtig' },
+];
+
+const ethnicityTypeOptions: { value: ReviewEthnicityTypeType; label: string }[] = [
+  { value: ReviewEthnicityTypeType.White, label: 'weiß' },
+  { value: ReviewEthnicityTypeType.PersonOfColor, label: 'Person of Color' },
+  { value: ReviewEthnicityTypeType.Black, label: 'Schwarz' },
+  { value: ReviewEthnicityTypeType.Indigenous, label: 'Indigen' },
+  { value: ReviewEthnicityTypeType.Jewish, label: 'Jüdisch' },
+  { value: ReviewEthnicityTypeType.Muslim, label: 'Muslim*in' },
+  { value: ReviewEthnicityTypeType.Migrant, label: 'Migrant*in' },
+  { value: ReviewEthnicityTypeType.RomaSinti, label: 'Rom*nja/Sinti*zze' },
+];
+
 const FIELDS_PER_PAGE: Record<number, Array<keyof ReviewFormData>> = {
-  1: ['name', 'publishName', 'email',], //general information
-  2: ['position', 'yearOfHiring', 'ageAtEmployment', 'duration', 'hoursPerWeek'], //about the position
-  3: [ 'languages', 'collective', 'trainingShortenable', 'partTime'], //about the company in general
-  4: [ 'listenedTo', 'tone','explained', 'canAskBoss', 'canAskColleagues', 'boundariesRespected',  'proximity',  'appreciated', 'experienceText' ], //experiences and respect
-  5: [ 'gender', 'genderOuted',  'sharedWithCompany', 'feltComfortableSharing','needsRespected'], //discrimination
-  6: ['feedback', 'moreWishes'], //final questions
+  1: ['name', 'email'],
+  2: ['position', 'yearOfHiring', 'yearOfLeaving', 'ageAtEmployment', 'hoursPerWeek', 'overtimePerMonth'],
+  3: ['languages', 'collective', 'trainingShortenable', 'partTime', 'specialtiesOther'],
+  4: ['listenedTo', 'tone', 'explained', 'canAskBoss', 'canAskColleagues', 'boundariesRespected', 'proximity', 'appreciated', 'experienceText'],
+  5: ['gender', 'sharedWithCompany', 'feltComfortableSharing', 'disabilityTypes', 'disabilitySharedWithCompany', 'disabilityFeltComfortableSharing', 'ethnicityTypes', 'ethnicitySharedWithCompany', 'ethnicityFeltComfortableSharing', 'genderIdentityRespected', 'needsRespected'],
+  6: ['feedback', 'moreWishes'],
 };
 
 const ReviewForm: React.FC<ReviewFormProps> = ({
@@ -192,18 +304,37 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
     error: errors[name]?.message,
   });
 
-  // register() returns ref/onChange/onBlur but not `checked`, so watch boolean fields for CheckboxField
+  const sanitize = (data: ReviewFormData): ReviewFormData => {
+    const e = <T,>(v: T | string | undefined): T | undefined =>
+      v === '' ? undefined : v as T;
+    return {
+      ...data,
+      position: e(data.position),
+      listenedTo: e(data.listenedTo),
+      canAskBoss: e(data.canAskBoss),
+      canAskColleagues: e(data.canAskColleagues),
+      tone: e(data.tone),
+      explained: e(data.explained),
+      proximity: data.proximity || '',
+      appreciated: e(data.appreciated),
+      sharedWithCompany: e(data.sharedWithCompany),
+      feltComfortableSharing: e(data.feltComfortableSharing),
+      disabilitySharedWithCompany: e(data.disabilitySharedWithCompany),
+      disabilityFeltComfortableSharing: e(data.disabilityFeltComfortableSharing),
+      ethnicitySharedWithCompany: e(data.ethnicitySharedWithCompany),
+      ethnicityFeltComfortableSharing: e(data.ethnicityFeltComfortableSharing),
+      needsRespected: e(data.needsRespected),
+    };
+  };
+
   const [
-    listenedTo, boundariesRespected, canAskBoss, canAskColleagues,
-    genderOuted, collective, trainingShortenable, partTime, publishName,
+    genderIdentityRespected, collective, trainingShortenable, partTime,
   ] = watch([
-    'listenedTo', 'boundariesRespected', 'canAskBoss', 'canAskColleagues',
-    'genderOuted', 'collective', 'trainingShortenable', 'partTime', 'publishName',
+    'genderIdentityRespected', 'collective', 'trainingShortenable', 'partTime',
   ]);
 
-
   const handleNext = async () => {
-      const fieldsOnCurrentPage = FIELDS_PER_PAGE[currentPage] || [];
+    const fieldsOnCurrentPage = FIELDS_PER_PAGE[currentPage] || [];
     const valid = fieldsOnCurrentPage.length ? await trigger(fieldsOnCurrentPage) : true;
     if (valid) {
       setCurrentPage(prev => Math.min(prev + 1, 6));
@@ -216,6 +347,19 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
     window.scrollTo(0, 0);
   };
 
+  const currentYear = new Date().getFullYear();
+  const hiringYearOptions = Array.from({ length: currentYear - 1969 }, (_, i) => ({
+    value: (currentYear - i).toString(),
+    label: (currentYear - i).toString(),
+  }));
+  const leavingYearOptions = [
+    { value: '', label: 'Dauert an' },
+    ...Array.from({ length: currentYear - 1969 }, (_, i) => ({
+      value: (currentYear - i).toString(),
+      label: (currentYear - i).toString(),
+    })),
+  ];
+
   const renderPage = () => {
     switch (currentPage) {
       case 1:
@@ -223,18 +367,16 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-gray-800 mb-3">Deine Kontaktdaten</h2>
-              <p className="text-gray-600 mb-6">Damit wir deinen Bericht zuordnen können, benötigen wir ein paar Angaben zu deiner Person. Dein Name und deine E-Mail-Adresse werden nicht veröffentlicht, es sei denn, du stimmst dem ausdrücklich zu.</p>
+              <p className="text-gray-600 mb-6">
+                Dein Name und deine E-Mail-Adresse werden nur genutzt, um dich bei Rückfragen zu kontaktieren. Sie werden nie veröffentlicht.
+              </p>
             </div>
 
             <FormField
-              {...field('name', 'Name ist erforderlich. Keine Sorge: Wird nicht veröffentlicht.')}
+              {...field('name', 'Name ist erforderlich.')}
               label="Dein Name"
               placeholder="Dein Name"
             />
-
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <CheckboxField {...register('publishName')} label="Mein Name darf veröffentlicht werden" checked={publishName} />
-            </div>
 
             <FormField
               {...field('email', 'E-Mail ist erforderlich, damit wir dich kontaktieren können.', { pattern: { value: /^\S+@\S+$/i, message: 'Ungültige E-Mail-Adresse' } })}
@@ -249,44 +391,55 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
         return (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-3">Zur Ausbildungsstelle</h2>
-              <p className="text-gray-600 mb-6">Erzähl uns etwas über deine Ausbildung – welchen Beruf du lernst, wann du angefangen hast, wie alt du warst und wie viele Stunden du arbeitest.</p>
+              <h2 className="text-2xl font-bold text-gray-800 mb-3">Zur (Arbeits)Stelle</h2>
+              <p className="text-gray-600 mb-6">Erzähl uns etwas über deine Arbeit: welchen Beruf übtest du dort aus, wann hast du dort gearbeitet, wie alt warst du und wie waren die Arbeitszeiten geregelt.</p>
             </div>
 
             <SelectField
               {...field('position', 'Position ist erforderlich')}
-              label="Position/Ausbildungsberuf"
+              label="Position im Betrieb"
               options={positionOptions}
             />
 
             <SelectField
               {...register('yearOfHiring')}
-              label="Ausbildungsjahr"
+              label="Beginn Arbeitszeit (Jahr)"
               required
-              options={Array.from({ length: 20 }, (_, i) => ({
-                value: (new Date().getFullYear() - i).toString(),
-                label: (new Date().getFullYear() - i).toString(),
-              }))}
+              options={hiringYearOptions}
             />
 
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Ende Arbeitszeit (Jahr)
+              </label>
+              <select
+                {...register('yearOfLeaving')}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-navbar-blue"
+              >
+                {leavingYearOptions.map(opt => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+              </select>
+            </div>
+
             <FormField
-              {...field('ageAtEmployment', 'Alter ist erforderlich')}
+              {...field('ageAtEmployment')}
               type="number"
-              label="Alter bei Ausbildungsbeginn"
+              label="Dein Alter bei Arbeitsbeginn (optional)"
               min="14"
               max="100"
             />
 
-            <SelectField
-              {...field('duration', 'Dauer ist erforderlich')}
-              label="Dauer der Ausbildung"
-              options={durationOptions}
+            <FormField
+              {...field('hoursPerWeek')}
+              type="number"
+              label="Durchschnittliche Stunden/Woche (optional)"
             />
 
             <FormField
-              {...field('hoursPerWeek', 'Stunden pro Woche sind erforderlich')}
+              {...field('overtimePerMonth')}
               type="number"
-              label="Stunden pro Woche"
+              label="Geschätztes (Jahres-)Mittel an Überstunden pro Monat (optional)"
             />
           </div>
         );
@@ -296,7 +449,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-gray-800 mb-3">Allgemeines zum Betrieb</h2>
-              <p className="text-gray-600 mb-6">Hier geht es um allgemeine Rahmenbedingungen im Betrieb, in dem du ausgebildet wirst – zum Beispiel welche Sprachen gesprochen werden und welche besonderen Merkmale der Betrieb hat.</p>
+              <p className="text-gray-600 mb-6">Hier geht es um allgemeine Rahmenbedingungen im Betrieb.</p>
             </div>
 
             <FormField
@@ -310,6 +463,14 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
               <CheckboxField {...register('collective')} label="Kollektiv" checked={collective} />
               <CheckboxField {...register('trainingShortenable')} label="Ausbildung verkürzbar" checked={trainingShortenable} />
               <CheckboxField {...register('partTime')} label="Teilzeit möglich" checked={partTime} />
+              <div className="pt-2">
+                <TextAreaField
+                  {...register('specialtiesOther')}
+                  label="Sonstiges"
+                  rows={3}
+                  placeholder="Weitere Besonderheiten des Betriebs..."
+                />
+              </div>
             </div>
           </div>
         );
@@ -318,109 +479,200 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
         return (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-3">Erfahrungen & Respekt</h2>
-              <p className="text-gray-600 mb-6">Wie hast du die Zusammenarbeit und den Umgang im Betrieb erlebt? Hier kannst du erzählen, ob dir zugehört wurde, wie der Ton war und ob deine Grenzen respektiert wurden.</p>
-            </div>
-         
-
-            <div className="space-y-3 p-4 bg-gray-50 rounded-lg">
-              <CheckboxField {...register('canAskBoss')} label="Ich konnte Fragen an meinen Chef/meine Chefin stellen" checked={canAskBoss} />
-              <CheckboxField {...register('canAskColleagues')} label="Ich konnte Fragen an Kolleg*innen stellen" checked={canAskColleagues} />
-               <CheckboxField {...register('listenedTo')} label="Mir wurde zugehört" checked={listenedTo} />
-              <CheckboxField {...register('boundariesRespected')} label="Meine Grenzen wurden respektiert" checked={boundariesRespected} />
+              <h2 className="text-2xl font-bold text-gray-800 mb-3">Betriebsklima & Respekt</h2>
+              <p className="text-gray-600 mb-6">Wie hast du die Zusammenarbeit und den Umgang im Betrieb erlebt?</p>
             </div>
 
             <SelectField
-              {...field('tone', 'Umgangston ist erforderlich')}
+              {...register('canAskBoss')}
+              label="Ich konnte mit Fragen/Problemen zu meine*r Chef*in gehen"
+              options={canAskBossOptions}
+            />
+
+            <SelectField
+              {...register('canAskColleagues')}
+              label="Ich konnte mit Fragen/Problemen zu Kolleg*innen gehen"
+              options={canAskColleaguesOptions}
+            />
+
+            <SelectField
+              {...register('listenedTo')}
+              label="Mir wurde zugehört"
+              options={listenedToOptions}
+            />
+
+            <SelectField
+              {...register('tone')}
               label="Wie war der Umgangston?"
               options={toneOptions}
             />
 
             <SelectField
-              {...field('explained', 'Diese Angabe ist erforderlich')}
-              label="Wurde dir alles erklärt?"
+              {...register('explained')}
+              label="Wurde dir genug erklärt?"
               options={explainedOptions}
             />
 
             <SelectField
-              {...field('proximity', 'Diese Angabe ist erforderlich')}
+              {...register('proximity')}
               label="Nähe/Distanz-Verhältnis"
               options={proximityOptions}
             />
 
             <SelectField
-              {...field('appreciated', 'Diese Angabe ist erforderlich')}
+              {...register('appreciated')}
               label="Hast du dich wertgeschätzt gefühlt?"
               options={appreciatedOptions}
             />
 
+            <div className="space-y-3 pt-2">
+              <h3 className="font-semibold text-gray-800">Meine Grenzen wurden respektiert</h3>
+              <p className="text-sm text-gray-500">Mehrfachauswahl möglich</p>
+              <div className="space-y-2">
+                {boundaryTypes.map(bt => (
+                  <label key={bt.value} className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      value={bt.value}
+                      {...register('boundariesRespected')}
+                      className="w-4 h-4 accent-navbar-blue"
+                    />
+                    <span className="text-sm text-gray-700">{bt.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
             <TextAreaField
-              {...field('experienceText', 'Erfahrungsbericht ist erforderlich')}
+              {...register('experienceText')}
               label="Meine Erfahrung"
               rows={6}
-              placeholder="Erzähle uns von deinen Erfahrungen..."
+              placeholder="Erzähle etwas genauer, wie du das Betriebsklima und den Umgang miteinander erlebt hast."
             />
           </div>
         );
 
       case 5:
         return (
-          <div className="space-y-6">
+          <div className="space-y-8">
             <div>
               <h2 className="text-2xl font-bold text-gray-800 mb-3">Gleichstellung & Diskriminierung</h2>
-              <p className="text-gray-600 mb-6">Dieser Abschnitt widmet sich Fragen zu Geschlecht und möglicher Diskriminierung. Deine Angaben helfen, Benachteiligungen sichtbar zu machen und die Arbeitsbedingungen für alle zu verbessern.</p>
+              <p className="text-gray-600 mb-2">
+                Dieser Abschnitt widmet sich Fragen zu Geschlecht und anderen Formen der Diskriminierung. Deine Erfahrungen helfen, Benachteiligung sichtbar zu machen und andere vor diskriminierendem Verhalten zu warnen.
+              </p>
             </div>
 
-            <SelectField
-              {...register('gender')}
-              label="Geschlecht"
-              options={genderOptions}
-            />
-
-            <div className="space-y-3 p-4 bg-gray-50 rounded-lg">
-              <CheckboxField {...register('genderOuted')} label="Meine geschlechtliche Identität wurde im Betrieb respektiert" checked={genderOuted} />
+            {/* Geschlecht */}
+            <div className="space-y-4">
+              <h3 className="font-semibold text-gray-800 text-lg border-b pb-1">Geschlecht</h3>
+              <SelectField
+                {...register('gender')}
+                label="Geschlecht"
+                options={genderOptions}
+              />
+              <SelectField
+                {...register('sharedWithCompany')}
+                label="War dem Betrieb deine Geschlechtsidentität bekannt?"
+                options={sharedWithCompanyOptions}
+              />
+              <SelectField
+                {...register('feltComfortableSharing')}
+                label="Hast du dich damit wohlgefühlt, dass dem Betrieb deine Geschlechtsidentität bekannt war?"
+                options={feltComfortableSharingOptions}
+              />
             </div>
 
-            <SelectField
-              {...field('sharedWithCompany', 'Diese Angabe ist erforderlich')}
-              label="Hast du diese Informationen mit dem Betrieb geteilt?"
-              options={sharedWithCompanyOptions}
-            />
+            {/* Beeinträchtigung */}
+            <div className="space-y-4">
+              <h3 className="font-semibold text-gray-800 text-lg border-b pb-1">Beeinträchtigung</h3>
+              <div className="space-y-2">
+                <p className="text-sm text-gray-600">Wähle aus, was auf dich zutrifft.</p>
+                {disabilityTypeOptions.map(dt => (
+                  <label key={dt.value} className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      value={dt.value}
+                      {...register('disabilityTypes')}
+                      className="w-4 h-4 accent-navbar-blue"
+                    />
+                    <span className="text-sm text-gray-700">{dt.label}</span>
+                  </label>
+                ))}
+              </div>
+              <SelectField
+                {...register('disabilitySharedWithCompany')}
+                label="War dem Betrieb deine Beeinträchtigung bekannt?"
+                options={disabilitySharedOptions}
+              />
+              <SelectField
+                {...register('disabilityFeltComfortableSharing')}
+                label="Hast du dich damit wohlgefühlt, dass dem Betrieb deine Beeinträchtigung bekannt war?"
+                options={disabilityFeltOptions}
+              />
+            </div>
 
-            <SelectField
-              {...field('feltComfortableSharing', 'Diese Angabe ist erforderlich')}
-              label="Hast du dich wohl gefühlt, diese Informationen zu teilen?"
-              options={feltComfortableSharingOptions}
-            />
+            {/* Herkunft & Erscheinungsbild */}
+            <div className="space-y-4">
+              <h3 className="font-semibold text-gray-800 text-lg border-b pb-1">Herkunft & Erscheinungsbild</h3>
+              <div className="space-y-2">
+                <p className="text-sm text-gray-600">Mehrfachauswahl möglich</p>
+                {ethnicityTypeOptions.map(et => (
+                  <label key={et.value} className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      value={et.value}
+                      {...register('ethnicityTypes')}
+                      className="w-4 h-4 accent-navbar-blue"
+                    />
+                    <span className="text-sm text-gray-700">{et.label}</span>
+                  </label>
+                ))}
+              </div>
+              <SelectField
+                {...register('ethnicitySharedWithCompany')}
+                label="War dem Betrieb deine Herkunft/Erscheinungsbild bekannt?"
+                options={ethnicitySharedOptions}
+              />
+              <SelectField
+                {...register('ethnicityFeltComfortableSharing')}
+                label="Hast du dich damit wohlgefühlt, dass dem Betrieb deine Herkunft/Erscheinungsbild bekannt war?"
+                options={ethnicityFeltOptions}
+              />
+            </div>
 
-            <SelectField
-              {...field('needsRespected', 'Diese Angabe ist erforderlich')}
-              label="Wurde auf deine Bedürfnisse Rücksicht genommen?"
-              options={needsRespectedOptions}
-            />
+            <div className='space-y-4'>
+              <h3 className="font-semibold text-gray-800 text-lg border-b pb-1">Gesamt</h3>
+              <div className="space-y-2"></div>
+              <SelectField
+                {...register('needsRespected')}
+                label="Wurde insgesamt auf deine Bedürfnisse bezüglich deiner Identität Rücksicht genommen?"
+                options={needsRespectedOptions}
+              />
+            </div>
           </div>
+
         );
 
       case 6:
         return (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-3">Abschluss</h2>
-              <p className="text-gray-600 mb-6">Fast geschafft! Teile uns abschließend dein Feedback mit und lass uns wissen, ob du noch weitere Wünsche oder Anmerkungen hast.</p>
+              <h2 className="text-2xl font-bold text-gray-800 mb-3">Feedback zum Betrieb</h2>
+              <p className="text-gray-600 mb-6">Fast geschafft!</p>
             </div>
 
             <TextAreaField
-              {...field('feedback', 'Feedback ist erforderlich')}
-              label="Feedback und Kritik"
+              {...register('feedback')}
+              label="Feedback zum Betrieb"
               rows={4}
-              placeholder="Was könnte der Betrieb verbessern?"
+              placeholder="Kann der Betrieb etwas verbessern? (optional)"
             />
 
             <TextAreaField
               {...register('moreWishes')}
-              label="Weitere Wünsche"
+              label="Wünsche an das Betriebsradar"
               rows={3}
-              placeholder="Wünschst du dir die Möglichkeit weitere Dinge angeben zu können? ?"
+              placeholder="Möchtest du uns Feedback geben oder weitere Dinge ergänzen?"
             />
 
             {submitError && (
@@ -437,7 +689,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="min-h-screen bg-gray-50 py-8 px-4">
+    <form className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6 md:p-8">
         {/* Progress Indicator */}
         <div className="mb-8">
@@ -484,11 +736,12 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
             </Button>
           ) : (
             <Button
-              type="submit"
+              type="button"
               variant="primary"
               isLoading={isSubmitting}
               disabled={isSubmitting}
               className="flex-1"
+              onClick={handleSubmit(data => onSubmit(sanitize(data)))}
             >
               Abschicken
             </Button>

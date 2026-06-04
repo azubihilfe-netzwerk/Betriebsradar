@@ -2,17 +2,19 @@ import { gql } from 'graphql-tag';
 import React, { FC } from 'react';
 import { useQuery } from '@apollo/client/react';
 import { Link } from 'react-router-dom';
-import { GetCompaniesQuery } from '../api/__generated__/graphql';
+import { GetCompaniesForMapQuery } from '../api/__generated__/graphql';
 
 const CompanyTable: FC = () => {
-    const { loading, error, data } = useQuery<GetCompaniesQuery>(gql`
-                        query GetCompanies {
+    const { loading, error, data } = useQuery<GetCompaniesForMapQuery>(gql`
+                        query GetCompaniesForMap {
                             companies {
                                 id
                                 name
                                 trade
                                 address
                                 reviewsCount
+                                latitude
+                                longitude
                             }
     }`
     );

@@ -34,47 +34,48 @@ model Company {
 }
 
 model Review {
-  id                     Int           @id @default(autoincrement())
-  name                   String        @default("")
-  email                  String        @default("")
-  publishName            Boolean       @default(false)
-  gender                 String?
-  company                Company?      @relation("Review_company", fields: [companyId], references: [id])
-  companyId              Int?          @map("company")
-  collective             Boolean       @default(false)
-  hoursPerWeek           Int
-  trainingShortenable    Boolean       @default(false)
-  partTime               Boolean       @default(false)
-  ageAtEmployment        Int
-  duration               String
-  yearOfHiring           String        @default("")
-  genderOuted            Boolean       @default(false)
-  position               String
-  listenedTo             Boolean       @default(false)
-  tone                   String?
-  explained              String?
-  canAskColleagues       Boolean       @default(false)
-  canAskBoss             Boolean       @default(false)
-  proximity              String?
-  boundariesRespected    Boolean       @default(false)
-  appreciated            String?
-  experienceText         String        @default("")
-  languages              String        @default("")
-  socialGroups           SocialGroup[] @relation("Review_socialGroups")
-  sharedWithCompany      String?
-  feltComfortableSharing String?
-  needsRespected         String?
-  feedback               String        @default("")
-  moreWishes             String        @default("")
-  status                 String?       @default("awaitingReview")
-  emailVerified          Boolean       @default(false)
-  accessKey              String?       @unique
+  id                               Int      @id @default(autoincrement())
+  name                             String   @default("")
+  email                            String   @default("")
+  company                          Company? @relation("Review_company", fields: [companyId], references: [id])
+  companyId                        Int?     @map("company")
+  collective                       Boolean  @default(false)
+  hoursPerWeek                     Int?
+  overtimePerMonth                 Int?
+  trainingShortenable              Boolean  @default(false)
+  partTime                         Boolean  @default(false)
+  specialtiesOther                 String   @default("")
+  ageAtEmployment                  Int?
+  yearOfHiring                     String   @default("")
+  yearOfLeaving                    String   @default("")
+  ongoing                          Boolean  @default(false)
+  genderIdentityRespected          Boolean  @default(false)
+  position                         String
+  listenedTo                       String?
+  canAskColleagues                 String?
+  canAskBoss                       String?
+  tone                             String?
+  explained                        String?
+  proximity                        String?
+  boundariesRespected              String   @default("[]")
+  appreciated                      String?
+  experienceText                   String   @default("")
+  languages                        String   @default("")
+  gender                           String?
+  sharedWithCompany                String?
+  feltComfortableSharing           String?
+  disabilityTypes                  String   @default("[]")
+  disabilitySharedWithCompany      String?
+  disabilityFeltComfortableSharing String?
+  ethnicityTypes                   String   @default("[]")
+  ethnicitySharedWithCompany       String?
+  ethnicityFeltComfortableSharing  String?
+  needsRespected                   String?
+  feedback                         String   @default("")
+  moreWishes                       String   @default("")
+  status                           String?  @default("awaitingReview")
+  emailVerified                    Boolean  @default(false)
+  accessKey                        String   @unique @default("")
 
   @@index([companyId])
-}
-
-model SocialGroup {
-  id                   Int      @id @default(autoincrement())
-  name                 String   @unique @default("")
-  recommendedByReviews Review[] @relation("Review_socialGroups")
 }

@@ -29,8 +29,10 @@ interface CompanyFormData {
 
 const SIZE_OPTIONS = [
   { value: undefined, label: 'Bitte wählen' },
-  { value: CompanySizeType['1to10'], label: '1–10 Mitarbeitende' },
-  { value: CompanySizeType['10to50'], label: '10–50 Mitarbeitende' },
+  { value: CompanySizeType['1to5'], label: '1–5 Mitarbeitende' },
+  { value: CompanySizeType['5to10'], label: '5–10 Mitarbeitende' },
+  { value: CompanySizeType['10to30'], label: '10–30 Mitarbeitende' },
+  { value: CompanySizeType['30to50'], label: '30–50 Mitarbeitende' },
   { value: CompanySizeType['50to250'], label: '50–250 Mitarbeitende' },
   { value: CompanySizeType['250plus'], label: 'Mehr als 250 Mitarbeitende' },
 ];
@@ -67,7 +69,7 @@ const UnternehmenEintragen: FC = () => {
       <div className="max-w-lg mx-auto">
         <h1 className="text-4xl font-bold text-navbar-blue mb-2">Betrieb eintragen</h1>
         <p className="text-gray-600 mb-8">
-          Trag deinen Ausbildungsbetrieb ein. Danach kannst du direkt deinen Erfahrungsbericht schreiben.
+          Trag deinen Betrieb ein. Danach kannst du direkt deinen Erfahrungsbericht schreiben.
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 bg-white rounded-xl shadow p-6">
@@ -86,15 +88,14 @@ const UnternehmenEintragen: FC = () => {
             {...register('trade')}
           />
           <FormField
-            label="Adresse"
+            label="Stadt / Adresse"
             required
-            placeholder="z. B. Musterstraße 1, 12345 Musterstadt"
+            placeholder="z. B. Berlin oder Musterstraße 1, 12345 Musterstadt"
             error={errors.address?.message}
             {...register('address')}
           />
           <FormField
-            label="Kontakt"
-            required
+            label="Kontakt (optional)"
             placeholder="z. B. info@musterbau.de"
             error={errors.contact?.message}
             {...register('contact')}

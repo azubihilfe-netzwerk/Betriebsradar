@@ -29,7 +29,6 @@ export interface SampleData {
 
 export async function createSampleData(ctx?: any): Promise<SampleData> {
   const context = ctx ?? getContext(config, PrismaModule).sudo();
-  await create_social_groups(context);
 
   console.log(`🌱 Inserting sample seed data`);
 
@@ -57,7 +56,7 @@ export async function createSampleData(ctx?: any): Promise<SampleData> {
     trade: 'Elektronik',
     contact: 'info@beispiel-gmbh.de',
     address: 'Dürkheimer Str. 27, 76185 Karlsruhe',
-    size: '_10to50',
+    size: '_10to30',
     verified: true,
   };
 

@@ -135,8 +135,10 @@ type Company {
 }
 
 enum CompanySizeType {
-  _1to10
-  _10to50
+  _1to5
+  _5to10
+  _10to30
+  _30to50
   _50to250
   _250plus
 }
@@ -247,55 +249,44 @@ type Review {
   id: ID!
   name: String
   email: String
-  publishName: Boolean
-  gender: ReviewGenderType
   company: Company
   collective: Boolean
   hoursPerWeek: Int
+  overtimePerMonth: Int
   trainingShortenable: Boolean
   partTime: Boolean
+  specialtiesOther: String
   ageAtEmployment: Int
-  duration: ReviewDurationType
   yearOfHiring: String
-  genderOuted: Boolean
+  yearOfLeaving: String
+  ongoing: Boolean
+  genderIdentityRespected: Boolean
   position: ReviewPositionType
-  listenedTo: Boolean
+  listenedTo: ReviewListenedToType
+  canAskColleagues: ReviewCanAskColleagueType
+  canAskBoss: ReviewCanAskBossType
   tone: ReviewToneType
   explained: ReviewExplainedType
-  canAskColleagues: Boolean
-  canAskBoss: Boolean
   proximity: String
-  boundariesRespected: Boolean
+  boundariesRespected: [ReviewBoundariesRespectedType!]
   appreciated: ReviewAppreciatedType
   experienceText: String
   languages: String
-  socialGroups(where: SocialGroupWhereInput! = {}, orderBy: [SocialGroupOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: SocialGroupWhereUniqueInput): [SocialGroup!]
-  socialGroupsCount(where: SocialGroupWhereInput! = {}): Int
+  gender: ReviewGenderType
   sharedWithCompany: ReviewSharedWithCompanyType
   feltComfortableSharing: ReviewFeltComfortableSharingType
+  disabilityTypes: [ReviewDisabilityTypeType!]
+  disabilitySharedWithCompany: ReviewDisabilitySharedWithCompanyType
+  disabilityFeltComfortableSharing: ReviewDisabilityFeltComfortableSharingType
+  ethnicityTypes: [ReviewEthnicityTypeType!]
+  ethnicitySharedWithCompany: ReviewEthnicitySharedWithCompanyType
+  ethnicityFeltComfortableSharing: ReviewEthnicityFeltComfortableSharingType
   needsRespected: ReviewNeedsRespectedType
   feedback: String
   moreWishes: String
   status: ReviewStatusType
   emailVerified: Boolean
   accessKey: String
-}
-
-enum ReviewGenderType {
-  cis_male
-  cis_female
-  enby
-  trans
-  diverse
-  other
-  prefer_not_to_say
-}
-
-enum ReviewDurationType {
-  OneToThreeweeks
-  OneToFourMonths
-  FiveToTwelveMonths
-  OneToThreeYears
 }
 
 enum ReviewPositionType {
@@ -305,6 +296,30 @@ enum ReviewPositionType {
   master
   helper
   other
+}
+
+enum ReviewListenedToType {
+  always
+  mostly
+  sometimes
+  rarely
+  never
+}
+
+enum ReviewCanAskColleagueType {
+  always
+  mostly
+  sometimes
+  rarely
+  never
+}
+
+enum ReviewCanAskBossType {
+  always
+  mostly
+  sometimes
+  rarely
+  never
 }
 
 enum ReviewToneType {
@@ -322,10 +337,29 @@ enum ReviewExplainedType {
   too_little
 }
 
+enum ReviewBoundariesRespectedType {
+  physical_strength
+  emotional
+  responsibility
+  physical_distance
+}
+
 enum ReviewAppreciatedType {
   yes
   partly
   no
+}
+
+enum ReviewGenderType {
+  prefer_not_to_say
+  cis_male
+  cis_female
+  enby
+  trans
+  trans_male
+  trans_female
+  diverse
+  other
 }
 
 enum ReviewSharedWithCompanyType {
@@ -335,6 +369,63 @@ enum ReviewSharedWithCompanyType {
 }
 
 enum ReviewFeltComfortableSharingType {
+  yes
+  partly
+  no
+}
+
+enum ReviewDisabilityTypeType {
+  autism_spectrum
+  autoimmune
+  blind_visually_impaired
+  deaf_hearing_impaired
+  physically_disabled
+  mental_illness
+  chronic_illness
+  cardiovascular
+  musculoskeletal
+  metabolic
+  digestive
+  spasticity
+  learning_disability
+  neurodivergent
+  wheelchair_mobility
+  drug_use
+  sexual_violence
+  overweight
+  underweight
+}
+
+enum ReviewDisabilitySharedWithCompanyType {
+  yes
+  partly
+  no
+}
+
+enum ReviewDisabilityFeltComfortableSharingType {
+  yes
+  partly
+  no
+}
+
+enum ReviewEthnicityTypeType {
+  white
+  person_of_color
+  black
+  indigenous
+  jewish
+  muslim
+  migrant
+  roma_sinti
+}
+
+enum ReviewEthnicitySharedWithCompanyType {
+  yes
+  partly
+  no
+}
+
+enum ReviewEthnicityFeltComfortableSharingType {
   yes
   partly
   no
@@ -364,47 +455,44 @@ input ReviewWhereInput {
   id: IDFilter
   name: StringFilter
   email: StringFilter
-  publishName: BooleanFilter
-  gender: ReviewGenderTypeNullableFilter
   company: CompanyWhereInput
   collective: BooleanFilter
-  hoursPerWeek: IntFilter
+  hoursPerWeek: IntNullableFilter
+  overtimePerMonth: IntNullableFilter
   trainingShortenable: BooleanFilter
   partTime: BooleanFilter
-  ageAtEmployment: IntFilter
-  duration: ReviewDurationTypeNullableFilter
+  specialtiesOther: StringFilter
+  ageAtEmployment: IntNullableFilter
   yearOfHiring: StringFilter
-  genderOuted: BooleanFilter
+  yearOfLeaving: StringFilter
+  ongoing: BooleanFilter
+  genderIdentityRespected: BooleanFilter
   position: ReviewPositionTypeNullableFilter
-  listenedTo: BooleanFilter
+  listenedTo: ReviewListenedToTypeNullableFilter
+  canAskColleagues: ReviewCanAskColleagueTypeNullableFilter
+  canAskBoss: ReviewCanAskBossTypeNullableFilter
   tone: ReviewToneTypeNullableFilter
   explained: ReviewExplainedTypeNullableFilter
-  canAskColleagues: BooleanFilter
-  canAskBoss: BooleanFilter
   proximity: StringNullableFilter
-  boundariesRespected: BooleanFilter
   appreciated: ReviewAppreciatedTypeNullableFilter
   experienceText: StringFilter
   languages: StringFilter
-  socialGroups: SocialGroupManyRelationFilter
+  gender: ReviewGenderTypeNullableFilter
   sharedWithCompany: ReviewSharedWithCompanyTypeNullableFilter
   feltComfortableSharing: ReviewFeltComfortableSharingTypeNullableFilter
+  disabilitySharedWithCompany: ReviewDisabilitySharedWithCompanyTypeNullableFilter
+  disabilityFeltComfortableSharing: ReviewDisabilityFeltComfortableSharingTypeNullableFilter
+  ethnicitySharedWithCompany: ReviewEthnicitySharedWithCompanyTypeNullableFilter
+  ethnicityFeltComfortableSharing: ReviewEthnicityFeltComfortableSharingTypeNullableFilter
   needsRespected: ReviewNeedsRespectedTypeNullableFilter
   feedback: StringFilter
   moreWishes: StringFilter
   status: ReviewStatusTypeNullableFilter
   emailVerified: BooleanFilter
-  accessKey: StringNullableFilter
+  accessKey: StringFilter
 }
 
-input ReviewGenderTypeNullableFilter {
-  equals: ReviewGenderType
-  in: [ReviewGenderType!]
-  notIn: [ReviewGenderType!]
-  not: ReviewGenderTypeNullableFilter
-}
-
-input IntFilter {
+input IntNullableFilter {
   equals: Int
   in: [Int!]
   notIn: [Int!]
@@ -412,14 +500,7 @@ input IntFilter {
   lte: Int
   gt: Int
   gte: Int
-  not: IntFilter
-}
-
-input ReviewDurationTypeNullableFilter {
-  equals: ReviewDurationType
-  in: [ReviewDurationType!]
-  notIn: [ReviewDurationType!]
-  not: ReviewDurationTypeNullableFilter
+  not: IntNullableFilter
 }
 
 input ReviewPositionTypeNullableFilter {
@@ -427,6 +508,27 @@ input ReviewPositionTypeNullableFilter {
   in: [ReviewPositionType!]
   notIn: [ReviewPositionType!]
   not: ReviewPositionTypeNullableFilter
+}
+
+input ReviewListenedToTypeNullableFilter {
+  equals: ReviewListenedToType
+  in: [ReviewListenedToType!]
+  notIn: [ReviewListenedToType!]
+  not: ReviewListenedToTypeNullableFilter
+}
+
+input ReviewCanAskColleagueTypeNullableFilter {
+  equals: ReviewCanAskColleagueType
+  in: [ReviewCanAskColleagueType!]
+  notIn: [ReviewCanAskColleagueType!]
+  not: ReviewCanAskColleagueTypeNullableFilter
+}
+
+input ReviewCanAskBossTypeNullableFilter {
+  equals: ReviewCanAskBossType
+  in: [ReviewCanAskBossType!]
+  notIn: [ReviewCanAskBossType!]
+  not: ReviewCanAskBossTypeNullableFilter
 }
 
 input ReviewToneTypeNullableFilter {
@@ -464,10 +566,11 @@ input ReviewAppreciatedTypeNullableFilter {
   not: ReviewAppreciatedTypeNullableFilter
 }
 
-input SocialGroupManyRelationFilter {
-  every: SocialGroupWhereInput
-  some: SocialGroupWhereInput
-  none: SocialGroupWhereInput
+input ReviewGenderTypeNullableFilter {
+  equals: ReviewGenderType
+  in: [ReviewGenderType!]
+  notIn: [ReviewGenderType!]
+  not: ReviewGenderTypeNullableFilter
 }
 
 input ReviewSharedWithCompanyTypeNullableFilter {
@@ -482,6 +585,34 @@ input ReviewFeltComfortableSharingTypeNullableFilter {
   in: [ReviewFeltComfortableSharingType!]
   notIn: [ReviewFeltComfortableSharingType!]
   not: ReviewFeltComfortableSharingTypeNullableFilter
+}
+
+input ReviewDisabilitySharedWithCompanyTypeNullableFilter {
+  equals: ReviewDisabilitySharedWithCompanyType
+  in: [ReviewDisabilitySharedWithCompanyType!]
+  notIn: [ReviewDisabilitySharedWithCompanyType!]
+  not: ReviewDisabilitySharedWithCompanyTypeNullableFilter
+}
+
+input ReviewDisabilityFeltComfortableSharingTypeNullableFilter {
+  equals: ReviewDisabilityFeltComfortableSharingType
+  in: [ReviewDisabilityFeltComfortableSharingType!]
+  notIn: [ReviewDisabilityFeltComfortableSharingType!]
+  not: ReviewDisabilityFeltComfortableSharingTypeNullableFilter
+}
+
+input ReviewEthnicitySharedWithCompanyTypeNullableFilter {
+  equals: ReviewEthnicitySharedWithCompanyType
+  in: [ReviewEthnicitySharedWithCompanyType!]
+  notIn: [ReviewEthnicitySharedWithCompanyType!]
+  not: ReviewEthnicitySharedWithCompanyTypeNullableFilter
+}
+
+input ReviewEthnicityFeltComfortableSharingTypeNullableFilter {
+  equals: ReviewEthnicityFeltComfortableSharingType
+  in: [ReviewEthnicityFeltComfortableSharingType!]
+  notIn: [ReviewEthnicityFeltComfortableSharingType!]
+  not: ReviewEthnicityFeltComfortableSharingTypeNullableFilter
 }
 
 input ReviewNeedsRespectedTypeNullableFilter {
@@ -502,29 +633,34 @@ input ReviewOrderByInput {
   id: OrderDirection
   name: OrderDirection
   email: OrderDirection
-  publishName: OrderDirection
-  gender: OrderDirection
   collective: OrderDirection
   hoursPerWeek: OrderDirection
+  overtimePerMonth: OrderDirection
   trainingShortenable: OrderDirection
   partTime: OrderDirection
+  specialtiesOther: OrderDirection
   ageAtEmployment: OrderDirection
-  duration: OrderDirection
   yearOfHiring: OrderDirection
-  genderOuted: OrderDirection
+  yearOfLeaving: OrderDirection
+  ongoing: OrderDirection
+  genderIdentityRespected: OrderDirection
   position: OrderDirection
   listenedTo: OrderDirection
-  tone: OrderDirection
-  explained: OrderDirection
   canAskColleagues: OrderDirection
   canAskBoss: OrderDirection
+  tone: OrderDirection
+  explained: OrderDirection
   proximity: OrderDirection
-  boundariesRespected: OrderDirection
   appreciated: OrderDirection
   experienceText: OrderDirection
   languages: OrderDirection
+  gender: OrderDirection
   sharedWithCompany: OrderDirection
   feltComfortableSharing: OrderDirection
+  disabilitySharedWithCompany: OrderDirection
+  disabilityFeltComfortableSharing: OrderDirection
+  ethnicitySharedWithCompany: OrderDirection
+  ethnicityFeltComfortableSharing: OrderDirection
   needsRespected: OrderDirection
   feedback: OrderDirection
   moreWishes: OrderDirection
@@ -536,31 +672,38 @@ input ReviewOrderByInput {
 input ReviewUpdateInput {
   name: String
   email: String
-  publishName: Boolean
-  gender: ReviewGenderType
   company: CompanyRelateToOneForUpdateInput
   collective: Boolean
   hoursPerWeek: Int
+  overtimePerMonth: Int
   trainingShortenable: Boolean
   partTime: Boolean
+  specialtiesOther: String
   ageAtEmployment: Int
-  duration: ReviewDurationType
   yearOfHiring: String
-  genderOuted: Boolean
+  yearOfLeaving: String
+  ongoing: Boolean
+  genderIdentityRespected: Boolean
   position: ReviewPositionType
-  listenedTo: Boolean
+  listenedTo: ReviewListenedToType
+  canAskColleagues: ReviewCanAskColleagueType
+  canAskBoss: ReviewCanAskBossType
   tone: ReviewToneType
   explained: ReviewExplainedType
-  canAskColleagues: Boolean
-  canAskBoss: Boolean
   proximity: String
-  boundariesRespected: Boolean
+  boundariesRespected: [ReviewBoundariesRespectedType!]
   appreciated: ReviewAppreciatedType
   experienceText: String
   languages: String
-  socialGroups: SocialGroupRelateToManyForUpdateInput
+  gender: ReviewGenderType
   sharedWithCompany: ReviewSharedWithCompanyType
   feltComfortableSharing: ReviewFeltComfortableSharingType
+  disabilityTypes: [ReviewDisabilityTypeType!]
+  disabilitySharedWithCompany: ReviewDisabilitySharedWithCompanyType
+  disabilityFeltComfortableSharing: ReviewDisabilityFeltComfortableSharingType
+  ethnicityTypes: [ReviewEthnicityTypeType!]
+  ethnicitySharedWithCompany: ReviewEthnicitySharedWithCompanyType
+  ethnicityFeltComfortableSharing: ReviewEthnicityFeltComfortableSharingType
   needsRespected: ReviewNeedsRespectedType
   feedback: String
   moreWishes: String
@@ -575,13 +718,6 @@ input CompanyRelateToOneForUpdateInput {
   disconnect: Boolean
 }
 
-input SocialGroupRelateToManyForUpdateInput {
-  disconnect: [SocialGroupWhereUniqueInput!]
-  set: [SocialGroupWhereUniqueInput!]
-  create: [SocialGroupCreateInput!]
-  connect: [SocialGroupWhereUniqueInput!]
-}
-
 input ReviewUpdateArgs {
   where: ReviewWhereUniqueInput!
   data: ReviewUpdateInput!
@@ -590,31 +726,38 @@ input ReviewUpdateArgs {
 input ReviewCreateInput {
   name: String
   email: String
-  publishName: Boolean
-  gender: ReviewGenderType
   company: CompanyRelateToOneForCreateInput
   collective: Boolean
   hoursPerWeek: Int
+  overtimePerMonth: Int
   trainingShortenable: Boolean
   partTime: Boolean
+  specialtiesOther: String
   ageAtEmployment: Int
-  duration: ReviewDurationType
   yearOfHiring: String
-  genderOuted: Boolean
+  yearOfLeaving: String
+  ongoing: Boolean
+  genderIdentityRespected: Boolean
   position: ReviewPositionType
-  listenedTo: Boolean
+  listenedTo: ReviewListenedToType
+  canAskColleagues: ReviewCanAskColleagueType
+  canAskBoss: ReviewCanAskBossType
   tone: ReviewToneType
   explained: ReviewExplainedType
-  canAskColleagues: Boolean
-  canAskBoss: Boolean
   proximity: String
-  boundariesRespected: Boolean
+  boundariesRespected: [ReviewBoundariesRespectedType!]
   appreciated: ReviewAppreciatedType
   experienceText: String
   languages: String
-  socialGroups: SocialGroupRelateToManyForCreateInput
+  gender: ReviewGenderType
   sharedWithCompany: ReviewSharedWithCompanyType
   feltComfortableSharing: ReviewFeltComfortableSharingType
+  disabilityTypes: [ReviewDisabilityTypeType!]
+  disabilitySharedWithCompany: ReviewDisabilitySharedWithCompanyType
+  disabilityFeltComfortableSharing: ReviewDisabilityFeltComfortableSharingType
+  ethnicityTypes: [ReviewEthnicityTypeType!]
+  ethnicitySharedWithCompany: ReviewEthnicitySharedWithCompanyType
+  ethnicityFeltComfortableSharing: ReviewEthnicityFeltComfortableSharingType
   needsRespected: ReviewNeedsRespectedType
   feedback: String
   moreWishes: String
@@ -626,52 +769,6 @@ input ReviewCreateInput {
 input CompanyRelateToOneForCreateInput {
   create: CompanyCreateInput
   connect: CompanyWhereUniqueInput
-}
-
-input SocialGroupRelateToManyForCreateInput {
-  create: [SocialGroupCreateInput!]
-  connect: [SocialGroupWhereUniqueInput!]
-}
-
-type SocialGroup {
-  id: ID!
-  name: String
-  recommendedByReviews(where: ReviewWhereInput! = {}, orderBy: [ReviewOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewWhereUniqueInput): [Review!]
-  recommendedByReviewsCount(where: ReviewWhereInput! = {}): Int
-}
-
-input SocialGroupWhereUniqueInput {
-  id: ID
-  name: String
-}
-
-input SocialGroupWhereInput {
-  AND: [SocialGroupWhereInput!]
-  OR: [SocialGroupWhereInput!]
-  NOT: [SocialGroupWhereInput!]
-  id: IDFilter
-  name: StringFilter
-  recommendedByReviews: ReviewManyRelationFilter
-}
-
-input SocialGroupOrderByInput {
-  id: OrderDirection
-  name: OrderDirection
-}
-
-input SocialGroupUpdateInput {
-  name: String
-  recommendedByReviews: ReviewRelateToManyForUpdateInput
-}
-
-input SocialGroupUpdateArgs {
-  where: SocialGroupWhereUniqueInput!
-  data: SocialGroupUpdateInput!
-}
-
-input SocialGroupCreateInput {
-  name: String
-  recommendedByReviews: ReviewRelateToManyForCreateInput
 }
 
 """
@@ -698,12 +795,6 @@ type Mutation {
   updateReviews(data: [ReviewUpdateArgs!]!): [Review]
   deleteReview(where: ReviewWhereUniqueInput!): Review
   deleteReviews(where: [ReviewWhereUniqueInput!]!): [Review]
-  createSocialGroup(data: SocialGroupCreateInput!): SocialGroup
-  createSocialGroups(data: [SocialGroupCreateInput!]!): [SocialGroup]
-  updateSocialGroup(where: SocialGroupWhereUniqueInput!, data: SocialGroupUpdateInput!): SocialGroup
-  updateSocialGroups(data: [SocialGroupUpdateArgs!]!): [SocialGroup]
-  deleteSocialGroup(where: SocialGroupWhereUniqueInput!): SocialGroup
-  deleteSocialGroups(where: [SocialGroupWhereUniqueInput!]!): [SocialGroup]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -737,9 +828,6 @@ type Query {
   review(where: ReviewWhereUniqueInput!): Review
   reviews(where: ReviewWhereInput! = {}, orderBy: [ReviewOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewWhereUniqueInput): [Review!]
   reviewsCount(where: ReviewWhereInput! = {}): Int
-  socialGroup(where: SocialGroupWhereUniqueInput!): SocialGroup
-  socialGroups(where: SocialGroupWhereInput! = {}, orderBy: [SocialGroupOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: SocialGroupWhereUniqueInput): [SocialGroup!]
-  socialGroupsCount(where: SocialGroupWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }
