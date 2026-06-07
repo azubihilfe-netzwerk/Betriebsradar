@@ -1,8 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client/react';
 import { gql } from 'graphql-tag';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { ReviewForm, ReviewFormData } from '../components/ReviewForm';
+import { Button } from '../components/Form';
 import {
   CreateReviewMutation,
   CreateReviewMutationVariables,
@@ -43,10 +44,13 @@ const BerichtSchreiben: FC = () => {
     CreateReviewMutationVariables
   >(CREATE_REVIEW);
 
+  const [landingPage, setLandingPage] = useState(true);
+
   if (!companyId) {
     navigate('/betriebauswaehlen');
     return null;
   }
+
 
   const companyName = companyData?.company?.name;
 
@@ -120,22 +124,46 @@ const BerichtSchreiben: FC = () => {
     );
   }
 
-  return companyLoading ? <i>Lädt...</i> : (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
-      <div className="max-w-2xl mx-auto mb-8">
-        <h1 className="text-2xl font-bold text-navbar-blue mb-2">Schreib deinen Erfahrungsbericht</h1>
-        <p className="text-gray-600 mt-1">
-          Teile deine Erfahrung in dem Betrieb <b className="text-bold">{companyName}</b>. Deine offene Rückmeldung hilft anderen, die richtige Wahl zu treffen.
-        </p>
-      </div>
+  if (companyLoading) {
+    return (<i>Lädt...</i>)
+  }
 
+  if (landingPage) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-8 px-4">
+        <div className="max-w-2xl mx-auto mb-8">
+          <h1 className="text-2xl font-bold text-navbar-blue mb-2">Schreib deinen Erfahrungsbericht</h1>
+          <p className="text-gray-600 mt-1">
+            Teile deine Erfahrung in dem Betrieb <b className="text-bold">{companyName}</b>. Deine offene Rückmeldung hilft anderen, die richtige Wahl zu treffen.
+
+            <p className='pt-2'>Berichte nur über Betriebe, in denen du selbst arbeitest oder gearbeitet hast. Bei dem Bericht geht es um deine subjektive Erfahrung und Empfindung.</p>
+          </p>
+          <div className='flex flex-row w-full gap-2'>
+            <Link
+              to="/betriebauswaehlen"
+              className="inline-block bg-navbar-blue text-white font-semibold mt-5 px-6 py-3 rounded-lg hover:opacity-90 transition-opacity w-1/2"
+            >
+              Anderen Betrieb wählen
+            </Link>
+            <Button onClick={() => setLandingPage(false)} className="w-1/2 bg-gray-200">
+              Los geht's
+            </Button>
+
+          </div>
+
+        </div>
+
+      </div>
+    );
+  } else {
+    return (
       <ReviewForm
         onSubmit={handleSubmit}
         isSubmitting={isSubmitting}
         submitError={error?.message}
       />
-    </div>
-  );
+    );
+  }
 };
 
 export default BerichtSchreiben;
