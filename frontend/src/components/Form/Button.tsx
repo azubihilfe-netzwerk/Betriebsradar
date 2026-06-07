@@ -12,9 +12,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const baseStyles = 'font-semibold rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed';
     
     const variantStyles = {
-      primary: 'bg-navbar-blue text-white hover:bg-blue-700',
+      primary: 'bg-brand-button text-gray-800 hover:bg-brand-button-hover',
       secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300',
-      danger: 'bg-red-600 text-white hover:bg-red-700',
+      danger: 'bg-brand-error text-white hover:opacity-90',
     };
     
     const sizeStyles = {

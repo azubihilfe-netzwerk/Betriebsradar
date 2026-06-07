@@ -1,8 +1,10 @@
 import { gql } from 'graphql-tag';
 import React, { FC, useState } from 'react';
 import { useQuery } from '@apollo/client/react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import LinkButton from '../components/Form/LinkButton';
 import { GetCompaniesQuery } from '../api/__generated__/graphql';
+import { SectionHeading } from '../components/UI';
 
 const GET_COMPANIES = gql`
   query GetCompanies {
@@ -30,11 +32,11 @@ const UnternehmenAuswaehlen: FC = () => {
   }) ?? [];
 
   return (
-    <div className="min-h-screen py-8 px-4">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-4xl font-bold text-navbar-blue mb-2">Betrieb auswählen</h1>
-        <p className="text-gray-600 mb-8">
-          Suche deinen Ausbildungsbetrieb. Wenn er noch nicht eingetragen ist, kannst du ihn neu hinzufügen.
+    <div className="">
+      <div className="space-y-4">
+        <SectionHeading>Betrieb auswählen</SectionHeading>
+        <p >
+          Suche deinen Ausbildungsbetrieb. Vielleicht ist er schon im Betriebsradar eingetragen.
         </p>
 
         <input
@@ -42,7 +44,7 @@ const UnternehmenAuswaehlen: FC = () => {
           placeholder="Betrieb suchen..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navbar-blue focus:border-transparent text-base mb-4"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent text-base mb-4"
           autoFocus
         />
 
@@ -73,14 +75,12 @@ const UnternehmenAuswaehlen: FC = () => {
           </ul>
         )}
 
-        <div className="mt-4 pt-4 border-t border-gray-200">
-          <p className=" text-m text-gray-600 mb-2">Betrieb noch nicht eingetragen?</p>
-          <Link
-            to="/unternehmeneintragen"
-            className="inline-block px-4 py-2 bg-navbar-blue text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-medium"
-          >
+        <div className="mt-4 pt-4 border-t border-gray-200 space-y-4">
+          <SectionHeading>Betrieb nicht gefunden?</SectionHeading>
+          <p>Hier kannst du deinen Betrieb neu beim Betriebsradar eintragen.</p>
+          <LinkButton to="/unternehmeneintragen" size="sm">
             Neuen Betrieb eintragen
-          </Link>
+          </LinkButton>
         </div>
       </div>
     </div>

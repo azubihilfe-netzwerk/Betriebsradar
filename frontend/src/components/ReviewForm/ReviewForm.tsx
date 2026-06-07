@@ -414,7 +414,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
               </label>
               <select
                 {...register('yearOfLeaving')}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-navbar-blue"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
               >
                 {leavingYearOptions.map(opt => (
                   <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -535,7 +535,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
                       type="checkbox"
                       value={bt.value}
                       {...register('boundariesRespected')}
-                      className="w-4 h-4 accent-navbar-blue"
+                      className="w-4 h-4 accent-brand"
                     />
                     <span className="text-sm text-gray-700">{bt.label}</span>
                   </label>
@@ -593,7 +593,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
                       type="checkbox"
                       value={dt.value}
                       {...register('disabilityTypes')}
-                      className="w-4 h-4 accent-navbar-blue"
+                      className="w-4 h-4 accent-brand"
                     />
                     <span className="text-sm text-gray-700">{dt.label}</span>
                   </label>
@@ -622,7 +622,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
                       type="checkbox"
                       value={et.value}
                       {...register('ethnicityTypes')}
-                      className="w-4 h-4 accent-navbar-blue"
+                      className="w-4 h-4 accent-brand"
                     />
                     <span className="text-sm text-gray-700">{et.label}</span>
                   </label>
@@ -689,8 +689,8 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
   };
 
   return (
-    <form className="min-h-screen bg-gray-50 py-8 px-4">
-      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6 md:p-8">
+    <form className="min-h-screen">
+      <div className="max-w-2xl mx-auto">
         {/* Progress Indicator */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
@@ -701,7 +701,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
           </div>
           <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
             <div
-              className="h-full bg-navbar-blue transition-all duration-300"
+              className="h-full bg-brand transition-all duration-300"
               style={{ width: `${(currentPage / 6) * 100}%` }}
             />
           </div>

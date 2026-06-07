@@ -28,7 +28,7 @@ const Login: React.FC = () => {
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-3xl font-bold mb-6 text-center" style={{ color: '#1a5d5d' }}>
+      <h1 className="text-3xl font-bold mb-6 text-center text-brand">
         Anmelden
       </h1>
 
@@ -50,7 +50,7 @@ const Login: React.FC = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md bg-brand-input focus:outline-none focus:ring-2 focus:ring-brand-button-hover"
             placeholder="E-Mail eingeben"
             disabled={isLoading}
           />
@@ -66,7 +66,7 @@ const Login: React.FC = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md bg-brand-input focus:outline-none focus:ring-2 focus:ring-brand-button-hover"
             placeholder="Passwort eingeben"
             disabled={isLoading}
           />
@@ -75,7 +75,7 @@ const Login: React.FC = () => {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 disabled:bg-gray-400 transition-colors font-semibold"
+          className="w-full px-4 py-2 bg-brand-button text-gray-800 rounded-md hover:bg-brand-button-hover transition-colors font-semibold"
         >
           {isLoading ? 'Lädt...' : 'Anmelden'}
         </button>

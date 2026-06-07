@@ -60,7 +60,7 @@ const EmailBestaetigen: FC = () => {
   if (verified === true) {
     return (
       <div className="max-w-2xl mx-auto text-center py-16">
-        <h1 className="text-3xl font-bold text-navbar-blue mb-4">
+        <h1 className="text-3xl font-bold text-brand mb-4">
           E-Mail erfolgreich bestätigt!
         </h1>
         <p className="text-gray-600">

@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import { Link } from 'react-router-dom';
+import LinkButton from '../components/Form/LinkButton';
 
 const BerichtEingereicht: FC = () => {
   return (
     <div className="max-w-2xl mx-auto py-12 px-4">
-      <h1 className="text-4xl font-bold text-navbar-blue mb-4">
+      <h1 className="text-4xl font-bold text-brand mb-4">
         Vielen Dank für deinen Bericht!
       </h1>
 
@@ -15,7 +15,7 @@ const BerichtEingereicht: FC = () => {
 
       <ol className="space-y-6 mb-10">
         <li className="flex gap-4">
-          <span className="flex-shrink-0 w-8 h-8 rounded-full bg-navbar-blue text-white flex items-center justify-center font-bold">
+          <span className="flex-shrink-0 w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center font-bold">
             1
           </span>
           <div>
@@ -29,7 +29,7 @@ const BerichtEingereicht: FC = () => {
         </li>
 
         <li className="flex gap-4">
-          <span className="flex-shrink-0 w-8 h-8 rounded-full bg-navbar-blue text-white flex items-center justify-center font-bold">
+          <span className="flex-shrink-0 w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center font-bold">
             2
           </span>
           <div>
@@ -45,18 +45,15 @@ const BerichtEingereicht: FC = () => {
 
       <p className="text-gray-600 text-sm mb-8">
         Fragen? Schreib uns an{' '}
-        <a href="mailto:kontakt@betriebsradar.org" className="text-navbar-blue hover:underline">
+        <a href="mailto:kontakt@betriebsradar.org" className="text-brand hover:underline">
           kontakt@betriebsradar.org
         </a>
         .
       </p>
 
-      <Link
-        to="/"
-        className="inline-block bg-navbar-blue text-white font-semibold px-6 py-3 rounded-lg hover:opacity-90 transition-opacity"
-      >
+      <LinkButton to="/" size="lg">
         Zur Startseite
-      </Link>
+      </LinkButton>
     </div>
   );
 };

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { CompanySizeType, Company, CompanyCreateInput } from '../api/__generated__/graphql';
 import FormField from '../components/Form/FormField';
 import SelectField from '../components/Form/SelectField';
+import { PageHeading } from '../components/UI';
 
 type CreateCompanyMutation = { createCompany: Pick<Company, 'id' | 'name'> | null | undefined };
 type CreateCompanyMutationVariables = { data: CompanyCreateInput };
@@ -65,62 +66,59 @@ const UnternehmenEintragen: FC = () => {
   };
 
   return (
-    <div className="min-h-screen py-8 px-4">
-      <div className="max-w-lg mx-auto">
-        <h1 className="text-4xl font-bold text-navbar-blue mb-2">Betrieb eintragen</h1>
-        <p className="text-gray-600 mb-8">
-          Trag deinen Betrieb ein. Danach kannst du direkt deinen Erfahrungsbericht schreiben.
-        </p>
+    <div className="m-4">
+      <PageHeading>Betrieb eintragen</PageHeading>
+      <p className="py-4">
+        Trag deinen Betrieb ein. Danach kannst du direkt deinen Erfahrungsbericht schreiben.
+      </p>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <FormField
+          label="Name des Betriebs"
+          required
+          placeholder="z. B. Musterbau GmbH"
+          error={errors.name?.message}
+          {...register('name', { required: 'Bitte gib den Namen des Betriebs an.' })}
+        />
+        <FormField
+          label="Gewerk / Branche"
+          required
+          placeholder="z. B. Elektroinstallation"
+          error={errors.trade?.message}
+          {...register('trade')}
+        />
+        <FormField
+          label="Stadt / Adresse"
+          required
+          placeholder="z. B. Berlin oder Musterstraße 1, 12345 Musterstadt"
+          error={errors.address?.message}
+          {...register('address')}
+        />
+        <FormField
+          label="Kontakt (optional)"
+          placeholder="z. B. info@musterbau.de"
+          error={errors.contact?.message}
+          {...register('contact')}
+        />
+        <SelectField
+          label="Betriebsgröße"
+          required
+          options={SIZE_OPTIONS}
+          error={errors.size?.message}
+          {...register('size')}
+        />
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 bg-white rounded-xl shadow p-6">
-          <FormField
-            label="Name des Betriebs"
-            required
-            placeholder="z. B. Musterbau GmbH"
-            error={errors.name?.message}
-            {...register('name', { required: 'Bitte gib den Namen des Betriebs an.' })}
-          />
-          <FormField
-            label="Gewerk / Branche"
-            required
-            placeholder="z. B. Elektroinstallation"
-            error={errors.trade?.message}
-            {...register('trade')}
-          />
-          <FormField
-            label="Stadt / Adresse"
-            required
-            placeholder="z. B. Berlin oder Musterstraße 1, 12345 Musterstadt"
-            error={errors.address?.message}
-            {...register('address')}
-          />
-          <FormField
-            label="Kontakt (optional)"
-            placeholder="z. B. info@musterbau.de"
-            error={errors.contact?.message}
-            {...register('contact')}
-          />
-          <SelectField
-            label="Betriebsgröße"
-            required
-            options={SIZE_OPTIONS}
-            error={errors.size?.message}
-            {...register('size')}
-          />
+        {error && (
+          <p className="text-red-600 text-sm">Fehler: {error.message}</p>
+        )}
 
-          {error && (
-            <p className="text-red-600 text-sm">Fehler: {error.message}</p>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 bg-navbar-blue text-white rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
-          >
-            {loading ? 'Wird eingetragen...' : 'Betrieb eintragen & Bericht schreiben'}
-          </button>
-        </form>
-      </div>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full py-3 bg-brand-button text-white rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+        >
+          {loading ? 'Wird eingetragen...' : 'Betrieb eintragen & Bericht schreiben'}
+        </button>
+      </form>
     </div>
   );
 };

@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
     };
 
     return (
-        <footer className="mt-4" style={{ backgroundColor: '#1a5d5d', color: 'white' }}>
+        <footer className="bg-brand text-white">
             <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center">
                 <p className="text-sm">&copy; {new Date().getFullYear()} AzubiNetzwerk. Alle Rechte vorbehalten.</p>
 

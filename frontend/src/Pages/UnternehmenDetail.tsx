@@ -40,7 +40,7 @@ const UnternehmenDetail: FC = () => {
     return (
         <div className="max-w-4xl">
             <div className="bg-white rounded-lg shadow p-6 mb-8">
-                <h1 className="text-2xl font-bold text-navbar-blue mb-2">{company.name}</h1>
+                <h1 className="text-2xl font-bold text-brand mb-2">{company.name}</h1>
                 <div className="grid grid-cols-2 gap-4 text-gray-700">
                     <div>
                         <p className="font-semibold">Gewerk:</p>
@@ -58,13 +58,13 @@ const UnternehmenDetail: FC = () => {
             </div>
 
             <div>
-                <h2 className="text-1xl font-bold text-navbar-blue mb-4">Berichte ({company.reviews?.length})</h2>
+                <h2 className="text-1xl font-bold text-brand mb-4">Berichte ({company.reviews?.length})</h2>
                 {company.reviews?.length === 0 ? (
                     <p className="text-gray-600">Noch keine Berichte vorhanden.</p>
                 ) : (
                     <div className="space-y-4">
                         {company.reviews?.map((review) => (
-                            <div key={review.id} className="bg-white rounded-lg shadow p-4 border-l-4 border-navbar-blue">
+                            <div key={review.id} className="bg-white rounded-lg shadow p-4 border-l-4 border-brand">
                                 <div className="flex justify-between items-start mb-2">
                                     <h3 className="text-lg font-semibold">{review.name}</h3>
 

@@ -21,29 +21,30 @@ import backgroundImage from "./images/Webseite-Hintergrund.png";
 function App() {
     return (
         <div
-            className="flex flex-col min-h-screen bg-cover bg-center"
-            style={{ backgroundImage: `url(${backgroundImage})` }}
+            className="flex flex-col min-h-screen bg-brand-input bg-center"
         >
             <Navbar />
-            <div className="flex-1 bg-white/80">
-                <main className="pt-28 max-w-screen-2xl mx-auto w-full px-4 py-8 flex flex-col mt-8">
-                    <Routes>
-                        <Route path="/" element={<Dashboard />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/impressum" element={<Impressum />} />
-                        <Route path="/kontakt" element={<Kontakt />} />
-                        <Route path="/datenschutz" element={<Datenschutz />} />
-                        <Route path="/unternehmeneintragen" element={<UnternehmenEintragen />} />
-                        <Route path="/unternehmensuchen" element={<UnternehmenSuchen />} />
-                        <Route path="/unternehmen/:id" element={<UnternehmenDetail />} />
-                        <Route path="/betriebauswaehlen" element={<UnternehmenAuswaehlen />} />
-                        <Route path="/berichtschreiben" element={<BerichtSchreiben/>} />
-                        <Route path="/berichte/:id" element={<BerichtDetail />} />
-                        <Route path="/verify-email" element={<EmailBestaetigen />} />
-                        <Route path="/bericht-eingereicht" element={<BerichtEingereicht />} />
-                    </Routes>
-                </main>
-            </div>
+                <div className="max-w-screen-2xl mx-auto w-full flex flex-col flex-1">
+                    <main className="max-w-3xl mx-auto py-8 px-6 mt-28 flex-1 w-full bg-brand-bg shadow-md">
+                        <Routes>
+                            <Route path="/" element={<Dashboard />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/impressum" element={<Impressum />} />
+                            <Route path="/kontakt" element={<Kontakt />} />
+                            <Route path="/datenschutz" element={<Datenschutz />} />
+                            <Route path="/unternehmeneintragen" element={<UnternehmenEintragen />} />
+                            <Route path="/unternehmensuchen" element={<UnternehmenSuchen />} />
+                            <Route path="/unternehmen/:id" element={<UnternehmenDetail />} />
+                            <Route path="/betriebauswaehlen" element={<UnternehmenAuswaehlen />} />
+                            <Route path="/berichtschreiben" element={<BerichtSchreiben />} />
+                            <Route path="/berichte/:id" element={<BerichtDetail />} />
+                            <Route path="/verify-email" element={<EmailBestaetigen />} />
+                            <Route path="/bericht-eingereicht" element={<BerichtEingereicht />} />
+                        </Routes>
+                    </main>
+                </div>
+           
+        
             <Footer />
         </div>
     );
