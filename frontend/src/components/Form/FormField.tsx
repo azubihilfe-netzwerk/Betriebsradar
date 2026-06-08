@@ -18,9 +18,10 @@ const FormField = React.forwardRef<HTMLInputElement, FormFieldProps>(
         )}
         <input
           ref={ref}
-          className={`w-full px-3 py-2 border-2 rounded-md bg-brand-input focus:ring-2 focus:ring-brand-button-hover focus:border-transparent ${
+          className={`w-full px-3 py-2 border-2 rounded-md ${
             error ? 'border-brand-error' : 'border-black'
-          } ${className || ''}`}
+          } bg-brand-input 
+           focus:outline-none  focus:border-brand-button-hover  ${className || ''}`}
           {...props}
         />
         {error && <p className="text-brand-error text-sm mt-1">{error}</p>}

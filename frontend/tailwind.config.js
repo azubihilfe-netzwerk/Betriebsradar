@@ -19,7 +19,7 @@ module.exports = {
         'brand-button':       '#e1e0f7', // primary button fill
         'brand-button-hover': '#c3c2ee', // primary button hover / nav link hover
         'brand-error':        '#e33581', // error borders and accents
-        'brand-navbar' :      '#c3c2ee'
+        'brand-navbar' :      '#c3c2ee',
       },
     },
   },

@@ -12,3 +12,7 @@ export const PageHeading: React.FC<HeadingProps> = ({ children, className = '' }
 export const SectionHeading: React.FC<HeadingProps> = ({ children, className = '' }) => (
   <h2 className={`text-xl font-bold text-brand ${className}`}>{children}</h2>
 );
+
+export const Paragraph: React.FC<HeadingProps> = ({ children, className = '' }) => (
+  <p className={`text-black ${className}`}>{children}</p>
+);

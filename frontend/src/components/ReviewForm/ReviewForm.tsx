@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useForm, RegisterOptions } from 'react-hook-form';
 import { Button, FormField, SelectField, CheckboxField, TextAreaField } from '../Form';
+import { SectionHeading, Paragraph } from '../UI/Heading';
 import {
   ReviewGenderType,
   ReviewToneType,
@@ -276,13 +277,9 @@ const ethnicityTypeOptions: { value: ReviewEthnicityTypeType; label: string }[] 
   { value: ReviewEthnicityTypeType.RomaSinti, label: 'Rom*nja/Sinti*zze' },
 ];
 
-const FIELDS_PER_PAGE: Record<number, Array<keyof ReviewFormData>> = {
-  1: ['name', 'email'],
-  2: ['position', 'yearOfHiring', 'yearOfLeaving', 'ageAtEmployment', 'hoursPerWeek', 'overtimePerMonth'],
-  3: ['languages', 'collective', 'trainingShortenable', 'partTime', 'specialtiesOther'],
-  4: ['listenedTo', 'tone', 'explained', 'canAskBoss', 'canAskColleagues', 'boundariesRespected', 'proximity', 'appreciated', 'experienceText'],
-  5: ['gender', 'sharedWithCompany', 'feltComfortableSharing', 'disabilityTypes', 'disabilitySharedWithCompany', 'disabilityFeltComfortableSharing', 'ethnicityTypes', 'ethnicitySharedWithCompany', 'ethnicityFeltComfortableSharing', 'genderIdentityRespected', 'needsRespected'],
-  6: ['feedback', 'moreWishes'],
+type FormPage = {
+  fields: Array<keyof ReviewFormData>;
+  render: () => React.ReactNode;
 };
 
 const ReviewForm: React.FC<ReviewFormProps> = ({
@@ -293,7 +290,13 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { register, handleSubmit, trigger, watch, formState: { errors } } = useForm<ReviewFormData>({
+  const {
+    register,
+    handleSubmit,
+    trigger,
+    watch,
+    formState: { errors },
+  } = useForm<ReviewFormData>({
     defaultValues: { ...defaultFormData, ...initialData },
     mode: 'onTouched',
   });
@@ -306,7 +309,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
 
   const sanitize = (data: ReviewFormData): ReviewFormData => {
     const e = <T,>(v: T | string | undefined): T | undefined =>
-      v === '' ? undefined : v as T;
+      v === '' ? undefined : (v as T);
     return {
       ...data,
       position: e(data.position),
@@ -327,25 +330,11 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
     };
   };
 
-  const [
-    genderIdentityRespected, collective, trainingShortenable, partTime,
-  ] = watch([
-    'genderIdentityRespected', 'collective', 'trainingShortenable', 'partTime',
+  const [collective, trainingShortenable, partTime] = watch([
+    'collective',
+    'trainingShortenable',
+    'partTime',
   ]);
-
-  const handleNext = async () => {
-    const fieldsOnCurrentPage = FIELDS_PER_PAGE[currentPage] || [];
-    const valid = fieldsOnCurrentPage.length ? await trigger(fieldsOnCurrentPage) : true;
-    if (valid) {
-      setCurrentPage(prev => Math.min(prev + 1, 6));
-      window.scrollTo(0, 0);
-    }
-  };
-
-  const handlePrev = () => {
-    setCurrentPage(prev => Math.max(prev - 1, 1));
-    window.scrollTo(0, 0);
-  };
 
   const currentYear = new Date().getFullYear();
   const hiringYearOptions = Array.from({ length: currentYear - 1969 }, (_, i) => ({
@@ -360,357 +349,384 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
     })),
   ];
 
-  const renderPage = () => {
-    switch (currentPage) {
-      case 1:
-        return (
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-3">Deine Kontaktdaten</h2>
-              <p className="text-gray-600 mb-6">
-                Dein Name und deine E-Mail-Adresse werden nur genutzt, um dich bei Rückfragen zu kontaktieren. Sie werden nie veröffentlicht.
-              </p>
-            </div>
-
-            <FormField
-              {...field('name', 'Name ist erforderlich.')}
-              label="Dein Name"
-              placeholder="Dein Name"
-            />
-
-            <FormField
-              {...field('email', 'E-Mail ist erforderlich, damit wir dich kontaktieren können.', { pattern: { value: /^\S+@\S+$/i, message: 'Ungültige E-Mail-Adresse' } })}
-              label="E-Mail"
-              placeholder="deine@email.de"
-              type="email"
-            />
+  const pages: FormPage[] = [
+    {
+      fields: ['name', 'email'],
+      render: () => (
+        <>
+          <div>
+            <SectionHeading className="mb-3">Deine Kontaktdaten</SectionHeading>
+            <Paragraph className="mb-6">
+              Dein Name und deine E-Mail-Adresse werden nur genutzt, um dich bei Rückfragen zu
+              kontaktieren. Sie werden nie veröffentlicht.
+            </Paragraph>
           </div>
-        );
-
-      case 2:
-        return (
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-3">Zur (Arbeits)Stelle</h2>
-              <p className="text-gray-600 mb-6">Erzähl uns etwas über deine Arbeit: welchen Beruf übtest du dort aus, wann hast du dort gearbeitet, wie alt warst du und wie waren die Arbeitszeiten geregelt.</p>
-            </div>
-
-            <SelectField
-              {...field('position', 'Position ist erforderlich')}
-              label="Position im Betrieb"
-              options={positionOptions}
-            />
-
-            <SelectField
-              {...register('yearOfHiring')}
-              label="Beginn Arbeitszeit (Jahr)"
-              required
-              options={hiringYearOptions}
-            />
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Ende Arbeitszeit (Jahr)
-              </label>
-              <select
-                {...register('yearOfLeaving')}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
-              >
-                {leavingYearOptions.map(opt => (
-                  <option key={opt.value} value={opt.value}>{opt.label}</option>
-                ))}
-              </select>
-            </div>
-
-            <FormField
-              {...field('ageAtEmployment')}
-              type="number"
-              label="Dein Alter bei Arbeitsbeginn (optional)"
-              min="14"
-              max="100"
-            />
-
-            <FormField
-              {...field('hoursPerWeek')}
-              type="number"
-              label="Durchschnittliche Stunden/Woche (optional)"
-            />
-
-            <FormField
-              {...field('overtimePerMonth')}
-              type="number"
-              label="Geschätztes (Jahres-)Mittel an Überstunden pro Monat (optional)"
-            />
+          <FormField
+            {...field('name', 'Name ist erforderlich.')}
+            label="Dein Name"
+            placeholder="Dein Name"
+          />
+          <FormField
+            {...field('email', 'E-Mail ist erforderlich, damit wir dich kontaktieren können.', {
+              pattern: { value: /^\S+@\S+$/i, message: 'Ungültige E-Mail-Adresse' },
+            })}
+            label="E-Mail"
+            placeholder="deine@email.de"
+            type="email"
+          />
+        </>
+      ),
+    },
+    {
+      fields: [
+        'position',
+        'yearOfHiring',
+        'yearOfLeaving',
+        'ageAtEmployment',
+        'hoursPerWeek',
+        'overtimePerMonth',
+      ],
+      render: () => (
+        <>
+          <div>
+            <SectionHeading className="mb-3">Zur (Arbeits)Stelle</SectionHeading>
+            <Paragraph className="mb-6">
+              Erzähl uns etwas über deine Arbeit: welchen Beruf übtest du dort aus, wann hast du
+              dort gearbeitet, wie alt warst du und wie waren die Arbeitszeiten geregelt.
+            </Paragraph>
           </div>
-        );
-
-      case 3:
-        return (
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-3">Allgemeines zum Betrieb</h2>
-              <p className="text-gray-600 mb-6">Hier geht es um allgemeine Rahmenbedingungen im Betrieb.</p>
-            </div>
-
-            <FormField
-              {...register('languages')}
-              label="Sprachen im Betrieb"
-              placeholder="z.B. Deutsch, Englisch"
-            />
-
-            <div className="space-y-3 pt-2">
-              <h3 className="font-semibold text-gray-800">Besonderheiten</h3>
-              <CheckboxField {...register('collective')} label="Kollektiv" checked={collective} />
-              <CheckboxField {...register('trainingShortenable')} label="Ausbildung verkürzbar" checked={trainingShortenable} />
-              <CheckboxField {...register('partTime')} label="Teilzeit möglich" checked={partTime} />
-              <div className="pt-2">
-                <TextAreaField
-                  {...register('specialtiesOther')}
-                  label="Sonstiges"
-                  rows={3}
-                  placeholder="Weitere Besonderheiten des Betriebs..."
-                />
-              </div>
-            </div>
+          <SelectField
+            {...field('position', 'Position ist erforderlich')}
+            label="Position im Betrieb"
+            options={positionOptions}
+          />
+          <SelectField
+            {...register('yearOfHiring')}
+            label="Beginn Arbeitszeit (Jahr)"
+            required
+            options={hiringYearOptions}
+          />
+          <SelectField
+            {...register('yearOfLeaving')}
+            label="Ende Arbeitszeit (Jahr)"
+            options={leavingYearOptions}
+          />
+          <FormField
+            {...field('ageAtEmployment')}
+            type="number"
+            label="Dein Alter bei Arbeitsbeginn (optional)"
+            min="14"
+            max="100"
+          />
+          <FormField
+            {...field('hoursPerWeek')}
+            type="number"
+            label="Durchschnittliche Stunden/Woche (optional)"
+          />
+          <FormField
+            {...field('overtimePerMonth')}
+            type="number"
+            label="Geschätztes (Jahres-)Mittel an Überstunden pro Monat (optional)"
+          />
+        </>
+      ),
+    },
+    {
+      fields: ['languages', 'collective', 'trainingShortenable', 'partTime', 'specialtiesOther'],
+      render: () => (
+        <>
+          <div>
+            <SectionHeading className="mb-3">Allgemeines zum Betrieb</SectionHeading>
+            <Paragraph className="mb-6">
+              Hier geht es um allgemeine Rahmenbedingungen im Betrieb.
+            </Paragraph>
           </div>
-        );
-
-      case 4:
-        return (
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-3">Betriebsklima & Respekt</h2>
-              <p className="text-gray-600 mb-6">Wie hast du die Zusammenarbeit und den Umgang im Betrieb erlebt?</p>
-            </div>
-
-            <SelectField
-              {...register('canAskBoss')}
-              label="Ich konnte mit Fragen/Problemen zu meine*r Chef*in gehen"
-              options={canAskBossOptions}
+          <FormField
+            {...register('languages')}
+            label="Sprachen im Betrieb"
+            placeholder="z.B. Deutsch, Englisch"
+          />
+          <div className="space-y-3 pt-2">
+            <h3 className="font-semibold text-gray-800">Besonderheiten</h3>
+            <CheckboxField {...register('collective')} label="Kollektiv" checked={collective} />
+            <CheckboxField
+              {...register('trainingShortenable')}
+              label="Ausbildung verkürzbar"
+              checked={trainingShortenable}
             />
-
-            <SelectField
-              {...register('canAskColleagues')}
-              label="Ich konnte mit Fragen/Problemen zu Kolleg*innen gehen"
-              options={canAskColleaguesOptions}
+            <CheckboxField
+              {...register('partTime')}
+              label="Teilzeit möglich"
+              checked={partTime}
             />
-
-            <SelectField
-              {...register('listenedTo')}
-              label="Mir wurde zugehört"
-              options={listenedToOptions}
-            />
-
-            <SelectField
-              {...register('tone')}
-              label="Wie war der Umgangston?"
-              options={toneOptions}
-            />
-
-            <SelectField
-              {...register('explained')}
-              label="Wurde dir genug erklärt?"
-              options={explainedOptions}
-            />
-
-            <SelectField
-              {...register('proximity')}
-              label="Nähe/Distanz-Verhältnis"
-              options={proximityOptions}
-            />
-
-            <SelectField
-              {...register('appreciated')}
-              label="Hast du dich wertgeschätzt gefühlt?"
-              options={appreciatedOptions}
-            />
-
-            <div className="space-y-3 pt-2">
-              <h3 className="font-semibold text-gray-800">Meine Grenzen wurden respektiert</h3>
-              <p className="text-sm text-gray-500">Mehrfachauswahl möglich</p>
-              <div className="space-y-2">
-                {boundaryTypes.map(bt => (
-                  <label key={bt.value} className="flex items-center gap-3 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      value={bt.value}
-                      {...register('boundariesRespected')}
-                      className="w-4 h-4 accent-brand"
-                    />
-                    <span className="text-sm text-gray-700">{bt.label}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            <TextAreaField
-              {...register('experienceText')}
-              label="Meine Erfahrung"
-              rows={6}
-              placeholder="Erzähle etwas genauer, wie du das Betriebsklima und den Umgang miteinander erlebt hast."
-            />
-          </div>
-        );
-
-      case 5:
-        return (
-          <div className="space-y-8">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-3">Gleichstellung & Diskriminierung</h2>
-              <p className="text-gray-600 mb-2">
-                Dieser Abschnitt widmet sich Fragen zu Geschlecht und anderen Formen der Diskriminierung. Deine Erfahrungen helfen, Benachteiligung sichtbar zu machen und andere vor diskriminierendem Verhalten zu warnen.
-              </p>
-            </div>
-
-            {/* Geschlecht */}
-            <div className="space-y-4">
-              <h3 className="font-semibold text-gray-800 text-lg border-b pb-1">Geschlecht</h3>
-              <SelectField
-                {...register('gender')}
-                label="Geschlecht"
-                options={genderOptions}
-              />
-              <SelectField
-                {...register('sharedWithCompany')}
-                label="War dem Betrieb deine Geschlechtsidentität bekannt?"
-                options={sharedWithCompanyOptions}
-              />
-              <SelectField
-                {...register('feltComfortableSharing')}
-                label="Hast du dich damit wohlgefühlt, dass dem Betrieb deine Geschlechtsidentität bekannt war?"
-                options={feltComfortableSharingOptions}
-              />
-            </div>
-
-            {/* Beeinträchtigung */}
-            <div className="space-y-4">
-              <h3 className="font-semibold text-gray-800 text-lg border-b pb-1">Beeinträchtigung</h3>
-              <div className="space-y-2">
-                <p className="text-sm text-gray-600">Wähle aus, was auf dich zutrifft.</p>
-                {disabilityTypeOptions.map(dt => (
-                  <label key={dt.value} className="flex items-center gap-3 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      value={dt.value}
-                      {...register('disabilityTypes')}
-                      className="w-4 h-4 accent-brand"
-                    />
-                    <span className="text-sm text-gray-700">{dt.label}</span>
-                  </label>
-                ))}
-              </div>
-              <SelectField
-                {...register('disabilitySharedWithCompany')}
-                label="War dem Betrieb deine Beeinträchtigung bekannt?"
-                options={disabilitySharedOptions}
-              />
-              <SelectField
-                {...register('disabilityFeltComfortableSharing')}
-                label="Hast du dich damit wohlgefühlt, dass dem Betrieb deine Beeinträchtigung bekannt war?"
-                options={disabilityFeltOptions}
-              />
-            </div>
-
-            {/* Herkunft & Erscheinungsbild */}
-            <div className="space-y-4">
-              <h3 className="font-semibold text-gray-800 text-lg border-b pb-1">Herkunft & Erscheinungsbild</h3>
-              <div className="space-y-2">
-                <p className="text-sm text-gray-600">Mehrfachauswahl möglich</p>
-                {ethnicityTypeOptions.map(et => (
-                  <label key={et.value} className="flex items-center gap-3 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      value={et.value}
-                      {...register('ethnicityTypes')}
-                      className="w-4 h-4 accent-brand"
-                    />
-                    <span className="text-sm text-gray-700">{et.label}</span>
-                  </label>
-                ))}
-              </div>
-              <SelectField
-                {...register('ethnicitySharedWithCompany')}
-                label="War dem Betrieb deine Herkunft/Erscheinungsbild bekannt?"
-                options={ethnicitySharedOptions}
-              />
-              <SelectField
-                {...register('ethnicityFeltComfortableSharing')}
-                label="Hast du dich damit wohlgefühlt, dass dem Betrieb deine Herkunft/Erscheinungsbild bekannt war?"
-                options={ethnicityFeltOptions}
-              />
-            </div>
-
-            <div className='space-y-4'>
-              <h3 className="font-semibold text-gray-800 text-lg border-b pb-1">Gesamt</h3>
-              <div className="space-y-2"></div>
-              <SelectField
-                {...register('needsRespected')}
-                label="Wurde insgesamt auf deine Bedürfnisse bezüglich deiner Identität Rücksicht genommen?"
-                options={needsRespectedOptions}
+            <div className="pt-2">
+              <TextAreaField
+                {...register('specialtiesOther')}
+                label="Sonstiges"
+                rows={3}
+                placeholder="Weitere Besonderheiten des Betriebs..."
               />
             </div>
           </div>
-
-        );
-
-      case 6:
-        return (
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-3">Feedback zum Betrieb</h2>
-              <p className="text-gray-600 mb-6">Fast geschafft!</p>
-            </div>
-
-            <TextAreaField
-              {...register('feedback')}
-              label="Feedback zum Betrieb"
-              rows={4}
-              placeholder="Kann der Betrieb etwas verbessern? (optional)"
-            />
-
-            <TextAreaField
-              {...register('moreWishes')}
-              label="Wünsche an das Betriebsradar"
-              rows={3}
-              placeholder="Möchtest du uns Feedback geben oder weitere Dinge ergänzen?"
-            />
-
-            {submitError && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
-                {submitError}
-              </div>
-            )}
+        </>
+      ),
+    },
+    {
+      fields: [
+        'listenedTo',
+        'tone',
+        'explained',
+        'canAskBoss',
+        'canAskColleagues',
+        'boundariesRespected',
+        'proximity',
+        'appreciated',
+        'experienceText',
+      ],
+      render: () => (
+        <>
+          <div>
+            <SectionHeading className="mb-3">Betriebsklima & Respekt</SectionHeading>
+            <Paragraph className="mb-6">
+              Wie hast du die Zusammenarbeit und den Umgang im Betrieb erlebt?
+            </Paragraph>
           </div>
-        );
+          <SelectField
+            {...register('canAskBoss')}
+            label="Ich konnte mit Fragen/Problemen zu meine*r Chef*in gehen"
+            options={canAskBossOptions}
+          />
+          <SelectField
+            {...register('canAskColleagues')}
+            label="Ich konnte mit Fragen/Problemen zu Kolleg*innen gehen"
+            options={canAskColleaguesOptions}
+          />
+          <SelectField
+            {...register('listenedTo')}
+            label="Mir wurde zugehört"
+            options={listenedToOptions}
+          />
+          <SelectField
+            {...register('tone')}
+            label="Wie war der Umgangston?"
+            options={toneOptions}
+          />
+          <SelectField
+            {...register('explained')}
+            label="Wurde dir genug erklärt?"
+            options={explainedOptions}
+          />
+          <SelectField
+            {...register('proximity')}
+            label="Nähe/Distanz-Verhältnis"
+            options={proximityOptions}
+          />
+          <SelectField
+            {...register('appreciated')}
+            label="Hast du dich wertgeschätzt gefühlt?"
+            options={appreciatedOptions}
+          />
+          <div className="space-y-3 pt-2">
+            <h3 className="font-semibold text-gray-800">Meine Grenzen wurden respektiert</h3>
+            <p className="text-sm text-gray-500">Mehrfachauswahl möglich</p>
+            <div className="space-y-2">
+              {boundaryTypes.map(bt => (
+                <label key={bt.value} className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    value={bt.value}
+                    {...register('boundariesRespected')}
+                    className="w-4 h-4 accent-brand"
+                  />
+                  <span className="text-sm text-gray-700">{bt.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+          <TextAreaField
+            {...register('experienceText')}
+            label="Meine Erfahrung"
+            rows={6}
+            placeholder="Erzähle etwas genauer, wie du das Betriebsklima und den Umgang miteinander erlebt hast."
+          />
+        </>
+      ),
+    },
+    {
+      fields: [
+        'gender',
+        'sharedWithCompany',
+        'feltComfortableSharing',
+        'disabilityTypes',
+        'disabilitySharedWithCompany',
+        'disabilityFeltComfortableSharing',
+        'ethnicityTypes',
+        'ethnicitySharedWithCompany',
+        'ethnicityFeltComfortableSharing',
+        'genderIdentityRespected',
+        'needsRespected',
+      ],
+      render: () => (
+        <>
+          <div>
+            <SectionHeading className="mb-3">Gleichstellung & Diskriminierung</SectionHeading>
+            <Paragraph className="mb-2">
+              Dieser Abschnitt widmet sich Fragen zu Geschlecht und anderen Formen der
+              Diskriminierung. Deine Erfahrungen helfen, Benachteiligung sichtbar zu machen und
+              andere vor diskriminierendem Verhalten zu warnen.
+            </Paragraph>
+          </div>
+          <div className="space-y-4">
+            <h3 className="font-semibold text-gray-800 text-lg border-b pb-1">Geschlecht</h3>
+            <SelectField {...register('gender')} label="Geschlecht" options={genderOptions} />
+            <SelectField
+              {...register('sharedWithCompany')}
+              label="War dem Betrieb deine Geschlechtsidentität bekannt?"
+              options={sharedWithCompanyOptions}
+            />
+            <SelectField
+              {...register('feltComfortableSharing')}
+              label="Hast du dich damit wohlgefühlt, dass dem Betrieb deine Geschlechtsidentität bekannt war?"
+              options={feltComfortableSharingOptions}
+            />
+          </div>
+          <div className="space-y-4">
+            <h3 className="font-semibold text-gray-800 text-lg border-b pb-1">Beeinträchtigung</h3>
+            <div className="space-y-2">
+              <p className="text-sm text-gray-600">Wähle aus, was auf dich zutrifft.</p>
+              {disabilityTypeOptions.map(dt => (
+                <label key={dt.value} className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    value={dt.value}
+                    {...register('disabilityTypes')}
+                    className="w-4 h-4 accent-brand"
+                  />
+                  <span className="text-sm text-gray-700">{dt.label}</span>
+                </label>
+              ))}
+            </div>
+            <SelectField
+              {...register('disabilitySharedWithCompany')}
+              label="War dem Betrieb deine Beeinträchtigung bekannt?"
+              options={disabilitySharedOptions}
+            />
+            <SelectField
+              {...register('disabilityFeltComfortableSharing')}
+              label="Hast du dich damit wohlgefühlt, dass dem Betrieb deine Beeinträchtigung bekannt war?"
+              options={disabilityFeltOptions}
+            />
+          </div>
+          <div className="space-y-4">
+            <h3 className="font-semibold text-gray-800 text-lg border-b pb-1">
+              Herkunft & Erscheinungsbild
+            </h3>
+            <div className="space-y-2">
+              <p className="text-sm text-gray-600">Mehrfachauswahl möglich</p>
+              {ethnicityTypeOptions.map(et => (
+                <label key={et.value} className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    value={et.value}
+                    {...register('ethnicityTypes')}
+                    className="w-4 h-4 accent-brand"
+                  />
+                  <span className="text-sm text-gray-700">{et.label}</span>
+                </label>
+              ))}
+            </div>
+            <SelectField
+              {...register('ethnicitySharedWithCompany')}
+              label="War dem Betrieb deine Herkunft/Erscheinungsbild bekannt?"
+              options={ethnicitySharedOptions}
+            />
+            <SelectField
+              {...register('ethnicityFeltComfortableSharing')}
+              label="Hast du dich damit wohlgefühlt, dass dem Betrieb deine Herkunft/Erscheinungsbild bekannt war?"
+              options={ethnicityFeltOptions}
+            />
+          </div>
+          <div className="space-y-4">
+            <h3 className="font-semibold text-gray-800 text-lg border-b pb-1">Gesamt</h3>
+            <SelectField
+              {...register('needsRespected')}
+              label="Wurde insgesamt auf deine Bedürfnisse bezüglich deiner Identität Rücksicht genommen?"
+              options={needsRespectedOptions}
+            />
+          </div>
+        </>
+      ),
+    },
+    {
+      fields: ['feedback', 'moreWishes'],
+      render: () => (
+        <>
+          <div>
+            <SectionHeading className="mb-3">Feedback zum Betrieb</SectionHeading>
+            <Paragraph className="mb-6">Fast geschafft!</Paragraph>
+          </div>
+          <TextAreaField
+            {...register('feedback')}
+            label="Feedback zum Betrieb"
+            rows={4}
+            placeholder="Kann der Betrieb etwas verbessern? (optional)"
+          />
+          <TextAreaField
+            {...register('moreWishes')}
+            label="Wünsche an das Betriebsradar"
+            rows={3}
+            placeholder="Möchtest du uns Feedback geben oder weitere Dinge ergänzen?"
+          />
+          {submitError && (
+            <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+              {submitError}
+            </div>
+          )}
+        </>
+      ),
+    },
+  ];
 
-      default:
-        return null;
+  const pageCount = pages.length;
+
+  const handleNext = async () => {
+    const { fields } = pages[currentPage - 1];
+    const valid = fields.length ? await trigger(fields) : true;
+    if (valid) {
+      setCurrentPage(prev => Math.min(prev + 1, pageCount));
+      window.scrollTo(0, 0);
     }
+  };
+
+  const handlePrev = () => {
+    setCurrentPage(prev => Math.max(prev - 1, 1));
+    window.scrollTo(0, 0);
   };
 
   return (
     <form className="min-h-screen">
       <div className="max-w-2xl mx-auto">
-        {/* Progress Indicator */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-gray-700">
-              Seite {currentPage} von 6
+              Seite {currentPage} von {pageCount}
             </span>
-            <span className="text-sm text-gray-500">{Math.round((currentPage / 6) * 100)}%</span>
+            <span className="text-sm text-gray-500">
+              {Math.round((currentPage / pageCount) * 100)}%
+            </span>
           </div>
           <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
             <div
               className="h-full bg-brand transition-all duration-300"
-              style={{ width: `${(currentPage / 6) * 100}%` }}
+              style={{ width: `${(currentPage / pageCount) * 100}%` }}
             />
           </div>
         </div>
 
-        {/* Page Content */}
-        <div key={currentPage} className="mb-8">{renderPage()}</div>
+        <div key={currentPage} className="space-y-6 mb-8">
+          {pages[currentPage - 1].render()}
+        </div>
 
-        {/* Navigation Buttons */}
         <div className="flex gap-4">
           {currentPage > 1 && (
             <Button
@@ -723,8 +739,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
               Zurück
             </Button>
           )}
-
-          {currentPage < 6 ? (
+          {currentPage < pageCount ? (
             <Button
               type="button"
               variant="primary"

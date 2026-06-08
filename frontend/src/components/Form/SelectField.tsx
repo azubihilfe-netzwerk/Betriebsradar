@@ -12,7 +12,7 @@ const SelectField = React.forwardRef<HTMLSelectElement, SelectFieldProps>(
     return (
       <div className="w-full">
         {label && (
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium mb-2">
             {label}
             {props.required && <span className="text-brand-error ml-1">*</span>}
           </label>
@@ -31,7 +31,7 @@ const SelectField = React.forwardRef<HTMLSelectElement, SelectFieldProps>(
           ))}
         </select>
         {error && <p className="text-brand-error text-sm mt-1">{error}</p>}
-        {helperText && <p className="text-gray-500 text-sm mt-1">{helperText}</p>}
+        {helperText && <p className="text-sm mt-1">{helperText}</p>}
       </div>
     );
   }
