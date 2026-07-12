@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client/react';
 import { gql } from 'graphql-tag';
-import { useNavigate, useSearchParams, Link } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import LinkButton from '../components/Form/LinkButton';
 import { ReviewForm, ReviewFormData } from '../components/ReviewForm';
 import { Button } from '../components/Form';
@@ -10,7 +10,7 @@ import {
   CreateReviewMutationVariables,
   GetCompanyDetailQuery,
 } from '../api/__generated__/graphql';
-import { PageHeading } from '../components/UI';
+import { BackLink, PageHeading } from '../components/UI';
 
 const CREATE_REVIEW = gql`
   mutation CreateReview($data: ReviewCreateInput!) {
@@ -46,7 +46,6 @@ const BerichtSchreiben: FC = () => {
     CreateReviewMutationVariables
   >(CREATE_REVIEW);
 
-  const [landingPage, setLandingPage] = useState(true);
 
   if (!companyId) {
     navigate('/betriebauswaehlen');
@@ -127,30 +126,6 @@ const BerichtSchreiben: FC = () => {
     return (<i>Lädt...</i>)
   }
 
-  if (landingPage) {
-    return (
-      <div className="gap-4">
-       
-       <Link className="text-brand-button-hover" to="/betriebauswaehlen">
-              ← Zurück
-            </Link>
-          <PageHeading>Schreib deinen Erfahrungsbericht</PageHeading>
-          <p className="text-gray-600 mt-1">
-            Teile deine Erfahrung in dem Betrieb <b className="text-bold">{companyName}</b>. Deine offene Rückmeldung hilft anderen, die richtige Wahl zu treffen.
-
-            <p className='pt-2'>Berichte nur über Betriebe, in denen du selbst arbeitest oder gearbeitet hast. Bei dem Bericht geht es um deine subjektive Erfahrung und Empfindung.</p>
-          </p>
-          <div className='flex flex-row w-full gap-2'>
-           
-            <Button onClick={() => setLandingPage(false)} className="w-1/2">
-              Los geht's
-            </Button>
-
-          </div>
-
-      </div>
-    );
-  } else {
     return (
       <ReviewForm
         onSubmit={handleSubmit}
@@ -158,7 +133,7 @@ const BerichtSchreiben: FC = () => {
         submitError={error?.message}
       />
     );
-  }
+  
 };
 
 export default BerichtSchreiben;

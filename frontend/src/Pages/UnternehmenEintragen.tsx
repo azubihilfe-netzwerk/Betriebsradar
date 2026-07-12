@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { CompanySizeType, Company, CompanyCreateInput } from '../api/__generated__/graphql';
 import FormField from '../components/Form/FormField';
 import SelectField from '../components/Form/SelectField';
+import { Button } from '../components/Form';
 import { PageHeading } from '../components/UI';
 
 type CreateCompanyMutation = { createCompany: Pick<Company, 'id' | 'name'> | null | undefined };
@@ -111,13 +112,14 @@ const UnternehmenEintragen: FC = () => {
           <p className="text-red-600 text-sm">Fehler: {error.message}</p>
         )}
 
-        <button
+        <Button
           type="submit"
-          disabled={loading}
-          className="w-full py-3 bg-brand-button text-white rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+          isLoading={loading}
+          size="lg"
+          className="w-full"
         >
-          {loading ? 'Wird eingetragen...' : 'Betrieb eintragen & Bericht schreiben'}
-        </button>
+          Betrieb eintragen & Bericht schreiben
+        </Button>
       </form>
     </div>
   );

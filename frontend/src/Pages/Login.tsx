@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { AlertCircle } from 'lucide-react';
+import { Button } from '../components/Form';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -72,13 +73,13 @@ const Login: React.FC = () => {
           />
         </div>
 
-        <button
+        <Button
           type="submit"
-          disabled={isLoading}
-          className="w-full px-4 py-2 bg-brand-button text-gray-800 rounded-md hover:bg-brand-button-hover transition-colors font-semibold"
+          isLoading={isLoading}
+          className="w-full"
         >
-          {isLoading ? 'Lädt...' : 'Anmelden'}
-        </button>
+          Anmelden
+        </Button>
       </form>
     </div>
   );

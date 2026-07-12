@@ -2,9 +2,12 @@ import { gql } from 'graphql-tag';
 import React, { FC, useState } from 'react';
 import { useQuery } from '@apollo/client/react';
 import { useNavigate } from 'react-router-dom';
+import Button from '../components/Form/Button';
 import LinkButton from '../components/Form/LinkButton';
 import { GetCompaniesQuery } from '../api/__generated__/graphql';
-import { SectionHeading } from '../components/UI';
+import { BackLink, PageHeading, SectionHeading } from '../components/UI';
+
+type Company = NonNullable<GetCompaniesQuery['companies']>[number];
 
 const GET_COMPANIES = gql`
   query GetCompanies {
@@ -19,6 +22,7 @@ const GET_COMPANIES = gql`
 
 const UnternehmenAuswaehlen: FC = () => {
   const [search, setSearch] = useState('');
+  const [selected, setSelected] = useState<Company | null>(null);
   const navigate = useNavigate();
   const { loading, error, data } = useQuery<GetCompaniesQuery>(GET_COMPANIES);
 
@@ -32,58 +36,87 @@ const UnternehmenAuswaehlen: FC = () => {
   }) ?? [];
 
   return (
-    <div className="">
-      <div className="space-y-4">
-        <SectionHeading>Betrieb auswählen</SectionHeading>
-        <p >
-          Suche deinen Ausbildungsbetrieb. Vielleicht ist er schon im Betriebsradar eingetragen.
-        </p>
+    <div className="space-y-4">
+      <PageHeading>Schreib deinen Erfahrungsbericht</PageHeading>
+      <p>
+        Teile deine Erfahrung zu einem Betrieb. Deine offene Rückmeldung hilft anderen, die richtige Wahl zu treffen.
+      </p>
+      <p >Berichte nur über Betriebe, in denen du selbst
+        arbeitest oder gearbeitet hast. Bei dem Bericht geht es um deine
+        subjektive Erfahrung und Empfindung. Alle Berichte werden anonym veröffentlicht.
+      </p>
 
-        <input
-          type="text"
-          placeholder="Betrieb suchen..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent text-base mb-4"
-          autoFocus
-        />
 
-        {loading && <p className="text-gray-500">Lädt...</p>}
-        {error && <p className="text-red-600">Fehler: {error.message}</p>}
+      <p >
+        Suche den Betrieb, über den du berichten möchtest. Vielleicht ist er schon im Betriebsradar eingetragen.
+      </p>
 
-        {!loading && !error && search.length > 0 && (
-          <ul className="bg-white border border-gray-200 rounded-lg shadow divide-y divide-gray-100 mb-6">
-            {filtered.length === 0 ? (
-              <li className="px-4 py-3 text-gray-500 text-sm">Kein Betrieb gefunden.</li>
-            ) : (
-              filtered.map((company) => (
-                <li key={company.id}>
-                  <button
-                    className="w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors"
-                    onClick={() => navigate(`/berichtschreiben?companyId=${company.id}`)}
-                  >
-                    <span className="font-medium text-gray-900">{company.name}</span>
-                    {(company.trade || company.address) && (
-                      <span className="text-sm text-gray-500 ml-2">
-                        {[company.trade, company.address].filter(Boolean).join(' · ')}
-                      </span>
-                    )}
-                  </button>
-                </li>
-              ))
-            )}
-          </ul>
-        )}
+      <input
+        type="text"
+        placeholder={selected?.name ? selected?.name : "Nach Name oder Stadt suchen..."}
+        value={search}
+        onChange={(e) => {
+          setSearch(e.target.value);
+          setSelected(null);
+        }}
+        onFocus={(e) => {
+          if (selected) {
+            setSearch("");
+          }
+        }}
+        className="w-full px-4 py-3 border border-gray-300 rounded-lg
+          focus:border-brand-button-hover focus:outline-none  rounded-md border-2  text-base mb-4"
+        autoFocus
+      />
 
-        <div className="mt-4 pt-4 border-t border-gray-200 space-y-4">
-          <SectionHeading>Betrieb nicht gefunden?</SectionHeading>
-          <p>Hier kannst du deinen Betrieb neu beim Betriebsradar eintragen.</p>
-          <LinkButton to="/unternehmeneintragen" size="sm">
-            Neuen Betrieb eintragen
-          </LinkButton>
-        </div>
-      </div>
+      {loading && <p className="text-gray-500">Lädt...</p>}
+      {error && <p className="text-red-600">Fehler: {error.message}</p>}
+
+      {!loading && !error && !selected && search.length > 0 && filtered.length > 0 && (
+        <ul className="bg-white border border-gray-200 rounded-lg shadow divide-y divide-gray-100 mb-6">
+          {(
+            filtered.map((company) => (
+              <li key={company.id}>
+                <button
+                  className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors`}
+                  onClick={() => {
+                    setSelected(company);
+                    setSearch(company.name || "");
+                  }}
+                >
+                  <span className="font-medium text-gray-900">{company.name}</span>
+                  {(company.trade || company.address) && (
+                    <span className="text-sm text-gray-500 ml-2">
+                      {[company.trade, company.address].filter(Boolean).join(' · ')}
+                    </span>
+                  )}
+                </button>
+              </li>
+            ))
+          )}
+        </ul>
+      )}
+
+      {selected && (
+        <Button
+          className="w-full"
+          onClick={() => navigate(`/berichtschreiben?companyId=${selected.id}`)}
+        >
+          Bericht zu {selected.name} schreiben
+        </Button>
+      )}
+
+      {filtered.length === 0 && (
+
+        <p>Kein Betrieb gefunden.</p>
+      )}
+      <LinkButton to="/unternehmeneintragen" className='w-full text-center' variant="secondary">
+        Neuen Betrieb eintragen
+      </LinkButton>
     </div>
+
+
+
   );
 };
 

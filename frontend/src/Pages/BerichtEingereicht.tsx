@@ -1,14 +1,15 @@
 import { FC } from 'react';
 import LinkButton from '../components/Form/LinkButton';
+import { PageHeading } from '../components/UI';
 
 const BerichtEingereicht: FC = () => {
   return (
     <div className="max-w-2xl mx-auto py-12 px-4">
-      <h1 className="text-4xl font-bold text-brand mb-4">
+      <PageHeading>
         Vielen Dank für deinen Bericht!
-      </h1>
+      </PageHeading>
 
-      <p className="text-gray-700 mb-8">
+      <p>
         Dein Erfahrungsbericht ist bei uns eingegangen. Damit er veröffentlicht werden kann, sind
         noch zwei kurze Schritte nötig:
       </p>

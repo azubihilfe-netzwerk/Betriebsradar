@@ -1,3 +1,4 @@
+export { default as BackLink } from './BackLink';
 export { default as Card } from './Card';
 export type { CardProps } from './Card';
 
