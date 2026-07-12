@@ -2,15 +2,14 @@ import React, { FC, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client/react';
 import { gql } from 'graphql-tag';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import LinkButton from '../components/Form/LinkButton';
-import { ReviewForm, ReviewFormData } from '../components/ReviewForm';
-import { Button } from '../components/Form';
+import { ReviewForm, ReviewFormData } from '../../components/ReviewForm';
+import { Button, LinkButton } from '../../components/Form';
 import {
   CreateReviewMutation,
   CreateReviewMutationVariables,
   GetCompanyDetailQuery,
-} from '../api/__generated__/graphql';
-import { BackLink, PageHeading } from '../components/UI';
+} from '../../api/__generated__/graphql';
+import { BackLink, PageHeading } from '../../components/UI';
 
 const CREATE_REVIEW = gql`
   mutation CreateReview($data: ReviewCreateInput!) {
@@ -31,7 +30,7 @@ const GET_COMPANY_NAME = gql`
   }
 `;
 
-const BerichtSchreiben: FC = () => {
+const WriteReport: FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const companyId = searchParams.get('companyId');
@@ -136,4 +135,4 @@ const BerichtSchreiben: FC = () => {
   
 };
 
-export default BerichtSchreiben;
+export default WriteReport;

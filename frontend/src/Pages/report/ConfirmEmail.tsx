@@ -9,7 +9,7 @@ const VERIFY_EMAIL = gql`
   }
 `;
 
-const EmailBestaetigen: FC = () => {
+const ConfirmEmail: FC = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
   const [verified, setVerified] = useState<boolean | null>(null);
@@ -74,4 +74,4 @@ const EmailBestaetigen: FC = () => {
   return null;
 };
 
-export default EmailBestaetigen;
+export default ConfirmEmail;

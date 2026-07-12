@@ -3,11 +3,11 @@ import React, { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/client/react';
 import { useNavigate } from 'react-router-dom';
-import { CompanySizeType, Company, CompanyCreateInput } from '../api/__generated__/graphql';
-import FormField from '../components/Form/FormField';
-import SelectField from '../components/Form/SelectField';
-import { Button } from '../components/Form';
-import { PageHeading } from '../components/UI';
+import { CompanySizeType, Company, CompanyCreateInput } from '../../api/__generated__/graphql';
+import FormField from '../../components/Form/FormField';
+import SelectField from '../../components/Form/SelectField';
+import { Button } from '../../components/Form';
+import { PageHeading } from '../../components/UI';
 
 type CreateCompanyMutation = { createCompany: Pick<Company, 'id' | 'name'> | null | undefined };
 type CreateCompanyMutationVariables = { data: CompanyCreateInput };
@@ -39,7 +39,7 @@ const SIZE_OPTIONS = [
   { value: CompanySizeType['250plus'], label: 'Mehr als 250 Mitarbeitende' },
 ];
 
-const UnternehmenEintragen: FC = () => {
+const RegisterCompany: FC = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm<CompanyFormData>();
   const [createCompany, { loading, error }] = useMutation<CreateCompanyMutation, CreateCompanyMutationVariables>(CREATE_COMPANY);
@@ -125,4 +125,4 @@ const UnternehmenEintragen: FC = () => {
   );
 };
 
-export default UnternehmenEintragen;
+export default RegisterCompany;

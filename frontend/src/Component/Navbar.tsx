@@ -17,25 +17,25 @@ const Navbar: React.FC = () => {
     };
 
     return (
-        <nav className="bg-brand-navbar shadow-md border-b-2 border-black fixed w-full z-10">
+        <nav className="bg-brand-navbar shadow-md border-b-2 border-blackish fixed w-full z-10">
             <div className="max-w-7xl mx-auto pl-2 pr-4 py-6 flex justify-between items-center">
                 {/* Logo + Schriftzug */}
                 <div className="flex items-center space-x-3">
                     <img src={logo} alt="Logo" className="h-16 w-auto" />
-                    <span className="text-2xl font-bold uppercase text-brand">Betriebsradar</span>
+                    <span className="text-2xl font-bold uppercase text-blackish">Betriebsradar</span>
 
                 </div>
 
                 {/* Desktop Links */}
                 <div className="hidden md:flex space-x-6 items-center">
-                    <Link to="/" className="text-gray-700 hover:text-brand  text-lg uppercase font-semibold">Home</Link>
+                    <Link to="/" className="text-gray-700 hover:text-blackish  text-lg uppercase font-semibold">Home</Link>
 
                     {/* Unternehmen mit Dropdown */}
-                    <Link to="/unternehmensuchen" className="text-gray-700 hover:text-brand text-lg uppercase font-semibold">Suchen</Link>
+                    <Link to="/unternehmensuchen" className="text-gray-700 hover:text-blackish text-lg uppercase font-semibold">Suchen</Link>
 
-                    <Link to="/betriebauswaehlen" className="text-gray-700 hover:text-brand text-lg uppercase font-semibold">Berichten</Link>
+                    <Link to="/betriebauswaehlen" className="text-gray-700 hover:text-blackish text-lg uppercase font-semibold">Berichten</Link>
 
-                    <Link to="/kontakt" className="text-gray-700 hover:text-brand text-lg uppercase font-semibold">Kontakt</Link>
+                    <Link to="/kontakt" className="text-gray-700 hover:text-blackish text-lg uppercase font-semibold">Kontakt</Link>
 
                 </div>
 
@@ -49,7 +49,7 @@ const Navbar: React.FC = () => {
 
             {/* Mobile Links */}
             {menuOpen && (
-                <div className="md:hidden bg-white px-4 pb-4 space-y-2">
+                <div className="md:hidden px-4 pb-4 space-y-2">
                     <Link to="/" className="block text-gray-700 hover:text-brand text-lg uppercase font-semibold">Home</Link>
                     <Link to="/unternehmensuchen" className="block text-gray-700 hover:text-brand text-lg uppercase font-semibold">Suchen</Link>
 

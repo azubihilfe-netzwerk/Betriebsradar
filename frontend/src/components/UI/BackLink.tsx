@@ -1,4 +1,4 @@
-import LinkButton from '../Form/LinkButton';
+import { LinkButton } from '../Form/Button';
 
 interface BackLinkProps {
   to: string;

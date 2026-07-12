@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import LinkButton from '../components/Form/LinkButton';
-import { PageHeading } from '../components/UI';
+import { LinkButton } from '../../components/Form';
+import { PageHeading } from '../../components/UI';
 
-const BerichtEingereicht: FC = () => {
+const ReportSubmitted: FC = () => {
   return (
     <div className="max-w-2xl mx-auto py-12 px-4">
       <PageHeading>
@@ -59,4 +59,4 @@ const BerichtEingereicht: FC = () => {
   );
 };
 
-export default BerichtEingereicht;
+export default ReportSubmitted;

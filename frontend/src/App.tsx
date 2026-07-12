@@ -1,19 +1,19 @@
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './Component/Navbar';
 import Dashboard from './Pages/Dashboard';
-import Impressum from './Pages/Impressum';
+import Imprint from './Pages/misc/Imprint';
 import Footer from "./Component/Footer";
-import Kontakt from "./Pages/Kontakt";
-import Datenschutz from "./Pages/Datenschutz";
-import Login from "./Pages/Login";
-import UnternehmenEintragen from "./Pages/UnternehmenEintragen";
-import UnternehmenSuchen from "./Pages/UnternehmenSuchen";
-import UnternehmenDetail from "./Pages/UnternehmenDetail";
-import BerichtDetail from "./Pages/BerichtDetail";
-import BerichtSchreiben from './Pages/BerichtSchreiben';
-import UnternehmenAuswaehlen from './Pages/UnternehmenAuswaehlen';
-import EmailBestaetigen from './Pages/EmailBestaetigen';
-import BerichtEingereicht from './Pages/BerichtEingereicht';
+import Contact from "./Pages/misc/Contact";
+import PrivacyPolicy from "./Pages/misc/PrivacyPolicy";
+import Login from "./Pages/misc/Login";
+import RegisterCompany from "./Pages/report/RegisterCompany";
+import SearchCompanies from "./Pages/read/SearchCompanies";
+import CompanyDetail from "./Pages/read/CompanyDetail";
+import ReportDetail from "./Pages/read/ReportDetail";
+import WriteReport from './Pages/report/WriteReport';
+import SelectCompany from './Pages/report/SelectCompany';
+import ConfirmEmail from './Pages/report/ConfirmEmail';
+import ReportSubmitted from './Pages/report/ReportSubmitted';
 
 // 📥 Bild importieren
 import backgroundImage from "./images/Webseite-Hintergrund.png";
@@ -29,17 +29,17 @@ function App() {
                         <Routes>
                             <Route path="/" element={<Dashboard />} />
                             <Route path="/login" element={<Login />} />
-                            <Route path="/impressum" element={<Impressum />} />
-                            <Route path="/kontakt" element={<Kontakt />} />
-                            <Route path="/datenschutz" element={<Datenschutz />} />
-                            <Route path="/unternehmeneintragen" element={<UnternehmenEintragen />} />
-                            <Route path="/unternehmensuchen" element={<UnternehmenSuchen />} />
-                            <Route path="/unternehmen/:id" element={<UnternehmenDetail />} />
-                            <Route path="/betriebauswaehlen" element={<UnternehmenAuswaehlen />} />
-                            <Route path="/berichtschreiben" element={<BerichtSchreiben />} />
-                            <Route path="/berichte/:id" element={<BerichtDetail />} />
-                            <Route path="/verify-email" element={<EmailBestaetigen />} />
-                            <Route path="/bericht-eingereicht" element={<BerichtEingereicht />} />
+                            <Route path="/impressum" element={<Imprint />} />
+                            <Route path="/kontakt" element={<Contact />} />
+                            <Route path="/datenschutz" element={<PrivacyPolicy />} />
+                            <Route path="/unternehmeneintragen" element={<RegisterCompany />} />
+                            <Route path="/unternehmensuchen" element={<SearchCompanies />} />
+                            <Route path="/unternehmen/:id" element={<CompanyDetail />} />
+                            <Route path="/betriebauswaehlen" element={<SelectCompany />} />
+                            <Route path="/berichtschreiben" element={<WriteReport />} />
+                            <Route path="/berichte/:id" element={<ReportDetail />} />
+                            <Route path="/verify-email" element={<ConfirmEmail />} />
+                            <Route path="/bericht-eingereicht" element={<ReportSubmitted />} />
                         </Routes>
                     </main>
                 </div>

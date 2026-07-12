@@ -2,9 +2,9 @@ import { gql } from 'graphql-tag';
 import { FC } from 'react';
 import { useQuery } from '@apollo/client/react';
 import { useParams } from 'react-router-dom';
-import { GetCompanyDetailQuery } from '../api/__generated__/graphql';
+import { GetCompanyDetailQuery } from '../../api/__generated__/graphql';
 
-const UnternehmenDetail: FC = () => {
+const CompanyDetail: FC = () => {
     const { id } = useParams<{ id: string }>();
     const { loading, error, data } = useQuery<GetCompanyDetailQuery>(
         gql`
@@ -82,4 +82,4 @@ const UnternehmenDetail: FC = () => {
     );
 };
 
-export default UnternehmenDetail;
+export default CompanyDetail;

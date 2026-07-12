@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Link, useParams } from 'react-router';
 
-const BerichtDetail: FC = () => {
+const ReportDetail: FC = () => {
     const { id } = useParams<{ id: string }>();
     return (
         <div className="min-h-screen flex flex-col items-center justify-start pt-6 ">
@@ -11,4 +11,4 @@ const BerichtDetail: FC = () => {
     )
 };
 
-export default BerichtDetail;
+export default ReportDetail;
