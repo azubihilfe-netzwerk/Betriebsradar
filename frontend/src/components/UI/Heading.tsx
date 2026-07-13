@@ -6,7 +6,7 @@ export interface HeadingProps {
 }
 
 export const PageHeading: React.FC<HeadingProps> = ({ children, className = '' }) => (
-  <h1 className={`text-3xl font-bold ${className}`}>{children}</h1>
+  <h1 className={`text-2xl font-bold ${className}`}>{children}</h1>
 );
 
 export const SectionHeading: React.FC<HeadingProps> = ({ children, className = '' }) => (

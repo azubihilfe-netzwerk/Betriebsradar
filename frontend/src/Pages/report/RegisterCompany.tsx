@@ -67,7 +67,7 @@ const RegisterCompany: FC = () => {
   };
 
   return (
-    <div className="m-4">
+    <div>
       <PageHeading>Betrieb eintragen</PageHeading>
       <p className="py-4">
         Trag deinen Betrieb ein. Danach kannst du direkt deinen Erfahrungsbericht schreiben.

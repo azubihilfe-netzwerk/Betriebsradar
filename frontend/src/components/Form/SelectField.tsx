@@ -19,8 +19,8 @@ const SelectField = React.forwardRef<HTMLSelectElement, SelectFieldProps>(
         )}
         <select
           ref={ref}
-          className={`w-full px-3 py-2 border-2 rounded-md bg-brand-input focus:ring-2 focus:ring-brand-button-hover focus:border-transparent ${
-            error ? 'border-brand-error' : 'border-blackish'
+          className={`w-full px-3 py-2 bg-brand-input focus:ring-2 focus:ring-brand-button-hover focus:border-transparent ${
+            error ? 'border-standard-error' : 'border-standard'
           } ${className || ''}`}
           {...props}
         >

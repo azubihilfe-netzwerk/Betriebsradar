@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .border-standard {
+    @apply border-2 rounded-md border-blackish;
+  }
+  .border-standard-error {
+    @apply border-2 rounded-md border-brand-error;
+  }
+}
+
 @font-face {
     font-family: 'Atkinson Hyperlegible Next';
     src: url('./fonts/AtkinsonHyperlegibleNextVF-Variable.woff2') format('woff2-variations');

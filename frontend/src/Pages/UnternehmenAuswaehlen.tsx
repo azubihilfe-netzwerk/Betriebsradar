@@ -2,9 +2,10 @@ import { gql } from 'graphql-tag';
 import React, { FC, useState } from 'react';
 import { useQuery } from '@apollo/client/react';
 import { useNavigate } from 'react-router-dom';
-import { Button, LinkButton } from '../../components/Form';
-import { GetCompaniesQuery } from '../../api/__generated__/graphql';
-import { BackLink, PageHeading, SectionHeading } from '../../components/UI';
+import Button from '../components/Form/Button';
+import LinkButton from '../components/Form/LinkButton';
+import { GetCompaniesQuery } from '../api/__generated__/graphql';
+import { BackLink, PageHeading, SectionHeading } from '../components/UI';
 
 type Company = NonNullable<GetCompaniesQuery['companies']>[number];
 
@@ -19,7 +20,7 @@ const GET_COMPANIES = gql`
   }
 `;
 
-const SelectCompany: FC = () => {
+const UnternehmenAuswaehlen: FC = () => {
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState<Company | null>(null);
   const navigate = useNavigate();
@@ -63,8 +64,8 @@ const SelectCompany: FC = () => {
             setSearch("");
           }
         }}
-        className="w-full px-4 py-3 bg-brand-input border-standard
-          focus:border-brand-button-hover focus:outline-none text-base mb-4"
+        className="w-full px-4 py-3 border border-gray-300 rounded-lg
+          focus:border-brand-button-hover focus:outline-none  rounded-md border-2  text-base mb-4"
         autoFocus
       />
 
@@ -72,7 +73,7 @@ const SelectCompany: FC = () => {
       {error && <p className="text-red-600">Fehler: {error.message}</p>}
 
       {!loading && !error && !selected && search.length > 0 && filtered.length > 0 && (
-        <ul className="bg-brand-input border-standard shadow divide-y divide-gray-100 mb-6">
+        <ul className="bg-white border border-gray-200 rounded-lg shadow divide-y divide-gray-100 mb-6">
           {(
             filtered.map((company) => (
               <li key={company.id}>
@@ -80,7 +81,7 @@ const SelectCompany: FC = () => {
                   className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors`}
                   onClick={() => {
                     setSelected(company);
-                    setSearch(company.name + " (" + company.address +  ")" || "");
+                    setSearch(company.name || "");
                   }}
                 >
                   <span className="font-medium text-gray-900">{company.name}</span>
@@ -96,26 +97,22 @@ const SelectCompany: FC = () => {
         </ul>
       )}
 
-
-      {filtered.length === 0 && !selected && (
-
-        <p><i>Kein Betrieb gefunden.</i></p>
-      )}
-
-      <div className="flex flex-row gap-4 w-full">
-        <LinkButton to="/unternehmeneintragen" variant="secondary" className='flex-1'>
-          Neuen Betrieb eintragen
-        </LinkButton>
-
       {selected && (
         <Button
-          className="flex-1"
+          className="w-full"
           onClick={() => navigate(`/berichtschreiben?companyId=${selected.id}`)}
         >
           Bericht zu {selected.name} schreiben
         </Button>
       )}
-      </div>
+
+      {filtered.length === 0 && (
+
+        <p>Kein Betrieb gefunden.</p>
+      )}
+      <LinkButton to="/unternehmeneintragen" className='w-full text-center' variant="secondary">
+        Neuen Betrieb eintragen
+      </LinkButton>
     </div>
 
 
@@ -123,4 +120,4 @@ const SelectCompany: FC = () => {
   );
 };
 
-export default SelectCompany;
+export default UnternehmenAuswaehlen;
