@@ -1,0 +1,1002 @@
+[
+  {
+    "name": "Peters Zimmerei OHG",
+    "trade": "Zimmerei",
+    "contact": "info@peters-zimmerei-ohg.de",
+    "address": "Bergstraße 19, 10115 Berlin",
+    "size": "_5to10",
+    "verified": true,
+    "latitude": 52.5311385,
+    "longitude": 13.3947904
+  },
+  {
+    "name": "Müller Anlagenbau e.K.",
+    "trade": "Anlagenmechanik",
+    "contact": "info@müller-anlagenbau-e-k.de",
+    "address": "Friedrichstraße 50, 20359 Hamburg",
+    "size": "_10to30",
+    "verified": true,
+    "latitude": 53.5485084,
+    "longitude": 9.9618486
+  },
+  {
+    "name": "Müller Elektro GmbH",
+    "trade": "Elektrotechnik",
+    "contact": "info@müller-elektro-gmbh.de",
+    "address": "Mühlenweg 43, 82166 Gräfelfing",
+    "size": "_1to5",
+    "verified": false,
+    "latitude": 48.114536,
+    "longitude": 11.4363289
+  },
+  {
+    "name": "Koch Tischlerei GmbH",
+    "trade": "Tischlerei",
+    "contact": "info@koch-tischlerei-gmbh.de",
+    "address": "Poststraße 54, 50676 Köln",
+    "size": "_50to250",
+    "verified": true,
+    "latitude": 50.9328427,
+    "longitude": 6.9497504
+  },
+  {
+    "name": "Hofmann Zimmerei",
+    "trade": "Zimmerei",
+    "contact": "info@hofmann-zimmerei.de",
+    "address": "Poststraße 35, 60329 Frankfurt am Main",
+    "size": "_5to10",
+    "verified": true,
+    "latitude": 50.1082386,
+    "longitude": 8.6630918
+  },
+  {
+    "name": "Lange Gebäudeservice e.K.",
+    "trade": "Gebäudereinigung",
+    "contact": "info@lange-gebäudeservice-e-k.de",
+    "address": "Goethestraße 24, 70174 Stuttgart",
+    "size": "_30to50",
+    "verified": false,
+    "latitude": 48.7844992,
+    "longitude": 9.176377
+  },
+  {
+    "name": "Neumann Installationstechnik GmbH",
+    "trade": "Installationstechnik",
+    "contact": "info@neumann-installationstechnik-gmbh.de",
+    "address": "Schillerstraße 28, 40237 Düsseldorf",
+    "size": "_1to5",
+    "verified": true,
+    "latitude": 51.2343417,
+    "longitude": 6.799522
+  },
+  {
+    "name": "Hoffmann Malerbetrieb GmbH",
+    "trade": "Maler und Lackierer",
+    "contact": "info@hoffmann-malerbetrieb-gmbh.de",
+    "address": "Mühlenweg 21, 04420 Markranstädt",
+    "size": "_30to50",
+    "verified": true,
+    "latitude": 51.2976506,
+    "longitude": 12.2200646
+  },
+  {
+    "name": "Werner Zimmerei GmbH & Co. KG",
+    "trade": "Zimmerei",
+    "contact": "info@werner-zimmerei-gmbh-co-kg.de",
+    "address": "Industriestraße 29, 49632 Essen (Oldenburg)",
+    "size": "_250plus",
+    "verified": true,
+    "latitude": 52.7258135,
+    "longitude": 7.9379
+  },
+  {
+    "name": "Bauer Malerbetrieb GmbH",
+    "trade": "Maler und Lackierer",
+    "contact": "info@bauer-malerbetrieb-gmbh.de",
+    "address": "Schillerstraße 45, 90409 Nürnberg",
+    "size": "_5to10",
+    "verified": true,
+    "latitude": 49.4643226,
+    "longitude": 11.0838984
+  },
+  {
+    "name": "Peters Fliesen OHG",
+    "trade": "Fliesenlegerei",
+    "contact": "info@peters-fliesen-ohg.de",
+    "address": "Goethestraße 18, 47166 Duisburg",
+    "size": "_250plus",
+    "verified": true,
+    "latitude": 51.4945551,
+    "longitude": 6.7751576
+  },
+  {
+    "name": "Schmidt Bau GmbH & Co. KG",
+    "trade": "Maurerhandwerk",
+    "contact": "info@schmidt-bau-gmbh-co-kg.de",
+    "address": "Bergstraße 38, 44791 Bochum",
+    "size": "_50to250",
+    "verified": true,
+    "latitude": 51.4863331,
+    "longitude": 7.2217986
+  },
+  {
+    "name": "Becker Anlagenbau",
+    "trade": "Anlagenmechanik",
+    "contact": "info@becker-anlagenbau.de",
+    "address": "Goethestraße 47, 42327 Wuppertal",
+    "size": "_1to5",
+    "verified": true,
+    "latitude": 51.2364381,
+    "longitude": 7.0855157
+  },
+  {
+    "name": "Hofmann Straßenbau OHG",
+    "trade": "Straßenbau",
+    "contact": "info@hofmann-straßenbau-ohg.de",
+    "address": "Poststraße 49, 29633 Munster",
+    "size": "_50to250",
+    "verified": true,
+    "latitude": 52.987223,
+    "longitude": 10.0824919
+  },
+  {
+    "name": "Koch Dach GmbH",
+    "trade": "Dachdeckerei",
+    "contact": "info@koch-dach-gmbh.de",
+    "address": "Schillerstraße 47, 76135 Karlsruhe",
+    "size": "_250plus",
+    "verified": true,
+    "latitude": 49.0067182,
+    "longitude": 8.378795
+  },
+  {
+    "name": "Schmidt Steinmetzbetrieb GmbH & Co. KG",
+    "trade": "Steinmetzhandwerk",
+    "contact": "info@schmidt-steinmetzbetrieb-gmbh-co-kg.de",
+    "address": "Poststraße 40, 68309 Mannheim",
+    "size": "_50to250",
+    "verified": true,
+    "latitude": 49.5142614,
+    "longitude": 8.5184761
+  },
+  {
+    "name": "Klein Haustechnik GmbH",
+    "trade": "Sanitär, Heizung, Klima",
+    "contact": "info@klein-haustechnik-gmbh.de",
+    "address": "Birkenweg 8, 86368 Gersthofen",
+    "size": "_1to5",
+    "verified": true,
+    "latitude": 48.4309971,
+    "longitude": 10.8835723
+  },
+  {
+    "name": "Hofmann Glaserei e.K.",
+    "trade": "Glaserei",
+    "contact": "info@hofmann-glaserei-e-k.de",
+    "address": "Ringstraße 4, 45879 Gelsenkirchen",
+    "size": "_250plus",
+    "verified": false,
+    "latitude": 51.5076577,
+    "longitude": 7.1033408
+  },
+  {
+    "name": "Hartmann Malerbetrieb GmbH",
+    "trade": "Maler und Lackierer",
+    "contact": "info@hartmann-malerbetrieb-gmbh.de",
+    "address": "Gartenstraße 31, 38114 Braunschweig",
+    "size": "_50to250",
+    "verified": true,
+    "latitude": 52.2705828,
+    "longitude": 10.5118676
+  },
+  {
+    "name": "Müller Dach",
+    "trade": "Dachdeckerei",
+    "contact": "info@müller-dach.de",
+    "address": "Poststraße 21, 09224 Chemnitz",
+    "size": "_1to5",
+    "verified": true,
+    "latitude": 50.812176,
+    "longitude": 12.7980406
+  },
+  {
+    "name": "Peters Elektro GmbH & Co. KG",
+    "trade": "Elektrotechnik",
+    "contact": "info@peters-elektro-gmbh-co-kg.de",
+    "address": "Poststraße 40, 52146 Würselen",
+    "size": "_50to250",
+    "verified": true,
+    "latitude": 50.8211115,
+    "longitude": 6.1348939
+  },
+  {
+    "name": "Hartmann Gebäudeservice Meisterbetrieb",
+    "trade": "Gebäudereinigung",
+    "contact": "info@hartmann-gebäudeservice-meisterbetrieb.de",
+    "address": "Birkenweg 45, 79100 Freiburg im Breisgau",
+    "size": "_5to10",
+    "verified": true,
+    "latitude": 47.98047,
+    "longitude": 7.8313966
+  },
+  {
+    "name": "Werner Metallbau OHG",
+    "trade": "Metallbau",
+    "contact": "info@werner-metallbau-ohg.de",
+    "address": "Königstraße 3, 46149 Oberhausen",
+    "size": "_50to250",
+    "verified": true,
+    "latitude": 51.5140903,
+    "longitude": 6.821879
+  },
+  {
+    "name": "Hoffmann Straßenbau Meisterbetrieb",
+    "trade": "Straßenbau",
+    "contact": "info@hoffmann-straßenbau-meisterbetrieb.de",
+    "address": "Industriestraße 40, 99091 Erfurt",
+    "size": "_5to10",
+    "verified": true,
+    "latitude": 51.0207667,
+    "longitude": 10.9985199
+  },
+  {
+    "name": "Braun Zimmerei e.K.",
+    "trade": "Zimmerei",
+    "contact": "info@braun-zimmerei-e-k.de",
+    "address": "Birkenweg 13, 22395 Hamburg",
+    "size": "_250plus",
+    "verified": false,
+    "latitude": 53.6602899,
+    "longitude": 10.1281473
+  },
+  {
+    "name": "Becker Glaserei GmbH",
+    "trade": "Glaserei",
+    "contact": "info@becker-glaserei-gmbh.de",
+    "address": "Königstraße 17, 40212 Düsseldorf",
+    "size": "_250plus",
+    "verified": true,
+    "latitude": 51.2243721,
+    "longitude": 6.7813754
+  },
+  {
+    "name": "Neumann Tischlerei e.K.",
+    "trade": "Tischlerei",
+    "contact": "info@neumann-tischlerei-e-k.de",
+    "address": "Waldstraße 29, 04105 Leipzig",
+    "size": "_30to50",
+    "verified": true,
+    "latitude": 51.3448519,
+    "longitude": 12.3572794
+  },
+  {
+    "name": "Neumann Elektro GmbH",
+    "trade": "Elektrotechnik",
+    "contact": "info@neumann-elektro-gmbh.de",
+    "address": "Alter Mühlenweg 19, 44139 Dortmund",
+    "size": "_50to250",
+    "verified": true,
+    "latitude": 51.5042959,
+    "longitude": 7.4611162
+  },
+  {
+    "name": "Neumann Straßenbau e.K.",
+    "trade": "Straßenbau",
+    "contact": "info@neumann-straßenbau-e-k.de",
+    "address": "Industriestraße 45, 01129 Dresden",
+    "size": "_50to250",
+    "verified": true,
+    "latitude": 51.0875507,
+    "longitude": 13.7166128
+  },
+  {
+    "name": "Lange Dach Meisterbetrieb",
+    "trade": "Dachdeckerei",
+    "contact": "info@lange-dach-meisterbetrieb.de",
+    "address": "Poststraße 43, 30900 Wedemark",
+    "size": "_30to50",
+    "verified": true,
+    "latitude": 52.5831295,
+    "longitude": 9.7388455
+  },
+  {
+    "name": "Schwarz Metallbau OHG",
+    "trade": "Metallbau",
+    "contact": "info@schwarz-metallbau-ohg.de",
+    "address": "Birkenweg 35, 90425 Nürnberg",
+    "size": "_5to10",
+    "verified": true,
+    "latitude": 49.4784899,
+    "longitude": 11.0902477
+  },
+  {
+    "name": "Braun Bau e.K.",
+    "trade": "Maurerhandwerk",
+    "contact": "info@braun-bau-e-k.de",
+    "address": "Birkenweg 12, 47279 Duisburg",
+    "size": "_5to10",
+    "verified": false,
+    "latitude": 51.3922326,
+    "longitude": 6.793397
+  },
+  {
+    "name": "Vogel Malerbetrieb Meisterbetrieb",
+    "trade": "Maler und Lackierer",
+    "contact": "info@vogel-malerbetrieb-meisterbetrieb.de",
+    "address": "Mühlenweg 19, 44809 Bochum",
+    "size": "_10to30",
+    "verified": false,
+    "latitude": 51.4957074,
+    "longitude": 7.2090097
+  },
+  {
+    "name": "Peters Anlagenbau GmbH",
+    "trade": "Anlagenmechanik",
+    "contact": "info@peters-anlagenbau-gmbh.de",
+    "address": "Friedrichstraße 28, 42103 Wuppertal",
+    "size": "_250plus",
+    "verified": true,
+    "latitude": 51.2591312,
+    "longitude": 7.1466585
+  },
+  {
+    "name": "Koch Metallbau Meisterbetrieb",
+    "trade": "Metallbau",
+    "contact": "info@koch-metallbau-meisterbetrieb.de",
+    "address": "Gartenstraße 21, 33604 Bielefeld",
+    "size": "_5to10",
+    "verified": true,
+    "latitude": 52.0135754,
+    "longitude": 8.5331352
+  },
+  {
+    "name": "Müller Elektro OHG",
+    "trade": "Elektrotechnik",
+    "contact": "info@müller-elektro-ohg.de",
+    "address": "Schillerstraße 34, 76135 Karlsruhe",
+    "size": "_30to50",
+    "verified": true,
+    "latitude": 49.0084262,
+    "longitude": 8.3792983
+  },
+  {
+    "name": "Schulz Garten- und Landschaftsbau Meisterbetrieb",
+    "trade": "Landschaftsgärtnerei",
+    "contact": "info@schulz-garten-und-landschaftsbau-meisterbetrieb.de",
+    "address": "Goethestraße 2, 68161 Mannheim",
+    "size": "_1to5",
+    "verified": true,
+    "latitude": 49.4874445,
+    "longitude": 8.4767135
+  },
+  {
+    "name": "Becker Garten- und Landschaftsbau e.K.",
+    "trade": "Landschaftsgärtnerei",
+    "contact": "info@becker-garten-und-landschaftsbau-e-k.de",
+    "address": "Rathausplatz 30, 65205 Wiesbaden",
+    "size": "_30to50",
+    "verified": true,
+    "latitude": 50.047409,
+    "longitude": 8.36165
+  },
+  {
+    "name": "Schmidt Bau e.K.",
+    "trade": "Maurerhandwerk",
+    "contact": "info@schmidt-bau-e-k.de",
+    "address": "Rathausplatz 6, 41061 Mönchengladbach",
+    "size": "_10to30",
+    "verified": true,
+    "latitude": 51.1933382,
+    "longitude": 6.4312672
+  },
+  {
+    "name": "Zimmermann Garten- und Landschaftsbau",
+    "trade": "Landschaftsgärtnerei",
+    "contact": "info@zimmermann-garten-und-landschaftsbau.de",
+    "address": "Kirchstraße 15, 45879 Gelsenkirchen",
+    "size": "_50to250",
+    "verified": true,
+    "latitude": 51.5097619,
+    "longitude": 7.097292
+  },
+  {
+    "name": "Braun Straßenbau GmbH & Co. KG",
+    "trade": "Straßenbau",
+    "contact": "info@braun-straßenbau-gmbh-co-kg.de",
+    "address": "Mühlenweg 31, 38122 Braunschweig",
+    "size": "_1to5",
+    "verified": true,
+    "latitude": 52.2214131,
+    "longitude": 10.5056712
+  },
+  {
+    "name": "Krause Zimmerei OHG",
+    "trade": "Zimmerei",
+    "contact": "info@krause-zimmerei-ohg.de",
+    "address": "Bahnhofstraße 38, 09111 Chemnitz",
+    "size": "_10to30",
+    "verified": true,
+    "latitude": 50.8357613,
+    "longitude": 12.9282397
+  },
+  {
+    "name": "Wagner Friseure GmbH",
+    "trade": "Friseurhandwerk",
+    "contact": "info@wagner-friseure-gmbh.de",
+    "address": "Friedrichstraße 9, 06132 Halle (Saale)",
+    "size": "_1to5",
+    "verified": true,
+    "latitude": 51.4302153,
+    "longitude": 11.9772676
+  },
+  {
+    "name": "Weber Kfz-Technik GmbH",
+    "trade": "Kfz-Mechatronik",
+    "contact": "info@weber-kfz-technik-gmbh.de",
+    "address": "Mühlenweg 34, 47839 Krefeld",
+    "size": "_50to250",
+    "verified": false,
+    "latitude": 51.3700612,
+    "longitude": 6.5046303
+  },
+  {
+    "name": "Fischer Tischlerei GmbH",
+    "trade": "Tischlerei",
+    "contact": "info@fischer-tischlerei-gmbh.de",
+    "address": "Rathausplatz 1, 99098 Erfurt",
+    "size": "_10to30",
+    "verified": false,
+    "latitude": 50.9995501,
+    "longitude": 11.1461878
+  },
+  {
+    "name": "Peters Steinmetzbetrieb OHG",
+    "trade": "Steinmetzhandwerk",
+    "contact": "info@peters-steinmetzbetrieb-ohg.de",
+    "address": "Mühlenweg 53, 34246 Vellmar",
+    "size": "_50to250",
+    "verified": false,
+    "latitude": 51.3571896,
+    "longitude": 9.4680342
+  },
+  {
+    "name": "Schwarz Fliesen Meisterbetrieb",
+    "trade": "Fliesenlegerei",
+    "contact": "info@schwarz-fliesen-meisterbetrieb.de",
+    "address": "Goethestraße 19, 50858 Köln",
+    "size": "_50to250",
+    "verified": true,
+    "latitude": 50.9412186,
+    "longitude": 6.8342977
+  },
+  {
+    "name": "Vogel Installationstechnik GmbH",
+    "trade": "Installationstechnik",
+    "contact": "info@vogel-installationstechnik-gmbh.de",
+    "address": "Schillerstraße 39, 60313 Frankfurt am Main",
+    "size": "_30to50",
+    "verified": true,
+    "latitude": 50.1148318,
+    "longitude": 8.6785551
+  },
+  {
+    "name": "Wagner Fliesen GmbH",
+    "trade": "Fliesenlegerei",
+    "contact": "info@wagner-fliesen-gmbh.de",
+    "address": "Rathausplatz 48, 04416 Markkleeberg",
+    "size": "_250plus",
+    "verified": true,
+    "latitude": 51.2803595,
+    "longitude": 12.3769903
+  },
+  {
+    "name": "Richter Zimmerei GmbH & Co. KG",
+    "trade": "Zimmerei",
+    "contact": "info@richter-zimmerei-gmbh-co-kg.de",
+    "address": "Goethestraße 35, 45128 Essen",
+    "size": "_5to10",
+    "verified": true,
+    "latitude": 51.4452705,
+    "longitude": 7.0053579
+  },
+  {
+    "name": "Möller Kfz-Technik GmbH & Co. KG",
+    "trade": "Kfz-Mechatronik",
+    "contact": "info@möller-kfz-technik-gmbh-co-kg.de",
+    "address": "Friedrichstraße 3, 28203 Bremen",
+    "size": "_10to30",
+    "verified": true,
+    "latitude": 53.0718046,
+    "longitude": 8.8183218
+  },
+  {
+    "name": "Fischer Bäckerei GmbH & Co. KG",
+    "trade": "Bäckerei",
+    "contact": "info@fischer-bäckerei-gmbh-co-kg.de",
+    "address": "Poststraße 15, 90471 Nürnberg",
+    "size": "_250plus",
+    "verified": true,
+    "latitude": 49.4169342,
+    "longitude": 11.1433875
+  },
+  {
+    "name": "Vogel Malerbetrieb GmbH",
+    "trade": "Maler und Lackierer",
+    "contact": "info@vogel-malerbetrieb-gmbh.de",
+    "address": "Gartenstraße 10, 47167 Duisburg",
+    "size": "_1to5",
+    "verified": true,
+    "latitude": 51.4915915,
+    "longitude": 6.7852878
+  },
+  {
+    "name": "Braun Bäckerei",
+    "trade": "Bäckerei",
+    "contact": "info@braun-bäckerei.de",
+    "address": "Mühlenweg 44, 42275 Wuppertal",
+    "size": "_1to5",
+    "verified": true,
+    "latitude": 51.2740986,
+    "longitude": 7.2029972
+  },
+  {
+    "name": "Becker Garten- und Landschaftsbau GmbH",
+    "trade": "Landschaftsgärtnerei",
+    "contact": "info@becker-garten-und-landschaftsbau-gmbh.de",
+    "address": "Rathausplatz 42, 29633 Munster",
+    "size": "_5to10",
+    "verified": false,
+    "latitude": 52.987786,
+    "longitude": 10.085785
+  },
+  {
+    "name": "Schulz Kfz-Technik GmbH & Co. KG",
+    "trade": "Kfz-Mechatronik",
+    "contact": "info@schulz-kfz-technik-gmbh-co-kg.de",
+    "address": "Bahnhofstraße 19, 68161 Mannheim",
+    "size": "_10to30",
+    "verified": false,
+    "latitude": 49.4847152,
+    "longitude": 8.4651549
+  },
+  {
+    "name": "Vogel Elektro OHG",
+    "trade": "Elektrotechnik",
+    "contact": "info@vogel-elektro-ohg.de",
+    "address": "Rathausplatz 30, 86150 Augsburg",
+    "size": "_30to50",
+    "verified": true,
+    "latitude": 48.368851,
+    "longitude": 10.8977195
+  },
+  {
+    "name": "Schröder Bäckerei",
+    "trade": "Bäckerei",
+    "contact": "info@schröder-bäckerei.de",
+    "address": "Industriestraße 41, 45899 Gelsenkirchen",
+    "size": "_50to250",
+    "verified": true,
+    "latitude": 51.5350439,
+    "longitude": 7.0240804
+  },
+  {
+    "name": "Krüger Glaserei GmbH & Co. KG",
+    "trade": "Glaserei",
+    "contact": "info@krüger-glaserei-gmbh-co-kg.de",
+    "address": "Poststraße 2, 38100 Braunschweig",
+    "size": "_50to250",
+    "verified": false,
+    "latitude": 52.262466,
+    "longitude": 10.5192679
+  },
+  {
+    "name": "Schwarz Steinmetzbetrieb GmbH & Co. KG",
+    "trade": "Steinmetzhandwerk",
+    "contact": "info@schwarz-steinmetzbetrieb-gmbh-co-kg.de",
+    "address": "Poststraße 38, 52146 Würselen",
+    "size": "_50to250",
+    "verified": true,
+    "latitude": 50.8211115,
+    "longitude": 6.1348939
+  },
+  {
+    "name": "Neumann Malerbetrieb GmbH",
+    "trade": "Maler und Lackierer",
+    "contact": "info@neumann-malerbetrieb-gmbh.de",
+    "address": "Poststraße 39, 06132 Halle (Saale)",
+    "size": "_30to50",
+    "verified": true,
+    "latitude": 51.4230541,
+    "longitude": 11.9894916
+  },
+  {
+    "name": "Schulz Garten- und Landschaftsbau OHG",
+    "trade": "Landschaftsgärtnerei",
+    "contact": "info@schulz-garten-und-landschaftsbau-ohg.de",
+    "address": "Mühlenweg 48, 47839 Krefeld",
+    "size": "_30to50",
+    "verified": true,
+    "latitude": 51.3700612,
+    "longitude": 6.5046303
+  },
+  {
+    "name": "Fuchs Bau GmbH",
+    "trade": "Maurerhandwerk",
+    "contact": "info@fuchs-bau-gmbh.de",
+    "address": "Friedrichstraße 36, 23562 Lübeck",
+    "size": "_30to50",
+    "verified": true,
+    "latitude": 53.8438887,
+    "longitude": 10.6864411
+  },
+  {
+    "name": "Schmidt Elektro OHG",
+    "trade": "Elektrotechnik",
+    "contact": "info@schmidt-elektro-ohg.de",
+    "address": "Schillerstraße 16, 46047 Oberhausen",
+    "size": "_50to250",
+    "verified": true,
+    "latitude": 51.4787695,
+    "longitude": 6.8650524
+  },
+  {
+    "name": "Klein Anlagenbau Meisterbetrieb",
+    "trade": "Anlagenmechanik",
+    "contact": "info@klein-anlagenbau-meisterbetrieb.de",
+    "address": "Straße des Friedens 37, 99094 Erfurt",
+    "size": "_250plus",
+    "verified": true,
+    "latitude": 50.9684653,
+    "longitude": 11.016797
+  },
+  {
+    "name": "Möller Kfz-Technik GmbH & Co. KG 6",
+    "trade": "Kfz-Mechatronik",
+    "contact": "info@möller-kfz-technik-gmbh-co-kg-6.de",
+    "address": "Schillerstraße 53, 55116 Mainz",
+    "size": "_5to10",
+    "verified": false,
+    "latitude": 49.9987024,
+    "longitude": 8.2669207
+  },
+  {
+    "name": "Neumann Schreinerei GmbH",
+    "trade": "Schreinerei",
+    "contact": "info@neumann-schreinerei-gmbh.de",
+    "address": "Schillerstraße 47-51, 34117 Kassel",
+    "size": "_10to30",
+    "verified": true,
+    "latitude": 51.3214745,
+    "longitude": 9.4914665
+  },
+  {
+    "name": "Meyer Tischlerei",
+    "trade": "Tischlerei",
+    "contact": "info@meyer-tischlerei.de",
+    "address": "Mühlenweg 13, 82166 Gräfelfing",
+    "size": "_5to10",
+    "verified": false,
+    "latitude": 48.114536,
+    "longitude": 11.4363289
+  },
+  {
+    "name": "Braun Kfz-Technik GmbH",
+    "trade": "Kfz-Mechatronik",
+    "contact": "info@braun-kfz-technik-gmbh.de",
+    "address": "Mühlenweg 17, 50996 Köln",
+    "size": "_10to30",
+    "verified": true,
+    "latitude": 50.8901026,
+    "longitude": 6.9887604
+  },
+  {
+    "name": "Neumann Tischlerei GmbH",
+    "trade": "Tischlerei",
+    "contact": "info@neumann-tischlerei-gmbh.de",
+    "address": "Königstraße 24, 70173 Stuttgart",
+    "size": "_5to10",
+    "verified": false,
+    "latitude": 48.779319,
+    "longitude": 9.1792328
+  },
+  {
+    "name": "Klein Installationstechnik e.K.",
+    "trade": "Installationstechnik",
+    "contact": "info@klein-installationstechnik-e-k.de",
+    "address": "Königstraße 26, 44309 Dortmund",
+    "size": "_30to50",
+    "verified": true,
+    "latitude": 51.5221527,
+    "longitude": 7.5529223
+  },
+  {
+    "name": "Braun Gebäudeservice e.K.",
+    "trade": "Gebäudereinigung",
+    "contact": "info@braun-gebäudeservice-e-k.de",
+    "address": "Poststraße 24, 28203 Stadtgebiet Bremen",
+    "size": "_250plus",
+    "verified": true,
+    "latitude": 53.0717444,
+    "longitude": 8.8188494
+  },
+  {
+    "name": "Koch Haustechnik e.K.",
+    "trade": "Sanitär, Heizung, Klima",
+    "contact": "info@koch-haustechnik-e-k.de",
+    "address": "Birkenweg 20, 01109 Dresden",
+    "size": "_50to250",
+    "verified": true,
+    "latitude": 51.115181,
+    "longitude": 13.7390263
+  },
+  {
+    "name": "Schulz Schreinerei e.K.",
+    "trade": "Schreinerei",
+    "contact": "info@schulz-schreinerei-e-k.de",
+    "address": "Waldstraße 11, 30629 Hannover",
+    "size": "_1to5",
+    "verified": true,
+    "latitude": 52.3928551,
+    "longitude": 9.8534246
+  },
+  {
+    "name": "Fischer Fliesen",
+    "trade": "Fliesenlegerei",
+    "contact": "info@fischer-fliesen.de",
+    "address": "Rathausplatz 35, 90403 Nürnberg",
+    "size": "_5to10",
+    "verified": false,
+    "latitude": 49.4544495,
+    "longitude": 11.0777217
+  },
+  {
+    "name": "Werner Malerbetrieb GmbH & Co. KG",
+    "trade": "Maler und Lackierer",
+    "contact": "info@werner-malerbetrieb-gmbh-co-kg.de",
+    "address": "Bergstraße 44, 44791 Bochum",
+    "size": "_250plus",
+    "verified": true,
+    "latitude": 51.4839966,
+    "longitude": 7.220789
+  },
+  {
+    "name": "Hoffmann Glaserei e.K.",
+    "trade": "Glaserei",
+    "contact": "info@hoffmann-glaserei-e-k.de",
+    "address": "Auer Schulstraße 24, 42103 Wuppertal",
+    "size": "_1to5",
+    "verified": true,
+    "latitude": 51.2554086,
+    "longitude": 7.1397547
+  },
+  {
+    "name": "Krüger Steinmetzbetrieb",
+    "trade": "Steinmetzhandwerk",
+    "contact": "info@krüger-steinmetzbetrieb.de",
+    "address": "Gartenstraße 46, 48147 Münster",
+    "size": "_10to30",
+    "verified": false,
+    "latitude": 51.9657332,
+    "longitude": 7.6342954
+  },
+  {
+    "name": "Braun Dach e.K.",
+    "trade": "Dachdeckerei",
+    "contact": "info@braun-dach-e-k.de",
+    "address": "Schillerstraße 17, 86391 Stadtbergen",
+    "size": "_250plus",
+    "verified": true,
+    "latitude": 48.3672834,
+    "longitude": 10.8507134
+  },
+  {
+    "name": "Bauer Steinmetzbetrieb GmbH",
+    "trade": "Steinmetzhandwerk",
+    "contact": "info@bauer-steinmetzbetrieb-gmbh.de",
+    "address": "Goethestraße 2, 65203 Wiesbaden",
+    "size": "_30to50",
+    "verified": true,
+    "latitude": 50.0371168,
+    "longitude": 8.2411225
+  },
+  {
+    "name": "Schröder Garten- und Landschaftsbau Meisterbetrieb",
+    "trade": "Landschaftsgärtnerei",
+    "contact": "info@schröder-garten-und-landschaftsbau-meisterbetrieb.de",
+    "address": "Goethestraße 53, 41061 Mönchengladbach",
+    "size": "_1to5",
+    "verified": true,
+    "latitude": 51.2017347,
+    "longitude": 6.4450652
+  },
+  {
+    "name": "Möller Elektro OHG",
+    "trade": "Elektrotechnik",
+    "contact": "info@möller-elektro-ohg.de",
+    "address": "Industriestraße 50, 45899 Gelsenkirchen",
+    "size": "_50to250",
+    "verified": true,
+    "latitude": 51.5335344,
+    "longitude": 7.0239741
+  },
+  {
+    "name": "Klein Schreinerei GmbH",
+    "trade": "Schreinerei",
+    "contact": "info@klein-schreinerei-gmbh.de",
+    "address": "Rathausplatz 53, 24103 Kiel",
+    "size": "_1to5",
+    "verified": true,
+    "latitude": 54.3227007,
+    "longitude": 10.133439
+  },
+  {
+    "name": "Vogel Installationstechnik GmbH & Co. KG",
+    "trade": "Installationstechnik",
+    "contact": "info@vogel-installationstechnik-gmbh-co-kg.de",
+    "address": "Friedrichstraße 60, 09123 Chemnitz",
+    "size": "_10to30",
+    "verified": false,
+    "latitude": 50.7728853,
+    "longitude": 12.9185274
+  },
+  {
+    "name": "Peters Tischlerei",
+    "trade": "Tischlerei",
+    "contact": "info@peters-tischlerei.de",
+    "address": "Bergstraße 30, 06108 Halle (Saale)",
+    "size": "_30to50",
+    "verified": false,
+    "latitude": 51.4864091,
+    "longitude": 11.9656685
+  },
+  {
+    "name": "Müller Fliesen Meisterbetrieb",
+    "trade": "Fliesenlegerei",
+    "contact": "info@müller-fliesen-meisterbetrieb.de",
+    "address": "Königstraße 49, 39116 Magdeburg",
+    "size": "_5to10",
+    "verified": false,
+    "latitude": 52.0855921,
+    "longitude": 11.5717557
+  },
+  {
+    "name": "Möller Metallbau e.K.",
+    "trade": "Metallbau",
+    "contact": "info@möller-metallbau-e-k.de",
+    "address": "Rathausplatz 48, 72805 Unterhausen",
+    "size": "_1to5",
+    "verified": true,
+    "latitude": 48.4309612,
+    "longitude": 9.2554215
+  },
+  {
+    "name": "Neumann Steinmetzbetrieb Meisterbetrieb",
+    "trade": "Steinmetzhandwerk",
+    "contact": "info@neumann-steinmetzbetrieb-meisterbetrieb.de",
+    "address": "Obermühlenweg 32, 99095 Erfurt",
+    "size": "_250plus",
+    "verified": false,
+    "latitude": 51.0375311,
+    "longitude": 11.007953
+  },
+  {
+    "name": "Schmidt Zimmerei GmbH & Co. KG",
+    "trade": "Zimmerei",
+    "contact": "info@schmidt-zimmerei-gmbh-co-kg.de",
+    "address": "Friedrichstraße 53, 70173 Stuttgart",
+    "size": "_1to5",
+    "verified": true,
+    "latitude": 48.7839617,
+    "longitude": 9.1787968
+  },
+  {
+    "name": "Peters Zimmerei OHG 6",
+    "trade": "Zimmerei",
+    "contact": "info@peters-zimmerei-ohg-6.de",
+    "address": "Königstraße 25, 40212 Düsseldorf",
+    "size": "_30to50",
+    "verified": true,
+    "latitude": 51.2243721,
+    "longitude": 6.7813754
+  },
+  {
+    "name": "Krause Bäckerei Meisterbetrieb",
+    "trade": "Bäckerei",
+    "contact": "info@krause-bäckerei-meisterbetrieb.de",
+    "address": "Poststraße 11, 44137 Dortmund",
+    "size": "_50to250",
+    "verified": true,
+    "latitude": 51.5102234,
+    "longitude": 7.4604186
+  },
+  {
+    "name": "Neumann Anlagenbau",
+    "trade": "Anlagenmechanik",
+    "contact": "info@neumann-anlagenbau.de",
+    "address": "Mühlenweg 10f, 45289 Essen",
+    "size": "_250plus",
+    "verified": true,
+    "latitude": 51.4150823,
+    "longitude": 7.1026911
+  },
+  {
+    "name": "Wagner Metallbau GmbH & Co. KG 6",
+    "trade": "Metallbau",
+    "contact": "info@wagner-metallbau-gmbh-co-kg-6.de",
+    "address": "Industriestraße 58, 28199 Bremen",
+    "size": "_50to250",
+    "verified": true,
+    "latitude": 53.0647494,
+    "longitude": 8.7823508
+  },
+  {
+    "name": "Hartmann Schreinerei OHG",
+    "trade": "Schreinerei",
+    "contact": "info@hartmann-schreinerei-ohg.de",
+    "address": "Hauptstraße 15, 01097 Dresden",
+    "size": "_1to5",
+    "verified": true,
+    "latitude": 51.0601399,
+    "longitude": 13.7429845
+  },
+  {
+    "name": "Neumann Malerbetrieb OHG",
+    "trade": "Maler und Lackierer",
+    "contact": "info@neumann-malerbetrieb-ohg.de",
+    "address": "Gartenstraße 53, 30161 Hannover",
+    "size": "_50to250",
+    "verified": true,
+    "latitude": 52.3801277,
+    "longitude": 9.7469535
+  },
+  {
+    "name": "Krause Installationstechnik OHG",
+    "trade": "Installationstechnik",
+    "contact": "info@krause-installationstechnik-ohg.de",
+    "address": "Rathausplatz 20, 90403 Nürnberg",
+    "size": "_10to30",
+    "verified": true,
+    "latitude": 49.4544495,
+    "longitude": 11.0777217
+  },
+  {
+    "name": "Schröder Installationstechnik OHG",
+    "trade": "Installationstechnik",
+    "contact": "info@schröder-installationstechnik-ohg.de",
+    "address": "Friedrichstraße 7, 47198 Duisburg",
+    "size": "_5to10",
+    "verified": false,
+    "latitude": 51.4508224,
+    "longitude": 6.712796
+  },
+  {
+    "name": "Lange Malerbetrieb",
+    "trade": "Maler und Lackierer",
+    "contact": "info@lange-malerbetrieb.de",
+    "address": "Goethestraße 50, 44791 Bochum",
+    "size": "_30to50",
+    "verified": false,
+    "latitude": 51.4860461,
+    "longitude": 7.2202752
+  },
+  {
+    "name": "Zimmermann Anlagenbau",
+    "trade": "Anlagenmechanik",
+    "contact": "info@zimmermann-anlagenbau.de",
+    "address": "Rathausplatz 41, 42349 Wuppertal",
+    "size": "_5to10",
+    "verified": false,
+    "latitude": 51.2050067,
+    "longitude": 7.1295276
+  },
+  {
+    "name": "Peters Zimmerei OHG 7",
+    "trade": "Zimmerei",
+    "contact": "info@peters-zimmerei-ohg-7.de",
+    "address": "Goethestraße 44, 53113 Bonn",
+    "size": "_1to5",
+    "verified": true,
+    "latitude": 50.7247372,
+    "longitude": 7.1057852
+  }
+]

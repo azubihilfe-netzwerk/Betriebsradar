@@ -14,6 +14,11 @@ const generateAccessKey = () => randomBytes(32).toString('hex');
 export const lists = {
   User: list({
     access: allowAll,
+    ui: {
+      singular: "Nutzer:in",
+      plural: "Nutzer:innen",
+      label: "Nutzer:innen"
+    },
     fields: {
       name: text({
         validation: { isRequired: true }
@@ -39,6 +44,11 @@ export const lists = {
   }),
 
   Company: list({
+    ui: {
+      label: "Betriebe",
+      singular: "Betrieb",
+      plural: "Betrieb"
+    },
     access: {
       filter: {
         query: ({ session }) => true,
@@ -75,7 +85,8 @@ export const lists = {
     },
     hooks: {
       resolveInput: async ({ resolvedData, operation }) => {
-        if (operation === 'create' && resolvedData.address) {
+        const hasCoords = resolvedData.latitude != null && resolvedData.longitude != null;
+        if (operation === 'create' && resolvedData.address && !hasCoords) {
           const coords = await geocodeAddress(String(resolvedData.address));
           if (coords) {
             return { ...resolvedData, latitude: coords.lat, longitude: coords.lon };
@@ -87,6 +98,11 @@ export const lists = {
   }),
 
   Review: list({
+    ui: {
+      plural: "Berichte",
+      singular: "Bericht",
+      label: "Berichte"
+    },
     access: {
       filter: {
         query: ({ session, context, listKey, operation }) => {

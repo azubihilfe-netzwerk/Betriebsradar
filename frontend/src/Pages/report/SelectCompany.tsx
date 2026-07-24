@@ -2,9 +2,9 @@ import { gql } from 'graphql-tag';
 import React, { FC, useState } from 'react';
 import { useQuery } from '@apollo/client/react';
 import { useNavigate } from 'react-router-dom';
-import { Button, LinkButton } from '../../components/Form';
+import { Button, LinkButton, SearchAutocomplete } from '../../components/Form';
 import { GetCompaniesQuery } from '../../api/__generated__/graphql';
-import { BackLink, PageHeading, SectionHeading } from '../../components/UI';
+import { PageHeading } from '../../components/UI';
 
 type Company = NonNullable<GetCompaniesQuery['companies']>[number];
 
@@ -50,57 +50,28 @@ const SelectCompany: FC = () => {
         Suche den Betrieb, über den du berichten möchtest. Vielleicht ist er schon im Betriebsradar eingetragen.
       </p>
 
-      <input
-        type="text"
-        placeholder={selected?.name ? selected?.name : "Nach Name oder Stadt suchen..."}
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value);
+      <SearchAutocomplete
+        items={selected ? [] : filtered}
+        getKey={(company) => company.id}
+        getLabel={(company) => company.name ?? ''}
+        getSubtitle={(company) => [company.trade, company.address].filter(Boolean).join(' · ') || null}
+        search={search}
+        onSearchChange={(value) => {
+          setSearch(value);
           setSelected(null);
         }}
-        onFocus={(e) => {
-          if (selected) {
-            setSearch("");
-          }
+        onSelect={(company) => {
+          setSelected(company);
+          setSearch(company.name + " (" + company.address + ")" || "");
         }}
-        className="w-full px-4 py-3 bg-brand-input border-standard
-          focus:border-brand-button-hover focus:outline-none text-base mb-4"
+        placeholder={selected?.name ? selected?.name : "Nach Name oder Stadt suchen..."}
+        emptyMessage="Kein Betrieb gefunden."
+        className="mb-4"
         autoFocus
       />
 
       {loading && <p className="text-gray-500">Lädt...</p>}
       {error && <p className="text-red-600">Fehler: {error.message}</p>}
-
-      {!loading && !error && !selected && search.length > 0 && filtered.length > 0 && (
-        <ul className="bg-brand-input border-standard shadow divide-y divide-gray-100 mb-6">
-          {(
-            filtered.map((company) => (
-              <li key={company.id}>
-                <button
-                  className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors`}
-                  onClick={() => {
-                    setSelected(company);
-                    setSearch(company.name + " (" + company.address +  ")" || "");
-                  }}
-                >
-                  <span className="font-medium text-gray-900">{company.name}</span>
-                  {(company.trade || company.address) && (
-                    <span className="text-sm text-gray-500 ml-2">
-                      {[company.trade, company.address].filter(Boolean).join(' · ')}
-                    </span>
-                  )}
-                </button>
-              </li>
-            ))
-          )}
-        </ul>
-      )}
-
-
-      {filtered.length === 0 && !selected && (
-
-        <p><i>Kein Betrieb gefunden.</i></p>
-      )}
 
       <div className="flex flex-row gap-4 w-full">
         <LinkButton to="/unternehmeneintragen" variant="secondary" className='flex-1'>

@@ -24,6 +24,11 @@ export function setTransporter(t: Transporter): void {
   _transporter = t;
 }
 
+function getErrorMessage(error: unknown) {
+	if (error instanceof Error) return error.message;
+	return String(error);
+}
+
 getTransporter().verify();
 
 export async function sendVerificationEmail(email: string, accessKey: string, name: string): Promise<void> {
@@ -43,6 +48,6 @@ export async function sendVerificationEmail(email: string, accessKey: string, na
            <a href="mailto:kontakt@betriebsradar.org">kontakt@betriebsradar.org</a>.</p>`,
     });
   } catch (err) {
-    console.error(`Failed to send verification email to ${email}:`, err);
+    console.error(`Failed to send verification email to ${email}: ${getErrorMessage(err)}`);
   }
 }

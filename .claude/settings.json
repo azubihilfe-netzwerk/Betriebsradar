@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(grep -E '\\\\.\\(tsx|ts|jsx|js|svelte|vue\\)$')"
+      "Bash(grep -E '\\\\.\\(tsx|ts|jsx|js|svelte|vue\\)$')",
+      "Bash(git stash *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/api/graphql)",
+      "Bash(npx --yes playwright --version)"
     ]
   }
 }
