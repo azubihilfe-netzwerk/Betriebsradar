@@ -3,6 +3,18 @@ import { FC } from 'react';
 import { useQuery } from '@apollo/client/react';
 import { useParams } from 'react-router-dom';
 import { GetCompanyDetailQuery } from '../../api/__generated__/graphql';
+import Card from '../../components/UI/Card';
+import { PageHeading } from '../../components/UI/Heading';
+import ReportCard from '../../components/Company/ReportCard';
+
+const companySizeLabels: Record<string, string> = {
+    _1to5: '1–5 Mitarbeitende',
+    _5to10: '5–10 Mitarbeitende',
+    _10to30: '10–30 Mitarbeitende',
+    _30to50: '30–50 Mitarbeitende',
+    _50to250: '50–250 Mitarbeitende',
+    _250plus: 'ab 250 Mitarbeitende',
+};
 
 const CompanyDetail: FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -21,9 +33,40 @@ const CompanyDetail: FC = () => {
                     reviewsCount
                     reviews {
                         id
-                        name
+                        position
                         yearOfHiring
+                        yearOfLeaving
+                        ongoing
                         experienceText
+                        feedback
+                        moreWishes
+                        specialtiesOther
+                        languages
+                        gender
+                        ageAtEmployment
+                        hoursPerWeek
+                        overtimePerMonth
+                        partTime
+                        collective
+                        trainingShortenable
+                        listenedTo
+                        canAskBoss
+                        canAskColleagues
+                        tone
+                        explained
+                        proximity
+                        appreciated
+                        boundariesRespected
+                        genderIdentityRespected
+                        needsRespected
+                        sharedWithCompany
+                        feltComfortableSharing
+                        disabilityTypes
+                        disabilitySharedWithCompany
+                        disabilityFeltComfortableSharing
+                        ethnicityTypes
+                        ethnicitySharedWithCompany
+                        ethnicityFeltComfortableSharing
                     }
                 }
             }
@@ -36,44 +79,44 @@ const CompanyDetail: FC = () => {
     if (!data?.company) return <p>Unternehmen nicht gefunden.</p>;
 
     const company = data.company;
+    const reviews = [...(company.reviews ?? [])].sort(
+        (a, b) => Number(b.yearOfHiring ?? 0) - Number(a.yearOfHiring ?? 0)
+    );
 
     return (
         <div className="max-w-4xl">
-            <div className="bg-white rounded-lg shadow p-6 mb-8">
-                <h1 className="text-2xl font-bold text-brand mb-2">{company.name}</h1>
-                <div className="grid grid-cols-2 gap-4 text-gray-700">
+            <Card className="mb-8">
+                <PageHeading className="text-brand mb-4">{company.name}</PageHeading>
+                <div className="grid grid-cols-1 gap-4 text-gray-700 sm:grid-cols-2">
                     <div>
-                        <p className="font-semibold">Gewerk:</p>
+                        <p className="font-semibold">Gewerk</p>
                         <p>{company.trade}</p>
                     </div>
                     <div>
-                        <p className="font-semibold">Adresse:</p>
+                        <p className="font-semibold">Adresse</p>
                         <p>{company.address}</p>
                     </div>
                     <div>
-                        <p className="font-semibold">Betriebsgröße:</p>
-                        <p>{company.size} Mitarbeitende</p>
+                        <p className="font-semibold">Betriebsgröße</p>
+                        <p>{company.size ? companySizeLabels[company.size] ?? company.size : '–'}</p>
                     </div>
+                    {company.contact && (
+                        <div>
+                            <p className="font-semibold">Kontakt</p>
+                            <p>{company.contact}</p>
+                        </div>
+                    )}
                 </div>
-            </div>
+            </Card>
 
             <div>
-                <h2 className="text-1xl font-bold text-brand mb-4">Berichte ({company.reviews?.length})</h2>
-                {company.reviews?.length === 0 ? (
+                <h2 className="text-xl font-bold text-brand mb-4">Berichte ({company.reviewsCount ?? reviews.length})</h2>
+                {reviews.length === 0 ? (
                     <p className="text-gray-600">Noch keine Berichte vorhanden.</p>
                 ) : (
                     <div className="space-y-4">
-                        {company.reviews?.map((review) => (
-                            <div key={review.id} className="bg-white rounded-lg shadow p-4 border-l-4 border-brand">
-                                <div className="flex justify-between items-start mb-2">
-                                    <h3 className="text-lg font-semibold">{review.name}</h3>
-
-                                </div>
-                                <p className="text-gray-700 mb-2">{review.experienceText}</p>
-                                <p className="text-sm text-gray-500">
-                                    {review.yearOfHiring}
-                                </p>
-                            </div>
+                        {reviews.map((review) => (
+                            <ReportCard key={review.id} review={review} />
                         ))}
                     </div>
                 )}

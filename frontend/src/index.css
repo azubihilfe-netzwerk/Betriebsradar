@@ -9,6 +9,9 @@
   .border-standard-error {
     @apply border-2 rounded-md border-brand-error;
   }
+  .card-standard {
+    @apply border-standard bg-brand-input;
+  }
 }
 
 @font-face {

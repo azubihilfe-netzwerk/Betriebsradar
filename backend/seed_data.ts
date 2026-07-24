@@ -26,6 +26,97 @@ export interface SampleData {
   anotherReview: { id: string };
 }
 
+// --- Sample review data ----------------------------------------------------
+// Generates 0-5 plausible Erfahrungsberichte per sample company so map/list
+// views have realistic amounts of data to render against.
+
+const FIRST_NAMES = [
+  'Lea', 'Finn', 'Mia', 'Noah', 'Emma', 'Ben', 'Hannah', 'Paul', 'Lina', 'Jonas',
+  'Sophie', 'Luca', 'Mila', 'Elias', 'Marie', 'Felix', 'Anna', 'Leon', 'Ida', 'Tom',
+];
+
+const GENDERS = ['prefer_not_to_say', 'cis_male', 'cis_female', 'enby', 'trans', 'trans_male', 'trans_female', 'diverse', 'other'];
+const POSITIONS = ['intern', 'apprentice', 'journey', 'master', 'helper', 'other'];
+const RATINGS = ['always', 'mostly', 'sometimes', 'rarely', 'never'];
+const TONES = ['very_good', 'good', 'ok', 'bad', 'awful'];
+const EXPLAINED = ['too_much', 'just_right', 'enough', 'too_little'];
+const PROXIMITY = ['too_close', 'casual', 'professional', 'too_distant'];
+const YES_PARTLY_NO = ['yes', 'partly', 'no'];
+const BOUNDARIES = ['physical_strength', 'emotional', 'responsibility', 'physical_distance'];
+const EXPERIENCE_TEXTS = [
+  'Insgesamt eine gute Erfahrung gemacht.',
+  'Es gab sowohl gute als auch schwierige Phasen.',
+  'Das Team war hilfsbereit und offen.',
+  'Die Kommunikation hätte besser sein können.',
+  'Ich habe mich wohl und respektiert gefühlt.',
+];
+
+function randomInt(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function pick<T>(options: T[]): T {
+  return options[randomInt(0, options.length - 1)];
+}
+
+function pickSome<T>(options: T[]): T[] {
+  return options.filter(() => Math.random() < 0.3);
+}
+
+function randomReviewData(company: { id: string }) {
+  const firstName = pick(FIRST_NAMES);
+  const yearOfHiring = String(randomInt(2015, 2024));
+  const ongoing = Math.random() < 0.4;
+  return {
+    name: `${firstName}s Erfahrungsbericht`,
+    email: `${firstName.toLowerCase()}.${randomInt(1000, 9999)}@example.com`,
+    company: { connect: { id: company.id } },
+    gender: pick(GENDERS),
+    ageAtEmployment: randomInt(16, 45),
+    collective: Math.random() < 0.2,
+    hoursPerWeek: randomInt(20, 45),
+    overtimePerMonth: randomInt(0, 15),
+    trainingShortenable: Math.random() < 0.5,
+    partTime: Math.random() < 0.2,
+    yearOfHiring,
+    yearOfLeaving: ongoing ? undefined : String(randomInt(Number(yearOfHiring), 2026)),
+    ongoing,
+    genderIdentityRespected: Math.random() < 0.7,
+    position: pick(POSITIONS),
+    listenedTo: pick(RATINGS),
+    tone: pick(TONES),
+    explained: pick(EXPLAINED),
+    canAskColleagues: pick(RATINGS),
+    canAskBoss: pick(RATINGS),
+    proximity: pick(PROXIMITY),
+    boundariesRespected: pickSome(BOUNDARIES),
+    appreciated: pick(YES_PARTLY_NO),
+    experienceText: pick(EXPERIENCE_TEXTS),
+    languages: 'Deutsch',
+    status: Math.random() < 0.85 ? 'published' : 'awaitingReview',
+  };
+}
+
+export async function createSampleReviews(context: any, companies: { id: string; name?: string }[]) {
+  const created = [];
+  // Bulk-generated reviews aren't real submissions, so skip the verification
+  // email the Review.afterOperation hook would otherwise send for each one.
+  context.skipVerificationEmail = true;
+  try {
+    for (const company of companies) {
+      const reviewCount = randomInt(0, 5);
+      for (let i = 0; i < reviewCount; i++) {
+        const review = await context.query.Review.createOne({ data: randomReviewData(company) });
+        created.push(review);
+      }
+    }
+  } finally {
+    delete context.skipVerificationEmail;
+  }
+  console.log(`✅ Created ${created.length} sample reviews across ${companies.length} companies`);
+  return created;
+}
+
 // --- Sample company data --------------------------------------------------
 // sample_companies.json holds 100 companies with real, geocoded German
 // addresses (generated once via scripts/generate_sample_companies.mjs), so
@@ -76,7 +167,8 @@ export async function createSampleData(ctx?: any): Promise<SampleData> {
 
   const theCompany = await getOrCreateEntityByName(context, 'Company', company);
 
-  await createSampleCompanies(context, 100);
+  const sampleCompanyRecords = await createSampleCompanies(context, 100);
+  await createSampleReviews(context, sampleCompanyRecords);
 
   const lucasReview = await getOrCreateEntityByName(context, 'Review', {
      name : 'Lucas Erfahrungsbericht',

@@ -422,8 +422,8 @@ export const lists = {
       }),
     },
     hooks: {
-      afterOperation: async ({ operation, item }) => {
-        if (operation === 'create' && item?.email && item?.accessKey) {
+      afterOperation: async ({ operation, item, context }) => {
+        if (operation === 'create' && item?.email && item?.accessKey && !(context as any).skipVerificationEmail) {
           await sendVerificationEmail(String(item.email), String(item.accessKey), String(item.name));
         }
       },

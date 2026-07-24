@@ -10,7 +10,7 @@ export interface CardProps {
 const Card: React.FC<CardProps> = ({ children, className = '', accent = false }) => {
   return (
     <div
-      className={`bg-brand-surface rounded-lg shadow p-6 ${
+      className={`card-standard p-6 ${
         accent ? 'border-l-4 border-brand' : ''
       } ${className}`}
     >
