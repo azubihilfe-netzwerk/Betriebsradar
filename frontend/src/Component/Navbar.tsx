@@ -16,6 +16,8 @@ const Navbar: React.FC = () => {
         setMenuOpen(false);
     };
 
+    const closeMenu = () => setMenuOpen(false);
+
     return (
         <nav className="bg-brand-navbar shadow-md border-b-2 border-blackish fixed w-full z-10">
             <div className="max-w-7xl mx-auto pl-2 pr-4 py-6 flex justify-between items-center">
@@ -50,12 +52,12 @@ const Navbar: React.FC = () => {
             {/* Mobile Links */}
             {menuOpen && (
                 <div className="md:hidden px-4 pb-4 space-y-2">
-                    <Link to="/" className="block text-gray-700 hover:text-brand text-lg uppercase font-semibold">Home</Link>
-                    <Link to="/unternehmensuchen" className="block text-gray-700 hover:text-brand text-lg uppercase font-semibold">Suchen</Link>
+                    <Link onClick={closeMenu} to="/" className="block text-gray-700 hover:text-brand text-lg uppercase font-semibold">Home</Link>
+                    <Link onClick={closeMenu} to="/unternehmensuchen" className="block text-gray-700 hover:text-brand text-lg uppercase font-semibold">Suchen</Link>
 
-                    <Link to="/betriebauswaehlen" className="block text-gray-700 hover:text-brand text-lg uppercase font-semibold">Berichten</Link>
+                    <Link onClick={closeMenu} to="/betriebauswaehlen" className="block text-gray-700 hover:text-brand text-lg uppercase font-semibold">Berichten</Link>
 
-                    <Link to="/kontakt" className="block text-gray-700 hover:text-brand text-lg uppercase font-semibold">Kontakt</Link>
+                    <Link onClick={closeMenu} to="/kontakt" className="block text-gray-700 hover:text-brand text-lg uppercase font-semibold">Kontakt</Link>
 
                 </div>
             )}
