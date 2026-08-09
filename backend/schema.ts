@@ -29,13 +29,13 @@ export const lists = {
       }),
       password: password({ validation: { isRequired: true } }),
       roles: multiselect({
-        label: 'Rollen',
         type: 'enum',
         options: [
           { label: 'Admin', value: 'admin' },
           { label: 'Autor*in', value: 'reviewer' },
           { label: 'Editor*in', value: 'editor' },
-        ]
+        ],
+        ui: { label: 'Rollen' },
       }),
       createdAt: timestamp({
         defaultValue: { kind: 'now' },
@@ -57,14 +57,13 @@ export const lists = {
       },
       operation: allowAll
     },
-    description: 'Betriebe, in denen Erfahrungen gemacht wurden',
+    graphql: { description: 'Betriebe, in denen Erfahrungen gemacht wurden' },
     fields: {
-      name: text({ label: 'Name', validation: { isRequired: true } }),
-      trade: text({ label: 'Gewerk', validation: { isRequired: true } }),
-      address: text({ label: 'Adresse', validation: { isRequired: true } }),
-      contact: text({ label: 'Kontaktdaten (optional)', validation: {isRequired: false} }),
+      name: text({ validation: { isRequired: true }, ui: { label: 'Name' } }),
+      trade: text({ validation: { isRequired: true }, ui: { label: 'Gewerk' } }),
+      address: text({ validation: { isRequired: true }, ui: { label: 'Adresse' } }),
+      contact: text({ validation: {isRequired: false}, ui: { label: 'Kontaktdaten (optional)' } }),
       size: select({
-        label: 'Größe',
         type: 'enum',
         options: [
           { label: '1–5', value: '_1to5' },
@@ -74,14 +73,14 @@ export const lists = {
           { label: '50–250', value: '_50to250' },
           { label: 'ab 250', value: '_250plus' },
         ],
-        ui: { displayMode: 'select' },
+        ui: { displayMode: 'select', label: 'Größe' },
         validation: { isRequired: true },
       }),
-      verified: checkbox({ label: 'Verifiziert', defaultValue: false }),
-      latitude: float({ label: 'Breitengrad', validation: {isRequired: false} }),
-      longitude: float({ label: 'Längengrad', validation: {isRequired: false} }),
+      verified: checkbox({ defaultValue: false, ui: { label: 'Verifiziert' } }),
+      latitude: float({ validation: {isRequired: false}, ui: { label: 'Breitengrad' } }),
+      longitude: float({ validation: {isRequired: false}, ui: { label: 'Längengrad' } }),
       //Relationships
-      reviews: relationship({ ref: 'Review.company', many: true, label: 'Anzahl Berichte' }),
+      reviews: relationship({ ref: 'Review.company', many: true, ui: { label: 'Anzahl Berichte' } }),
     },
     hooks: {
       resolveInput: async ({ resolvedData, operation }) => {
@@ -132,23 +131,22 @@ export const lists = {
       operation: allowAll,
     },
     fields: {
-      name: text({ label: 'Titel des Erfahrungsberichts', validation: { isRequired: true } }),
-      email: text({ label: 'E-Mail-Adresse', validation: { isRequired: true } }),
-      
-      company: relationship({ ref: 'Company.reviews', label: 'Betrieb' }),
-      collective: checkbox({ label: 'Kollektiv', defaultValue: false }),
-      hoursPerWeek: integer({ label: 'Durchschnittliche h/Woche', validation: {isRequired: false} }),
-      overtimePerMonth: integer({ label: 'Geschätzte Überstunden/Monat (Jahresmittel)', validation: {isRequired: false} }),
-      trainingShortenable: checkbox({ label: 'Ausbildung verkürzbar' }),
-      partTime: checkbox({ label: 'Teilzeit möglich' }),
-      specialtiesOther: text({ label: 'Sonstiges (Besonderheiten)', validation: {isRequired: false}, ui: { displayMode: 'textarea' } }),
-      ageAtEmployment: integer({ label: 'Alter zum Zeitpunkt der Anstellung', validation: {isRequired: false} }),
-      yearOfHiring: text({ label: 'Beginn Arbeitszeit (Jahr)', validation: { isRequired: true } }),
-      yearOfLeaving: text({ label: 'Ende Arbeitszeit (Jahr)', validation: {isRequired: false} }),
-      ongoing: checkbox({ label: 'Dauert an', defaultValue: false }),
-      genderIdentityRespected: checkbox({ label: 'Geschlechtliche Identität wurde im Betrieb respektiert' }),
+      name: text({ validation: { isRequired: true }, ui: { label: 'Titel des Erfahrungsberichts' } }),
+      email: text({ validation: { isRequired: true }, ui: { label: 'E-Mail-Adresse' } }),
+
+      company: relationship({ ref: 'Company.reviews', ui: { label: 'Betrieb' } }),
+      collective: checkbox({ defaultValue: false, ui: { label: 'Kollektiv' } }),
+      hoursPerWeek: integer({ validation: {isRequired: false}, ui: { label: 'Durchschnittliche h/Woche' } }),
+      overtimePerMonth: integer({ validation: {isRequired: false}, ui: { label: 'Geschätzte Überstunden/Monat (Jahresmittel)' } }),
+      trainingShortenable: checkbox({ ui: { label: 'Ausbildung verkürzbar' } }),
+      partTime: checkbox({ ui: { label: 'Teilzeit möglich' } }),
+      specialtiesOther: text({ validation: {isRequired: false}, ui: { displayMode: 'textarea', label: 'Sonstiges (Besonderheiten)' } }),
+      ageAtEmployment: integer({ validation: {isRequired: false}, ui: { label: 'Alter zum Zeitpunkt der Anstellung' } }),
+      yearOfHiring: text({ validation: { isRequired: true }, ui: { label: 'Beginn Arbeitszeit (Jahr)' } }),
+      yearOfLeaving: text({ validation: {isRequired: false}, ui: { label: 'Ende Arbeitszeit (Jahr)' } }),
+      ongoing: checkbox({ defaultValue: false, ui: { label: 'Dauert an' } }),
+      genderIdentityRespected: checkbox({ ui: { label: 'Geschlechtliche Identität wurde im Betrieb respektiert' } }),
       position: select({
-        label: 'Position',
         type: 'enum',
         options: [
           { label: 'Praktikant*in', value: 'intern' },
@@ -158,12 +156,11 @@ export const lists = {
           { label: 'Bauhelfer*in', value: 'helper' },
           { label: 'Andere', value: 'other' },
         ],
-        ui: { displayMode: 'select' },
+        ui: { displayMode: 'select', label: 'Position' },
         validation: { isRequired: true },
       }),
       // Betriebsklima & Respekt
       listenedTo: select({
-        label: 'Wurde dir zugehört?',
         type: 'enum',
         options: [
           { label: 'immer', value: 'always' },
@@ -172,10 +169,9 @@ export const lists = {
           { label: 'selten', value: 'rarely' },
           { label: 'niemals', value: 'never' },
         ],
-        ui: { displayMode: 'select' },
+        ui: { displayMode: 'select', label: 'Wurde dir zugehört?' },
       }),
       canAskColleagues: select({
-        label: 'Konnte ich mit Fragen/Problemen zu Kolleg*innen gehen?',
         type: 'enum',
         options: [
           { label: 'immer', value: 'always' },
@@ -184,10 +180,9 @@ export const lists = {
           { label: 'selten', value: 'rarely' },
           { label: 'niemals', value: 'never' },
         ],
-        ui: { displayMode: 'select' },
+        ui: { displayMode: 'select', label: 'Konnte ich mit Fragen/Problemen zu Kolleg*innen gehen?' },
       }),
       canAskBoss: select({
-        label: 'Konnte ich mit Fragen/Problemen zu meine*r Chef*in gehen?',
         type: 'enum',
         options: [
           { label: 'immer', value: 'always' },
@@ -196,10 +191,9 @@ export const lists = {
           { label: 'selten', value: 'rarely' },
           { label: 'niemals', value: 'never' },
         ],
-        ui: { displayMode: 'select' },
+        ui: { displayMode: 'select', label: 'Konnte ich mit Fragen/Problemen zu meine*r Chef*in gehen?' },
       }),
       tone: select({
-        label: 'Wie war der Umgangston?',
         type: 'enum',
         options: [
           { label: 'sehr angenehm', value: 'very_good' },
@@ -208,10 +202,9 @@ export const lists = {
           { label: 'unangenehm', value: 'bad' },
           { label: 'scheiße', value: 'awful' },
         ],
-        ui: { displayMode: 'select' },
+        ui: { displayMode: 'select', label: 'Wie war der Umgangston?' },
       }),
       explained: select({
-        label: 'Wurde dir genug erklärt?',
         type: 'enum',
         options: [
           { label: 'zu viel', value: 'too_much' },
@@ -219,20 +212,18 @@ export const lists = {
           { label: 'ausreichend', value: 'enough' },
           { label: 'zu wenig', value: 'too_little' },
         ],
-        ui: { displayMode: 'select' },
+        ui: { displayMode: 'select', label: 'Wurde dir genug erklärt?' },
       }),
       proximity: select({
-        label: 'Wie war das kollegiale Nähe/Distanz-Verhältnis?',
         options: [
           { label: 'zu nah', value: 'too_close' },
           { label: 'locker', value: 'casual' },
           { label: 'professionell', value: 'professional' },
           { label: 'zu distant', value: 'too_distant' },
         ],
-        ui: { displayMode: 'select' },
+        ui: { displayMode: 'select', label: 'Wie war das kollegiale Nähe/Distanz-Verhältnis?' },
       }),
       boundariesRespected: multiselect({
-        label: 'Meine Grenzen wurden respektiert (Mehrfachauswahl)',
         type: 'enum',
         options: [
           { label: 'körperlich-kräftetechnisch', value: 'physical_strength' },
@@ -240,22 +231,21 @@ export const lists = {
           { label: 'verantwortungstechnisch', value: 'responsibility' },
           { label: 'körperlich-distanztechnisch', value: 'physical_distance' },
         ],
+        ui: { label: 'Meine Grenzen wurden respektiert (Mehrfachauswahl)' },
       }),
       appreciated: select({
-        label: 'Hast du dich wertgeschätzt gefühlt?',
         type: 'enum',
         options: [
           { label: 'ja', value: 'yes' },
           { label: 'teilweise', value: 'partly' },
           { label: 'nein', value: 'no' },
         ],
-        ui: { displayMode: 'select' },
+        ui: { displayMode: 'select', label: 'Hast du dich wertgeschätzt gefühlt?' },
       }),
-      experienceText: text({ label: 'Freitextfeld: Betriebsklima & Umgang', ui: { displayMode: 'textarea' } }),
-      languages: text({ label: 'Sprachen im Betrieb' }),
+      experienceText: text({ ui: { displayMode: 'textarea', label: 'Freitextfeld: Betriebsklima & Umgang' } }),
+      languages: text({ ui: { label: 'Sprachen im Betrieb' } }),
       // Geschlecht
       gender: select({
-        label: 'Geschlecht',
         type: 'enum',
         options: [
           { label: 'keine Angabe', value: 'prefer_not_to_say' },
@@ -268,31 +258,28 @@ export const lists = {
           { label: 'divers', value: 'diverse' },
           { label: 'offen', value: 'other' },
         ],
-        ui: { displayMode: 'select' },
+        ui: { displayMode: 'select', label: 'Geschlecht' },
       }),
       sharedWithCompany: select({
-        label: 'War dem Betrieb deine Geschlechtsidentität bekannt?',
         type: 'enum',
         options: [
           { label: 'ja', value: 'yes' },
           { label: 'teilweise', value: 'partly' },
           { label: 'nein', value: 'no' },
         ],
-        ui: { displayMode: 'select' },
+        ui: { displayMode: 'select', label: 'War dem Betrieb deine Geschlechtsidentität bekannt?' },
       }),
       feltComfortableSharing: select({
-        label: 'Hast du dich damit wohlgefühlt, dass dem Betrieb deine Geschlechtsidentität bekannt war?',
         type: 'enum',
         options: [
           { label: 'ja', value: 'yes' },
           { label: 'teilweise', value: 'partly' },
           { label: 'nein', value: 'no' },
         ],
-        ui: { displayMode: 'select' },
+        ui: { displayMode: 'select', label: 'Hast du dich damit wohlgefühlt, dass dem Betrieb deine Geschlechtsidentität bekannt war?' },
       }),
       // Beeinträchtigung
       disabilityTypes: multiselect({
-        label: 'Beeinträchtigungen (Mehrfachauswahl)',
         type: 'enum',
         options: [
           { label: 'Autismus-Spektrum', value: 'autism_spectrum' },
@@ -315,30 +302,28 @@ export const lists = {
           { label: 'mehrgewichtig/hochgewichtig', value: 'overweight' },
           { label: 'wenigergewichtig', value: 'underweight' },
         ],
+        ui: { label: 'Beeinträchtigungen (Mehrfachauswahl)' },
       }),
       disabilitySharedWithCompany: select({
-        label: 'War dem Betrieb deine Beeinträchtigung bekannt?',
         type: 'enum',
         options: [
           { label: 'ja', value: 'yes' },
           { label: 'teilweise', value: 'partly' },
           { label: 'nein', value: 'no' },
         ],
-        ui: { displayMode: 'select' },
+        ui: { displayMode: 'select', label: 'War dem Betrieb deine Beeinträchtigung bekannt?' },
       }),
       disabilityFeltComfortableSharing: select({
-        label: 'Hast du dich damit wohlgefühlt, dass dem Betrieb deine Beeinträchtigung bekannt war?',
         type: 'enum',
         options: [
           { label: 'ja', value: 'yes' },
           { label: 'teilweise', value: 'partly' },
           { label: 'nein', value: 'no' },
         ],
-        ui: { displayMode: 'select' },
+        ui: { displayMode: 'select', label: 'Hast du dich damit wohlgefühlt, dass dem Betrieb deine Beeinträchtigung bekannt war?' },
       }),
       // Herkunft & Erscheinungsbild
       ethnicityTypes: multiselect({
-        label: 'Herkunft & Erscheinungsbild (Mehrfachauswahl)',
         type: 'enum',
         options: [
           { label: 'weiß', value: 'white' },
@@ -350,62 +335,59 @@ export const lists = {
           { label: 'Migrant*in', value: 'migrant' },
           { label: 'Rom*nja/Sinti*zze', value: 'roma_sinti' },
         ],
+        ui: { label: 'Herkunft & Erscheinungsbild (Mehrfachauswahl)' },
       }),
       ethnicitySharedWithCompany: select({
-        label: 'War dem Betrieb deine Herkunft/Erscheinungsbild bekannt?',
         type: 'enum',
         options: [
           { label: 'ja', value: 'yes' },
           { label: 'teilweise', value: 'partly' },
           { label: 'nein', value: 'no' },
         ],
-        ui: { displayMode: 'select' },
+        ui: { displayMode: 'select', label: 'War dem Betrieb deine Herkunft/Erscheinungsbild bekannt?' },
       }),
       ethnicityFeltComfortableSharing: select({
-        label: 'Hast du dich damit wohlgefühlt, dass dem Betrieb deine Herkunft/Erscheinungsbild bekannt war?',
         type: 'enum',
         options: [
           { label: 'ja', value: 'yes' },
           { label: 'teilweise', value: 'partly' },
           { label: 'nein', value: 'no' },
         ],
-        ui: { displayMode: 'select' },
+        ui: { displayMode: 'select', label: 'Hast du dich damit wohlgefühlt, dass dem Betrieb deine Herkunft/Erscheinungsbild bekannt war?' },
       }),
       needsRespected: select({
-        label: 'Wurde insgesamt auf deine Bedürfnisse bezüglich deiner Identität Rücksicht genommen?',
         type: 'enum',
         options: [
           { label: 'ja', value: 'yes' },
           { label: 'teilweise', value: 'partly' },
           { label: 'nein', value: 'no' },
         ],
-        ui: { displayMode: 'select' },
+        ui: { displayMode: 'select', label: 'Wurde insgesamt auf deine Bedürfnisse bezüglich deiner Identität Rücksicht genommen?' },
       }),
-      feedback: text({ label: 'Feedback zum Betrieb', ui: { displayMode: 'textarea' } }),
-      moreWishes: text({ label: 'Wünsche an das Betriebsradar / weiteres Feedback', ui: { displayMode: 'textarea' } }),
+      feedback: text({ ui: { displayMode: 'textarea', label: 'Feedback zum Betrieb' } }),
+      moreWishes: text({ ui: { displayMode: 'textarea', label: 'Wünsche an das Betriebsradar / weiteres Feedback' } }),
 
       /**Internal fields -> cannot be updated by reviewing person*/
       status: select({
-        label: 'Zustand des Berichts',
-           type: 'enum',
+        type: 'enum',
         options: [
           { label: 'Ready for Review', value: 'awaitingReview' },
           { label: 'Änderungen erwünscht', value: 'changesRequested'},
           { label: 'Veröffentlicht', value: 'published' },
         ],
         defaultValue: 'awaitingReview',
-        ui: { displayMode: 'segmented-control' },
+        ui: { displayMode: 'segmented-control', label: 'Zustand des Berichts' },
         access: {
           update: ({ session, context, listKey, operation }) =>  session?.data?.roles.includes('editor') || false,
           create: ({ session, context, listKey, operation }) =>  false, //no one can set this field on creation, it will be set to 'draft' by default
-        },         
+        },
       }),
-      emailVerified: checkbox({ label: 'E-Mail verifiziert', defaultValue: false }),
+      emailVerified: checkbox({ defaultValue: false, ui: { label: 'E-Mail verifiziert' } }),
       //the access key is generated on creation and cannot be updated, it is used to allow users to edit their review without having an account
       accessKey: text({
-        label: 'Zugriffsschlüssel',
         isIndexed: 'unique',
         validation: {isRequired: false},
+        ui: { label: 'Zugriffsschlüssel' },
         access: {
           read: ({ session }) => session?.data?.roles?.includes('editor') || session?.data?.roles?.includes('admin') || true,
           create: () => true,

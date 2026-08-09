@@ -3,10 +3,8 @@ jest.mock('../geocoder', () => ({
 }));
 
 import { KeystoneContext } from '@keystone-6/core/types';
-import { SampleData } from '../seed_data';
 import { graphql } from './gql';
-import { ReviewDurationType, ReviewPositionType, ReviewStatusType } from './gql/graphql';
-import { context as publicContext, contextAs, execute, resetAndSeed } from './setup';
+import { context as publicContext, contextAs, createCompany, createUser, execute, resetDb } from './setup';
 import { setTransporter } from '../mailer';
 import { parse } from 'graphql';
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
@@ -71,7 +69,7 @@ const GET_REVIEWS_BY_EMAIL = graphql(`
   }
 `);
 
-var sampleData: SampleData;
+var companyId: string;
 var adminContext: KeystoneContext;
 var editorContext: KeystoneContext;
 
@@ -82,9 +80,15 @@ const mockSendMail = jest.fn().mockResolvedValue({ messageId: 'test-message-id' 
 
 beforeAll(async () => {
   setTransporter({ sendMail: mockSendMail } as any);
-  sampleData = await resetAndSeed();
-  adminContext = await contextAs('admin@example.com');
-  editorContext = await contextAs(sampleData.editorAnna.email);
+  await resetDb();
+
+  const admin = await createUser({ email: 'admin@example.com', roles: ['admin'] });
+  const editor = await createUser({ email: 'editor@example.com', roles: ['editor'] });
+  const company = await createCompany();
+  companyId = company.id;
+
+  adminContext = await contextAs(admin.email);
+  editorContext = await contextAs(editor.email);
 });
 
 describe("Given a submitted Review", () => {
@@ -96,7 +100,7 @@ describe("Given a submitted Review", () => {
 
   it("when a public user requests reviews, the review is not visible", async () => {
     let { data } = await execute(publicContext, GET_ALL_REVIEWS);
-    expect(data?.reviews).toHaveLength(1);
+    expect(data?.reviews?.map(r => r.id)).not.toContain(reviewId);
   });
 
   it("when a public user requests the review by id, it is not returned", async () => {
@@ -111,7 +115,7 @@ describe("Given a submitted Review", () => {
 
   it("state is AwaitingReview and email verficiation is pending", async () => {
     let {data} = await execute(adminContext, GET_REVIEW_BY_ID, {id : reviewId});
-    expect(data?.review?.status).toBe(ReviewStatusType.AwaitingReview);
+    expect(data?.review?.status).toBe('awaitingReview');
     expect(data?.review?.emailVerified).toBeFalsy();
   })
 
@@ -166,8 +170,6 @@ describe("Email Verification", () => {
 });
 
 async function submitReview(email = 'new-test@example.com'): Promise<string> {
-  const companyId = sampleData.theCompany.id;
-
   // Submit a review without any session — context has no session attached
   const { data, errors } = await execute(publicContext, CREATE_REVIEW, {
     data: {
@@ -175,9 +177,8 @@ async function submitReview(email = 'new-test@example.com'): Promise<string> {
       email,
       hoursPerWeek: 40,
       ageAtEmployment: 20,
-      duration: ReviewDurationType.OneToFourMonths,
       yearOfHiring: '2024',
-      position: ReviewPositionType.Intern,
+      position: 'intern',
       company: { connect: { id: companyId } },
     },
   });

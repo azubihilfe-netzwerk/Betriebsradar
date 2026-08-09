@@ -1,6 +1,6 @@
 import type { Transporter } from "nodemailer";
 import nodemailer from "nodemailer";
-require("dotenv").config();
+import "dotenv/config";
 
 
 let _transporter: Transporter | null = null;

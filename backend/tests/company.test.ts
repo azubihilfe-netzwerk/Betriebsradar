@@ -85,13 +85,12 @@ beforeAll(async () => {
 describe('Company visibility', () => {
   it('public user sees the verified seed company', async () => {
     const { data } = await execute(publicContext, GET_COMPANIES);
-    expect(data?.companies).toHaveLength(1);
-    expect(data?.companies?.[0].name).toBe('Beispiel GmbH');
+    expect(data?.companies?.some(c => c.name === 'Beispiel GmbH')).toBe(true);
   });
 
   it('public user does see unverified companies', async () => {
     const { data } = await execute(editorContext, CREATE_COMPANY, {
-      data: { name: 'Unverifiziert GmbH', trade: 'Tischlerei', address: 'Musterstraße 1, 10115 Berlin', contact: 'x@x.de', size: '_1to10' },
+      data: { name: 'Unverifiziert GmbH', trade: 'Tischlerei', address: 'Musterstraße 1, 10115 Berlin', contact: 'x@x.de', size: '_1to5' },
     });
     const unverifiedId = data?.createCompany?.id!;
 
@@ -109,7 +108,7 @@ describe('Company visibility', () => {
 describe('Company creation', () => {
   it('anyone can create a company', async () => {
     const { data, errors } = await execute(publicContext, CREATE_COMPANY, {
-      data: { name: 'Öffentlich erstellt', trade: 'Malerei', address: 'Testgasse 5, 80331 München', contact: 'pub@test.de', size: '_1to10' },
+      data: { name: 'Öffentlich erstellt', trade: 'Malerei', address: 'Testgasse 5, 80331 München', contact: 'pub@test.de', size: '_1to5' },
     });
     expect(errors).toBeUndefined();
     expect(data?.createCompany?.id).toBeDefined();
@@ -117,14 +116,14 @@ describe('Company creation', () => {
 
   it('new company starts unverified', async () => {
     const { data } = await execute(publicContext, CREATE_COMPANY, {
-      data: { name: 'Neue Firma', trade: 'Klempnerei', address: 'Neue Str. 1, 50667 Köln', contact: 'neu@test.de', size: '_10to50' },
+      data: { name: 'Neue Firma', trade: 'Klempnerei', address: 'Neue Str. 1, 50667 Köln', contact: 'neu@test.de', size: '_30to50' },
     });
     expect(data?.createCompany?.verified).toBe(false);
   });
 
   it('geocodes the address on creation and stores coordinates', async () => {
     const { data } = await execute(publicContext, CREATE_COMPANY, {
-      data: { name: 'Geo Firma', trade: 'Elektrik', address: 'Kaiserstraße 1, 76131 Karlsruhe', contact: 'geo@test.de', size: '_1to10' },
+      data: { name: 'Geo Firma', trade: 'Elektrik', address: 'Kaiserstraße 1, 76131 Karlsruhe', contact: 'geo@test.de', size: '_1to5' },
     });
     expect(geocodeAddress).toHaveBeenCalledWith('Kaiserstraße 1, 76131 Karlsruhe');
     expect(data?.createCompany?.latitude).toBeCloseTo(49.0069);

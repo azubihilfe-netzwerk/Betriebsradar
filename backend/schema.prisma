@@ -2,13 +2,12 @@
 // Modify your Keystone config when you want to change this.
 
 datasource sqlite {
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
-  provider          = "sqlite"
+  provider = "sqlite"
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "./generated/prisma"
 }
 
 model User {
@@ -16,7 +15,7 @@ model User {
   name      String    @default("")
   email     String    @unique @default("")
   password  String
-  roles     String    @default("[]")
+  roles     Json
   createdAt DateTime? @default(now())
 }
 
@@ -57,17 +56,17 @@ model Review {
   tone                             String?
   explained                        String?
   proximity                        String?
-  boundariesRespected              String   @default("[]")
+  boundariesRespected              Json
   appreciated                      String?
   experienceText                   String   @default("")
   languages                        String   @default("")
   gender                           String?
   sharedWithCompany                String?
   feltComfortableSharing           String?
-  disabilityTypes                  String   @default("[]")
+  disabilityTypes                  Json
   disabilitySharedWithCompany      String?
   disabilityFeltComfortableSharing String?
-  ethnicityTypes                   String   @default("[]")
+  ethnicityTypes                   Json
   ethnicitySharedWithCompany       String?
   ethnicityFeltComfortableSharing  String?
   needsRespected                   String?
