@@ -3,10 +3,9 @@ jest.mock('../geocoder', () => ({
 }));
 
 import { geocodeAddress } from '../geocoder';
-import { SampleData } from '../seed_data';
 import { parse } from 'graphql';
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
-import { context as publicContext, contextAs, execute, resetAndSeed } from './setup';
+import { context as publicContext, contextAs, createCompany, createUser, execute, resetDb } from './setup';
 import { setTransporter } from '../mailer';
 
 const mockSendMail = jest.fn().mockResolvedValue({ messageId: 'test-message-id' });
@@ -73,19 +72,25 @@ const DELETE_COMPANY = parse(`
   { id: string }
 >;
 
-var sampleData: SampleData;
 var editorContext: Awaited<ReturnType<typeof contextAs>>;
+var verifiedCompanyId: string;
+var verifiedCompanyName: string;
 
 beforeAll(async () => {
   setTransporter({ sendMail: mockSendMail } as any);
-  sampleData = await resetAndSeed();
-  editorContext = await contextAs(sampleData.editorAnna.email);
+  await resetDb();
+  await createUser({ email: 'editor@example.com', roles: ['editor'] });
+  editorContext = await contextAs('editor@example.com');
+
+  const verifiedCompany = await createCompany({ verified: true });
+  verifiedCompanyId = verifiedCompany.id;
+  verifiedCompanyName = verifiedCompany.name;
 });
 
 describe('Company visibility', () => {
-  it('public user sees the verified seed company', async () => {
+  it('public user sees a verified company', async () => {
     const { data } = await execute(publicContext, GET_COMPANIES);
-    expect(data?.companies?.some(c => c.name === 'Beispiel GmbH')).toBe(true);
+    expect(data?.companies?.some(c => c.id === verifiedCompanyId && c.name === verifiedCompanyName)).toBe(true);
   });
 
   it('public user does see unverified companies', async () => {

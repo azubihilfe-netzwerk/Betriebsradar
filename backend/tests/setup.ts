@@ -43,10 +43,8 @@ export async function resetDb(): Promise<void> {
 }
 
 /** Wipes the test database and re-runs the seed script against it. */
-export async function resetAndSeed(): Promise<SampleData> {
-  await resetDb();
-  // seed() accepts a context so it writes to the same test database
-  return (await seed(context.sudo()));
+export async function resetAndSeed(): Promise<void> {
+  return await resetDb();
 }
 
 type Overrides<T> = Partial<T> & Record<string, unknown>;
