@@ -1,5 +1,7 @@
-jest.mock('../geocoder', () => ({
-  geocodeAddress: jest.fn().mockResolvedValue({ lat: 49.0069, lon: 8.4037 }),
+import { vi } from 'vitest';
+
+vi.mock('../geocoder', () => ({
+  geocodeAddress: vi.fn().mockResolvedValue({ lat: 49.0069, lon: 8.4037 }),
 }));
 
 import { KeystoneContext } from '@keystone-6/core/types';
@@ -73,7 +75,7 @@ var companyId: string;
 var adminContext: KeystoneContext;
 var editorContext: KeystoneContext;
 
-const mockSendMail = jest.fn().mockResolvedValue({ messageId: 'test-message-id' });
+const mockSendMail = vi.fn().mockResolvedValue({ messageId: 'test-message-id' });
 
 // ---------------------------------------------------------------------------
 
@@ -189,6 +191,6 @@ async function submitReview(email = 'new-test@example.com'): Promise<string> {
   if (reviewId) {
     return reviewId;
   } else {
-    fail();
+    throw new Error('createReview did not return an id');
   }
 }

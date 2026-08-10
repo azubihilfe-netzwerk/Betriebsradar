@@ -14,7 +14,7 @@ function uniqueSuffix(): string {
   return `${Date.now()}-${nextId++}`;
 }
 
-const dbUrl = `file:./test-${process.env.JEST_WORKER_ID ?? 1}.db`;
+const dbUrl = `file:./test-${process.env.VITEST_WORKER_ID ?? 1}.db`;
 const backendDir = path.join(__dirname, '..');
 // Override the db URL so tests use an isolated database per Jest worker
 const config = {

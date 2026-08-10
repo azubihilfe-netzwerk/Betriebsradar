@@ -1,5 +1,7 @@
-jest.mock('../geocoder', () => ({
-  geocodeAddress: jest.fn().mockResolvedValue({ lat: 49.0069, lon: 8.4037 }),
+import { vi } from 'vitest';
+
+vi.mock('../geocoder', () => ({
+  geocodeAddress: vi.fn().mockResolvedValue({ lat: 49.0069, lon: 8.4037 }),
 }));
 
 import { geocodeAddress } from '../geocoder';
@@ -8,7 +10,7 @@ import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { context as publicContext, contextAs, createCompany, createUser, execute, resetDb } from './setup';
 import { setTransporter } from '../mailer';
 
-const mockSendMail = jest.fn().mockResolvedValue({ messageId: 'test-message-id' });
+const mockSendMail = vi.fn().mockResolvedValue({ messageId: 'test-message-id' });
 
 const GET_COMPANIES = parse(`
   query GetCompanies {
