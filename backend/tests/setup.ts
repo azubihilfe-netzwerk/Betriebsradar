@@ -6,7 +6,7 @@ import { getContext } from '@keystone-6/core/context';
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 import * as PrismaModule from '../generated/prisma/client';
 import baseConfig from '../keystone';
-import { createSampleData as seed, SampleData } from '../seed_data';
+import { resetDatabase } from '@keystone-6/core/testing/sqlite'
 
 let nextId = 0;
 /** Returns a short, per-process-unique suffix so parallel test data doesn't collide. */
@@ -14,7 +14,8 @@ function uniqueSuffix(): string {
   return `${Date.now()}-${nextId++}`;
 }
 
-const dbUrl = `file:./test-${process.env.VITEST_WORKER_ID ?? 1}.db`;
+const dbName = `test-${process.env.VITEST_WORKER_ID ?? 1}.db`;
+const dbUrl = `file:./${dbName}`;
 const backendDir = path.join(__dirname, '..');
 // Override the db URL so tests use an isolated database per Jest worker
 const config = {
@@ -29,17 +30,8 @@ export const context = getContext(config, PrismaModule);
 
 /** Wipes the test database, leaving it empty. */
 export async function resetDb(): Promise<void> {
-  execFileSync('npx', ['prisma', 'db', 'push', '--force-reset', '--accept-data-loss'], {
-    cwd: backendDir,
-    env: {
-      ...process.env,
-      DATABASE_URL: dbUrl,
-      // Safe: this only ever targets the isolated per-worker test-N.db files
-      // created above, never the real keystone.db.
-      PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION: 'test suite resets its own isolated sqlite file before each run',
-    },
-    stdio: 'pipe',
-  });
+  await resetDatabase({"filename" : dbName}, "migrations");
+ 
 }
 
 /** Wipes the test database and re-runs the seed script against it. */

@@ -1,4 +1,5 @@
 import { defineConfig } from 'prisma/config'
+const dbUrl = process.env.DATABASE_URL ?? 'file:./keystone.db';
 
 export default defineConfig({
   schema: 'schema.prisma',
@@ -6,6 +7,6 @@ export default defineConfig({
     path: 'migrations',
   },
   datasource: {
-    url: process.env.DATABASE_URL,
+    url: dbUrl,
   },
 })
