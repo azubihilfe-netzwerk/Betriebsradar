@@ -1,12 +1,13 @@
-import { execFileSync } from 'child_process';
 import path from 'path';
+import { randomUUID } from 'crypto';
 import { print } from 'graphql';
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { getContext } from '@keystone-6/core/context';
-import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { Client, escapeIdentifier } from 'pg';
 import * as PrismaModule from '../generated/prisma/client';
 import baseConfig from '../keystone';
-import { resetDatabase } from '@keystone-6/core/testing/sqlite'
+import { resetDatabase } from '@keystone-6/core/testing/postgresql'
 
 let nextId = 0;
 /** Returns a short, per-process-unique suffix so parallel test data doesn't collide. */
@@ -14,15 +15,18 @@ function uniqueSuffix(): string {
   return `${Date.now()}-${nextId++}`;
 }
 
-const dbName = `test-${process.env.VITEST_WORKER_ID ?? 1}.db`;
-const dbUrl = `file:./${dbName}`;
-const backendDir = path.join(__dirname, '..');
-// Override the db URL so tests use an isolated database per Jest worker
+// Vitest can interleave multiple test files within the same worker, so a schema keyed only
+// on the worker id isn't enough isolation — key it per module instance instead.
+const schema = `test_${process.env.VITEST_WORKER_ID ?? 1}_${randomUUID().replace(/-/g, '')}`;
+const migrationsDir = path.join(__dirname, '..', 'migrations');
+// Override the db URL so tests use an isolated schema per Vitest worker
 const config = {
   ...baseConfig,
   db: {
     ...baseConfig.db,
-    prismaClientOptions: () => ({ adapter: new PrismaBetterSqlite3({ url: dbUrl }) }),
+    prismaClientOptions: () => ({
+      adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }, { schema }),
+    }),
   },
 };
 
@@ -30,9 +34,20 @@ export const context = getContext(config, PrismaModule);
 
 /** Wipes the test database, leaving it empty. */
 export async function resetDb(): Promise<void> {
-  await resetDatabase({"filename" : dbName}, "migrations");
- 
+  await resetDatabase({ connectionString: process.env.DATABASE_URL, schema }, migrationsDir);
 }
+
+// Each test file gets its own schema (see above); drop it once the file's tests are done so
+// schemas don't accumulate on the shared local Postgres instance.
+afterAll(async () => {
+  const client = new Client({ connectionString: process.env.DATABASE_URL });
+  await client.connect();
+  try {
+    await client.query(`DROP SCHEMA IF EXISTS ${escapeIdentifier(schema)} CASCADE`);
+  } finally {
+    await client.end();
+  }
+});
 
 /** Wipes the test database and re-runs the seed script against it. */
 export async function resetAndSeed(): Promise<void> {
@@ -62,7 +77,7 @@ export async function createCompany(overrides: Overrides<{ name: string; trade: 
       name: `Test Company ${uniqueSuffix()}`,
       trade: 'Elektronik',
       address: 'Dürkheimer Str. 27, 76185 Karlsruhe',
-      size: '_10to30',
+      size: 's10to30',
       verified: true,
       ...overrides,
     },

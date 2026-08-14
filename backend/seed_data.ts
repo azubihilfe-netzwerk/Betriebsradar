@@ -161,7 +161,7 @@ export async function createSampleData(ctx?: any): Promise<SampleData> {
     trade: 'Elektronik',
     contact: 'info@beispiel-gmbh.de',
     address: 'Dürkheimer Str. 27, 76185 Karlsruhe',
-    size: '_10to30',
+    size: 's10to30',
     verified: true,
   };
 

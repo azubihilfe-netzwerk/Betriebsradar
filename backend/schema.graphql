@@ -59,7 +59,13 @@ input StringFilter {
   contains: String
   startsWith: String
   endsWith: String
+  mode: QueryMode
   not: NestedStringFilter
+}
+
+enum QueryMode {
+  default
+  insensitive
 }
 
 input NestedStringFilter {
@@ -135,12 +141,12 @@ type Company {
 }
 
 enum CompanySizeType {
-  _1to5
-  _5to10
-  _10to30
-  _30to50
-  _50to250
-  _250plus
+  s1to5
+  s5to10
+  s10to30
+  s30to50
+  s50to250
+  size250plus
 }
 
 input CompanyWhereUniqueInput {
@@ -557,6 +563,7 @@ input StringNullableFilter {
   contains: String
   startsWith: String
   endsWith: String
+  mode: QueryMode
   not: StringNullableFilter
 }
 
@@ -903,11 +910,6 @@ type KeystoneAdminUIFieldMetaListView {
 enum KeystoneAdminUIFieldMetaListViewFieldMode {
   read
   hidden
-}
-
-enum QueryMode {
-  default
-  insensitive
 }
 
 type KeystoneAdminUIFieldGroupMeta {

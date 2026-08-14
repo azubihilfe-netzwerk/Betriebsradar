@@ -2,20 +2,33 @@ import { config } from '@keystone-6/core'
 import { mergeSchemas } from '@graphql-tools/schema'
 import type { KeystoneContext } from '@keystone-6/core/types'
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3'
+import { PrismaPg } from '@prisma/adapter-pg'
 import { lists } from './schema'
 import { withAuth, session } from './auth'
 import 'dotenv/config';
 
-const dbUrl = process.env.DATABASE_URL ?? 'file:./keystone.db';
 
-export default withAuth(
-  config({
-    db: {
-      provider: 'sqlite',
+export const dbUrl = process.env.DATABASE_URL;
+
+const dbConfig = dbUrl!.startsWith("file") ?
+ {
+      provider: 'sqlite' as const,
       prismaClientOptions: () => ({
         adapter: new PrismaBetterSqlite3({ url: dbUrl }),
       }),
-      idField: { kind: 'autoincrement' },
+    } :
+  { provider: 'postgresql' as const,
+  prismaClientOptions: () => ({
+    adapter: new PrismaPg({ connectionString: process.env.PG_URL! }),
+    log: ['query'],
+  }),}
+;
+ 
+
+export default withAuth(
+  config({
+    db: { ...dbConfig,
+      idField: { kind : 'autoincrement'}
     },
     lists,
     session,

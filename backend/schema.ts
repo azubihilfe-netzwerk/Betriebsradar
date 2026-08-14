@@ -66,12 +66,12 @@ export const lists = {
       size: select({
         type: 'enum',
         options: [
-          { label: '1–5', value: '_1to5' },
-          { label: '5–10', value: '_5to10' },
-          { label: '10–30', value: '_10to30' },
-          { label: '30–50', value: '_30to50' },
-          { label: '50–250', value: '_50to250' },
-          { label: 'ab 250', value: '_250plus' },
+          { label: '1–5', value: 's1to5' },
+          { label: '5–10', value: 's5to10' },
+          { label: '10–30', value: 's10to30' },
+          { label: '30–50', value: 's30to50' },
+          { label: '50–250', value: 's50to250' },
+          { label: 'ab 250', value: 'size250plus' },
         ],
         ui: { displayMode: 'select', label: 'Größe' },
         validation: { isRequired: true },

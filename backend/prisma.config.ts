@@ -1,5 +1,5 @@
 import { defineConfig } from 'prisma/config'
-const dbUrl = process.env.DATABASE_URL ?? 'file:./keystone.db';
+import { dbUrl} from './keystone'
 
 export default defineConfig({
   schema: 'schema.prisma',
