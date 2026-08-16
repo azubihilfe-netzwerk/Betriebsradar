@@ -25,7 +25,7 @@ const config = {
   db: {
     ...baseConfig.db,
     prismaClientOptions: () => ({
-      adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }, { schema }),
+      adapter: new PrismaPg({ connectionString: process.env.PG_URL }, { schema }),
     }),
   },
 };
@@ -34,13 +34,13 @@ export const context = getContext(config, PrismaModule);
 
 /** Wipes the test database, leaving it empty. */
 export async function resetDb(): Promise<void> {
-  await resetDatabase({ connectionString: process.env.DATABASE_URL, schema }, migrationsDir);
+  await resetDatabase({ connectionString: process.env.PG_URL, schema }, migrationsDir);
 }
 
 // Each test file gets its own schema (see above); drop it once the file's tests are done so
 // schemas don't accumulate on the shared local Postgres instance.
 afterAll(async () => {
-  const client = new Client({ connectionString: process.env.DATABASE_URL });
+  const client = new Client({ connectionString: process.env.PG_URL });
   await client.connect();
   try {
     await client.query(`DROP SCHEMA IF EXISTS ${escapeIdentifier(schema)} CASCADE`);

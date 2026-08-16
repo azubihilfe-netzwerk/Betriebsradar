@@ -1,7 +1,7 @@
 
 import { getContext } from '@keystone-6/core/context';
-import config from './keystone';
-import * as PrismaModule from './generated/prisma/client';
+import config from '../keystone';
+import * as PrismaModule from '../generated/prisma/client';
 import sampleCompanies from './sample_companies.json';
 
 // Generic function to get or create an entity by name

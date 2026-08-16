@@ -7,7 +7,7 @@
     "build": "keystone build",
     "postinstall": "keystone postinstall",
     "start": "keystone start --with-migrations",
-    "seed_data": "tsx seed_data.ts",
+    "seed_data": "tsx seed/seed_data.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "codegen": "graphql-codegen --config codegen.ts"

@@ -41,3 +41,12 @@ You can use the graph ql playground to explore the backend Api: [http://localhos
 3. Generate a new `schema.prisma`: `npx keystone build --no-ui`
 4. Create migration script: `npx prisma migrate dev --name added_some_field`
 5. Commit migration script
+
+On the server:
+
+Run: `npx prisma migrate deploy`
+
+## Configuration
+
+Config variables and secrets live in a `.env` in the backend.
+The actual config file lives elsewhere on the server and the `.env` is a link. 

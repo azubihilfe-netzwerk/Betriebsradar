@@ -1,6 +1,6 @@
 // One-off helper script: resolves real German addresses via the Nominatim
 // geocoding API and writes { name, trade, contact, address, size, verified,
-// latitude, longitude } records to backend/sample_companies.json for use by
+// latitude, longitude } records to backend/seed/sample_companies.json for use by
 // seed_data.ts. Re-run only if you want to regenerate the sample data set;
 // respects Nominatim's 1 req/sec usage policy, so it takes a few minutes.
 //
@@ -219,10 +219,10 @@ async function main() {
 
   const fs = await import('node:fs');
   fs.writeFileSync(
-    new URL('../sample_companies.json', import.meta.url),
+    new URL('../seed/sample_companies.json', import.meta.url),
     JSON.stringify(companies, null, 2) + '\n'
   );
-  console.log(`\nWrote ${companies.length} companies to ../sample_companies.json`);
+  console.log(`\nWrote ${companies.length} companies to ../seed/sample_companies.json`);
 }
 
 main();
