@@ -16,7 +16,6 @@ type PasswordState {
 
 enum UserRolesType {
   admin
-  reviewer
   editor
 }
 

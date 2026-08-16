@@ -71,6 +71,15 @@ const GET_REVIEWS_BY_EMAIL = graphql(`
   }
 `);
 
+const UPDATE_REVIEW_STATUS = graphql(`
+  mutation UpdateReviewStatus($id: ID!, $status: ReviewStatusType!) {
+    updateReview(where: { id: $id }, data: { status: $status }) {
+      id
+      status
+    }
+  }
+`);
+
 var companyId: string;
 var adminContext: KeystoneContext;
 var editorContext: KeystoneContext;
@@ -120,6 +129,12 @@ describe("Given a submitted Review", () => {
     expect(data?.review?.status).toBe('awaitingReview');
     expect(data?.review?.emailVerified).toBeFalsy();
   })
+
+  it("a reviewer can approve the review", async () => {
+    let { data, errors } = await execute(editorContext, UPDATE_REVIEW_STATUS, { id: reviewId, status: 'published' });
+    expect(errors).toBeUndefined();
+    expect(data?.updateReview?.status).toBe('published');
+  });
 
 });
 

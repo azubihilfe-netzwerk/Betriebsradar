@@ -5,8 +5,11 @@ import { randomBytes } from 'crypto';
 import { sendVerificationEmail } from './mailer';
 import { geocodeAddress } from './geocoder';
 
+const isEditor = (session: any) =>
+  session?.data?.roles?.includes('editor') ;
+
 const isEditorOrAdmin = (session: any) =>
-  session?.data?.roles?.includes('editor') || session?.data?.roles?.includes('admin') || false;
+  isEditor(session) || session?.data?.roles?.includes('admin') || false;
 
 const generateAccessKey = () => randomBytes(32).toString('hex');
 
@@ -32,7 +35,6 @@ export const lists = {
         type: 'enum',
         options: [
           { label: 'Admin', value: 'admin' },
-          { label: 'Autor*in', value: 'reviewer' },
           { label: 'Editor*in', value: 'editor' },
         ],
         ui: { label: 'Rollen' },
@@ -110,23 +112,11 @@ export const lists = {
             //as editor or admin see all reviews
             return {};
           }
-          // If logged in as author, see all published reviews or own reviews
-          if (roles.includes('reviewer')) {
-            return {
-              OR: [
-                { status: { equals: 'published' } },
-                { user: { id: { equals: context.session?.data?.id } } }
-              ]
-            }
-          }
+          // If not logged in, see only published reviews
           return { status: { equals: 'published' } };
         },
-        update: ({ session, context, listKey, operation }) => {
-          return { user: { id: context.session?.data.id } };
-        },
-        delete: ({ session, context, listKey, operation }) => {
-          return { user: { id: context.session?.data.id } };
-        },
+        update: ({ session }) => isEditorOrAdmin(session),
+        delete: ({ session }) => isEditorOrAdmin(session),
       },
       operation: allowAll,
     },
