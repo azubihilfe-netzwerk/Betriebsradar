@@ -3,7 +3,7 @@ import {
   ReviewGenderType,
   ReviewListenedToType,
   ReviewCanAskBossType,
-  ReviewCanAskColleagueType,
+  ReviewCanAskColleaguesType,
   ReviewToneType,
   ReviewExplainedType,
   ReviewAppreciatedType,
@@ -15,8 +15,8 @@ import {
   ReviewEthnicityFeltComfortableSharingType,
   ReviewNeedsRespectedType,
   ReviewBoundariesRespectedType,
-  ReviewDisabilityTypeType,
-  ReviewEthnicityTypeType,
+  ReviewDisabilityTypesType,
+  ReviewEthnicityTypesType,
 } from '../api/__generated__/graphql';
 
 export const positionLabels: Record<ReviewPositionType, string> = {
@@ -56,12 +56,12 @@ export const canAskBossLabels: Record<ReviewCanAskBossType, string> = {
   [ReviewCanAskBossType.Rarely]: 'selten',
   [ReviewCanAskBossType.Never]: 'niemals',
 };
-export const canAskColleaguesLabels: Record<ReviewCanAskColleagueType, string> = {
-  [ReviewCanAskColleagueType.Always]: 'immer',
-  [ReviewCanAskColleagueType.Mostly]: 'meistens',
-  [ReviewCanAskColleagueType.Sometimes]: 'ab und zu',
-  [ReviewCanAskColleagueType.Rarely]: 'selten',
-  [ReviewCanAskColleagueType.Never]: 'niemals',
+export const canAskColleaguesLabels: Record<ReviewCanAskColleaguesType, string> = {
+  [ReviewCanAskColleaguesType.Always]: 'immer',
+  [ReviewCanAskColleaguesType.Mostly]: 'meistens',
+  [ReviewCanAskColleaguesType.Sometimes]: 'ab und zu',
+  [ReviewCanAskColleaguesType.Rarely]: 'selten',
+  [ReviewCanAskColleaguesType.Never]: 'niemals',
 };
 
 export const toneLabels: Record<ReviewToneType, string> = {
@@ -137,37 +137,37 @@ export const boundariesRespectedLabels: Record<ReviewBoundariesRespectedType, st
   [ReviewBoundariesRespectedType.PhysicalDistance]: 'körperlich-distanztechnisch',
 };
 
-export const disabilityTypeLabels: Record<ReviewDisabilityTypeType, string> = {
-  [ReviewDisabilityTypeType.AutismSpectrum]: 'Autismus-Spektrum',
-  [ReviewDisabilityTypeType.Autoimmune]: 'Autoimmunerkrankung',
-  [ReviewDisabilityTypeType.BlindVisuallyImpaired]: 'blind/sehbehindert',
-  [ReviewDisabilityTypeType.DeafHearingImpaired]: 'gehörlos/hörbehindert',
-  [ReviewDisabilityTypeType.PhysicallyDisabled]: 'körperlich behindert',
-  [ReviewDisabilityTypeType.MentalIllness]: 'psychische Erkrankung',
-  [ReviewDisabilityTypeType.ChronicIllness]: 'chronische Erkrankung',
-  [ReviewDisabilityTypeType.Cardiovascular]: 'Herz-Kreislauf-Erkrankung',
-  [ReviewDisabilityTypeType.Musculoskeletal]: 'Skelett-/Muskelerkrankung',
-  [ReviewDisabilityTypeType.Metabolic]: 'Stoffwechselerkrankung',
-  [ReviewDisabilityTypeType.Digestive]: 'Erkrankung des Verdauungssystems',
-  [ReviewDisabilityTypeType.Spasticity]: 'Spastik',
-  [ReviewDisabilityTypeType.LearningDisability]: 'Lernschwierigkeiten / sog. geistige Behinderung',
-  [ReviewDisabilityTypeType.Neurodivergent]: 'neurodivergent',
-  [ReviewDisabilityTypeType.WheelchairMobility]: 'Rollstuhlnutzend / Mobilitätseinschränkung',
-  [ReviewDisabilityTypeType.DrugUse]: 'Drogenkonsument*in',
-  [ReviewDisabilityTypeType.SexualViolence]: 'Erfahrung sexualisierter Gewalt',
-  [ReviewDisabilityTypeType.Overweight]: 'mehrgewichtig/hochgewichtig',
-  [ReviewDisabilityTypeType.Underweight]: 'wenigergewichtig',
+export const disabilityTypeLabels: Record<ReviewDisabilityTypesType, string> = {
+  [ReviewDisabilityTypesType.AutismSpectrum]: 'Autismus-Spektrum',
+  [ReviewDisabilityTypesType.Autoimmune]: 'Autoimmunerkrankung',
+  [ReviewDisabilityTypesType.BlindVisuallyImpaired]: 'blind/sehbehindert',
+  [ReviewDisabilityTypesType.DeafHearingImpaired]: 'gehörlos/hörbehindert',
+  [ReviewDisabilityTypesType.PhysicallyDisabled]: 'körperlich behindert',
+  [ReviewDisabilityTypesType.MentalIllness]: 'psychische Erkrankung',
+  [ReviewDisabilityTypesType.ChronicIllness]: 'chronische Erkrankung',
+  [ReviewDisabilityTypesType.Cardiovascular]: 'Herz-Kreislauf-Erkrankung',
+  [ReviewDisabilityTypesType.Musculoskeletal]: 'Skelett-/Muskelerkrankung',
+  [ReviewDisabilityTypesType.Metabolic]: 'Stoffwechselerkrankung',
+  [ReviewDisabilityTypesType.Digestive]: 'Erkrankung des Verdauungssystems',
+  [ReviewDisabilityTypesType.Spasticity]: 'Spastik',
+  [ReviewDisabilityTypesType.LearningDisability]: 'Lernschwierigkeiten / sog. geistige Behinderung',
+  [ReviewDisabilityTypesType.Neurodivergent]: 'neurodivergent',
+  [ReviewDisabilityTypesType.WheelchairMobility]: 'Rollstuhlnutzend / Mobilitätseinschränkung',
+  [ReviewDisabilityTypesType.DrugUse]: 'Drogenkonsument*in',
+  [ReviewDisabilityTypesType.SexualViolence]: 'Erfahrung sexualisierter Gewalt',
+  [ReviewDisabilityTypesType.Overweight]: 'mehrgewichtig/hochgewichtig',
+  [ReviewDisabilityTypesType.Underweight]: 'wenigergewichtig',
 };
 
-export const ethnicityTypeLabels: Record<ReviewEthnicityTypeType, string> = {
-  [ReviewEthnicityTypeType.White]: 'weiß',
-  [ReviewEthnicityTypeType.PersonOfColor]: 'Person of Color',
-  [ReviewEthnicityTypeType.Black]: 'Schwarz',
-  [ReviewEthnicityTypeType.Indigenous]: 'Indigen',
-  [ReviewEthnicityTypeType.Jewish]: 'Jüdisch',
-  [ReviewEthnicityTypeType.Muslim]: 'Muslim*in',
-  [ReviewEthnicityTypeType.Migrant]: 'Migrant*in',
-  [ReviewEthnicityTypeType.RomaSinti]: 'Rom*nja/Sinti*zze',
+export const ethnicityTypeLabels: Record<ReviewEthnicityTypesType, string> = {
+  [ReviewEthnicityTypesType.White]: 'weiß',
+  [ReviewEthnicityTypesType.PersonOfColor]: 'Person of Color',
+  [ReviewEthnicityTypesType.Black]: 'Schwarz',
+  [ReviewEthnicityTypesType.Indigenous]: 'Indigen',
+  [ReviewEthnicityTypesType.Jewish]: 'Jüdisch',
+  [ReviewEthnicityTypesType.Muslim]: 'Muslim*in',
+  [ReviewEthnicityTypesType.Migrant]: 'Migrant*in',
+  [ReviewEthnicityTypesType.RomaSinti]: 'Rom*nja/Sinti*zze',
 };
 
 /** "seit 2024" while ongoing, "2024–2026" once ended, or just "2024" if neither is known. */

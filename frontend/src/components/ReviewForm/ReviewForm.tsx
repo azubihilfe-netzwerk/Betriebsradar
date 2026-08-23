@@ -13,12 +13,12 @@ import {
   ReviewPositionType,
   ReviewListenedToType,
   ReviewCanAskBossType,
-  ReviewCanAskColleagueType,
+  ReviewCanAskColleaguesType,
   ReviewBoundariesRespectedType,
-  ReviewDisabilityTypeType,
+  ReviewDisabilityTypesType,
   ReviewDisabilitySharedWithCompanyType,
   ReviewDisabilityFeltComfortableSharingType,
-  ReviewEthnicityTypeType,
+  ReviewEthnicityTypesType,
   ReviewEthnicitySharedWithCompanyType,
   ReviewEthnicityFeltComfortableSharingType,
 } from '../../api/__generated__/graphql';
@@ -36,7 +36,7 @@ export interface ReviewFormData {
   listenedTo?: ReviewListenedToType;
   tone?: ReviewToneType;
   explained?: ReviewExplainedType;
-  canAskColleagues?: ReviewCanAskColleagueType;
+  canAskColleagues?: ReviewCanAskColleaguesType;
   canAskBoss?: ReviewCanAskBossType;
   proximity: string;
   boundariesRespected: ReviewBoundariesRespectedType[];
@@ -51,10 +51,10 @@ export interface ReviewFormData {
   specialtiesOther: string;
   sharedWithCompany?: ReviewSharedWithCompanyType;
   feltComfortableSharing?: ReviewFeltComfortableSharingType;
-  disabilityTypes: ReviewDisabilityTypeType[];
+  disabilityTypes: ReviewDisabilityTypesType[];
   disabilitySharedWithCompany?: ReviewDisabilitySharedWithCompanyType;
   disabilityFeltComfortableSharing?: ReviewDisabilityFeltComfortableSharingType;
-  ethnicityTypes: ReviewEthnicityTypeType[];
+  ethnicityTypes: ReviewEthnicityTypesType[];
   ethnicitySharedWithCompany?: ReviewEthnicitySharedWithCompanyType;
   ethnicityFeltComfortableSharing?: ReviewEthnicityFeltComfortableSharingType;
   needsRespected?: ReviewNeedsRespectedType;
@@ -149,11 +149,11 @@ const canAskBossOptions = [
 
 const canAskColleaguesOptions = [
   { value: undefined, label: 'Bitte wählen' },
-  { value: ReviewCanAskColleagueType.Always, label: 'immer' },
-  { value: ReviewCanAskColleagueType.Mostly, label: 'meistens' },
-  { value: ReviewCanAskColleagueType.Sometimes, label: 'ab und zu' },
-  { value: ReviewCanAskColleagueType.Rarely, label: 'selten' },
-  { value: ReviewCanAskColleagueType.Never, label: 'niemals' },
+  { value: ReviewCanAskColleaguesType.Always, label: 'immer' },
+  { value: ReviewCanAskColleaguesType.Mostly, label: 'meistens' },
+  { value: ReviewCanAskColleaguesType.Sometimes, label: 'ab und zu' },
+  { value: ReviewCanAskColleaguesType.Rarely, label: 'selten' },
+  { value: ReviewCanAskColleaguesType.Never, label: 'niemals' },
 ];
 
 const toneOptions = [
@@ -244,37 +244,37 @@ const boundaryTypes: { value: ReviewBoundariesRespectedType; label: string }[] =
   { value: ReviewBoundariesRespectedType.PhysicalDistance, label: 'körperlich-distanztechnisch' },
 ];
 
-const disabilityTypeOptions: { value: ReviewDisabilityTypeType; label: string }[] = [
-  { value: ReviewDisabilityTypeType.AutismSpectrum, label: 'Autismus-Spektrum' },
-  { value: ReviewDisabilityTypeType.Autoimmune, label: 'Autoimmunerkrankung' },
-  { value: ReviewDisabilityTypeType.BlindVisuallyImpaired, label: 'blind/sehbehindert' },
-  { value: ReviewDisabilityTypeType.DeafHearingImpaired, label: 'gehörlos/hörbehindert' },
-  { value: ReviewDisabilityTypeType.PhysicallyDisabled, label: 'körperlich behindert' },
-  { value: ReviewDisabilityTypeType.MentalIllness, label: 'psychische Erkrankung' },
-  { value: ReviewDisabilityTypeType.ChronicIllness, label: 'chronische Erkrankung' },
-  { value: ReviewDisabilityTypeType.Cardiovascular, label: 'Herz-Kreislauf-Erkrankung' },
-  { value: ReviewDisabilityTypeType.Musculoskeletal, label: 'Skelett-/Muskelerkrankung' },
-  { value: ReviewDisabilityTypeType.Metabolic, label: 'Stoffwechselerkrankung' },
-  { value: ReviewDisabilityTypeType.Digestive, label: 'Erkrankung des Verdauungssystems' },
-  { value: ReviewDisabilityTypeType.Spasticity, label: 'Spastik' },
-  { value: ReviewDisabilityTypeType.LearningDisability, label: 'Lernschwierigkeiten / sog. geistige Behinderung' },
-  { value: ReviewDisabilityTypeType.Neurodivergent, label: 'neurodivergent' },
-  { value: ReviewDisabilityTypeType.WheelchairMobility, label: 'Rollstuhlnutzend / Mobilitätseinschränkung' },
-  { value: ReviewDisabilityTypeType.DrugUse, label: 'Drogenkonsument*in' },
-  { value: ReviewDisabilityTypeType.SexualViolence, label: 'Erfahrung sexualisierter Gewalt' },
-  { value: ReviewDisabilityTypeType.Overweight, label: 'mehrgewichtig/hochgewichtig' },
-  { value: ReviewDisabilityTypeType.Underweight, label: 'wenigergewichtig' },
+const disabilityTypeOptions: { value: ReviewDisabilityTypesType; label: string }[] = [
+  { value: ReviewDisabilityTypesType.AutismSpectrum, label: 'Autismus-Spektrum' },
+  { value: ReviewDisabilityTypesType.Autoimmune, label: 'Autoimmunerkrankung' },
+  { value: ReviewDisabilityTypesType.BlindVisuallyImpaired, label: 'blind/sehbehindert' },
+  { value: ReviewDisabilityTypesType.DeafHearingImpaired, label: 'gehörlos/hörbehindert' },
+  { value: ReviewDisabilityTypesType.PhysicallyDisabled, label: 'körperlich behindert' },
+  { value: ReviewDisabilityTypesType.MentalIllness, label: 'psychische Erkrankung' },
+  { value: ReviewDisabilityTypesType.ChronicIllness, label: 'chronische Erkrankung' },
+  { value: ReviewDisabilityTypesType.Cardiovascular, label: 'Herz-Kreislauf-Erkrankung' },
+  { value: ReviewDisabilityTypesType.Musculoskeletal, label: 'Skelett-/Muskelerkrankung' },
+  { value: ReviewDisabilityTypesType.Metabolic, label: 'Stoffwechselerkrankung' },
+  { value: ReviewDisabilityTypesType.Digestive, label: 'Erkrankung des Verdauungssystems' },
+  { value: ReviewDisabilityTypesType.Spasticity, label: 'Spastik' },
+  { value: ReviewDisabilityTypesType.LearningDisability, label: 'Lernschwierigkeiten / sog. geistige Behinderung' },
+  { value: ReviewDisabilityTypesType.Neurodivergent, label: 'neurodivergent' },
+  { value: ReviewDisabilityTypesType.WheelchairMobility, label: 'Rollstuhlnutzend / Mobilitätseinschränkung' },
+  { value: ReviewDisabilityTypesType.DrugUse, label: 'Drogenkonsument*in' },
+  { value: ReviewDisabilityTypesType.SexualViolence, label: 'Erfahrung sexualisierter Gewalt' },
+  { value: ReviewDisabilityTypesType.Overweight, label: 'mehrgewichtig/hochgewichtig' },
+  { value: ReviewDisabilityTypesType.Underweight, label: 'wenigergewichtig' },
 ];
 
-const ethnicityTypeOptions: { value: ReviewEthnicityTypeType; label: string }[] = [
-  { value: ReviewEthnicityTypeType.White, label: 'weiß' },
-  { value: ReviewEthnicityTypeType.PersonOfColor, label: 'Person of Color' },
-  { value: ReviewEthnicityTypeType.Black, label: 'Schwarz' },
-  { value: ReviewEthnicityTypeType.Indigenous, label: 'Indigen' },
-  { value: ReviewEthnicityTypeType.Jewish, label: 'Jüdisch' },
-  { value: ReviewEthnicityTypeType.Muslim, label: 'Muslim*in' },
-  { value: ReviewEthnicityTypeType.Migrant, label: 'Migrant*in' },
-  { value: ReviewEthnicityTypeType.RomaSinti, label: 'Rom*nja/Sinti*zze' },
+const ethnicityTypeOptions: { value: ReviewEthnicityTypesType; label: string }[] = [
+  { value: ReviewEthnicityTypesType.White, label: 'weiß' },
+  { value: ReviewEthnicityTypesType.PersonOfColor, label: 'Person of Color' },
+  { value: ReviewEthnicityTypesType.Black, label: 'Schwarz' },
+  { value: ReviewEthnicityTypesType.Indigenous, label: 'Indigen' },
+  { value: ReviewEthnicityTypesType.Jewish, label: 'Jüdisch' },
+  { value: ReviewEthnicityTypesType.Muslim, label: 'Muslim*in' },
+  { value: ReviewEthnicityTypesType.Migrant, label: 'Migrant*in' },
+  { value: ReviewEthnicityTypesType.RomaSinti, label: 'Rom*nja/Sinti*zze' },
 ];
 
 type FormPage = {

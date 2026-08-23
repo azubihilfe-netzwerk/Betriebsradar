@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useApolloClient } from '@apollo/client/react';
 import { gql } from 'graphql-tag';
-import { LoginUserMutation, UserRoleType} from '../api/__generated__/graphql';
+import { LoginUserMutation, UserRolesType} from '../api/__generated__/graphql';
 
 
 interface LoggedInUser {
     id: string;
     email: string | null;
-    roles: UserRoleType[] | null;
+    roles: UserRolesType[] | null;
 }
 
 

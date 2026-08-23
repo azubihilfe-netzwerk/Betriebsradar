@@ -31,12 +31,11 @@ interface CompanyFormData {
 
 const SIZE_OPTIONS = [
   { value: undefined, label: 'Bitte wählen' },
-  { value: CompanySizeType['1to5'], label: '1–5 Mitarbeitende' },
-  { value: CompanySizeType['5to10'], label: '5–10 Mitarbeitende' },
-  { value: CompanySizeType['10to30'], label: '10–30 Mitarbeitende' },
-  { value: CompanySizeType['30to50'], label: '30–50 Mitarbeitende' },
-  { value: CompanySizeType['50to250'], label: '50–250 Mitarbeitende' },
-  { value: CompanySizeType['250plus'], label: 'Mehr als 250 Mitarbeitende' },
+  { value: CompanySizeType.S1to5, label: '1–5 Mitarbeitende' },
+  { value: CompanySizeType.S10to30, label: '10–30 Mitarbeitende' },
+  { value: CompanySizeType.S30to50, label: '30–50 Mitarbeitende' },
+  { value: CompanySizeType.S50to250, label: '50–250 Mitarbeitende' },
+  { value: CompanySizeType.Size250plus, label: 'Mehr als 250 Mitarbeitende' },
 ];
 
 const RegisterCompany: FC = () => {
