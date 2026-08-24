@@ -4,6 +4,18 @@ import config from '../keystone';
 import * as PrismaModule from '../generated/prisma/client';
 import sampleCompanies from './sample_companies.json';
 
+// Splits a "Street Number, PLZ City" string (the format used in
+// sample_companies.json and by generate_sample_companies.mjs) into the
+// separate fields the Company list now stores.
+function splitAddress(address: string) {
+  const [streetPart, cityPart] = address.split(',').map((s) => s.trim());
+  const match = streetPart.match(/^(.*?)\s+(\S+)$/);
+  const street = match ? match[1] : streetPart;
+  const houseNumber = match ? match[2] : '';
+  const [plz, ...cityWords] = (cityPart ?? '').split(' ');
+  return { street, houseNumber, plz, city: cityWords.join(' ') };
+}
+
 // Generic function to get or create an entity by name
 async function getOrCreateEntityByName(context: any, entity: string, data: any, queryField: string = 'name') {
   const existing = await context.query[entity].findMany({
@@ -126,8 +138,8 @@ export async function createSampleReviews(context: any, companies: { id: string;
 export async function createSampleCompanies(context: any, count: number = 100) {
   const companies = sampleCompanies.slice(0, count);
   const created = [];
-  for (const company of companies) {
-    created.push(await getOrCreateEntityByName(context, 'Company', company));
+  for (const { address, ...company } of companies) {
+    created.push(await getOrCreateEntityByName(context, 'Company', { ...company, ...splitAddress(address) }));
   }
   return created;
 }
@@ -160,7 +172,10 @@ export async function createSampleData(ctx?: any): Promise<SampleData> {
     name: 'Beispiel GmbH',
     trade: 'Elektronik',
     contact: 'info@beispiel-gmbh.de',
-    address: 'Dürkheimer Str. 27, 76185 Karlsruhe',
+    street: 'Dürkheimer Str.',
+    houseNumber: '27',
+    plz: '76185',
+    city: 'Karlsruhe',
     size: 's10to30',
     verified: true,
   };

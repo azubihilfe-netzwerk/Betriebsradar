@@ -97,7 +97,7 @@ describe('Company visibility', () => {
 
   it('public user does see unverified companies', async () => {
     const { data } = await execute(editorContext, CREATE_COMPANY, {
-      data: { name: 'Unverifiziert GmbH', trade: 'Tischlerei', address: 'Musterstraße 1, 10115 Berlin', contact: 'x@x.de', size: 's1to5' },
+      data: { name: 'Unverifiziert GmbH', trade: 'Tischlerei', street: 'Musterstraße', houseNumber: '1', plz: '10115', city: 'Berlin', contact: 'x@x.de', size: 's1to5' },
     });
     const unverifiedId = data?.createCompany?.id!;
 
@@ -115,7 +115,7 @@ describe('Company visibility', () => {
 describe('Company creation', () => {
   it('anyone can create a company', async () => {
     const { data, errors } = await execute(publicContext, CREATE_COMPANY, {
-      data: { name: 'Öffentlich erstellt', trade: 'Malerei', address: 'Testgasse 5, 80331 München', contact: 'pub@test.de', size: 's1to5' },
+      data: { name: 'Öffentlich erstellt', trade: 'Malerei', street: 'Testgasse', houseNumber: '5', plz: '80331', city: 'München', contact: 'pub@test.de', size: 's1to5' },
     });
     expect(errors).toBeUndefined();
     expect(data?.createCompany?.id).toBeDefined();
@@ -123,14 +123,14 @@ describe('Company creation', () => {
 
   it('new company starts unverified', async () => {
     const { data } = await execute(publicContext, CREATE_COMPANY, {
-      data: { name: 'Neue Firma', trade: 'Klempnerei', address: 'Neue Str. 1, 50667 Köln', contact: 'neu@test.de', size: 's30to50' },
+      data: { name: 'Neue Firma', trade: 'Klempnerei', street: 'Neue Str.', houseNumber: '1', plz: '50667', city: 'Köln', contact: 'neu@test.de', size: 's30to50' },
     });
     expect(data?.createCompany?.verified).toBe(false);
   });
 
   it('geocodes the address on creation and stores coordinates', async () => {
     const { data } = await execute(publicContext, CREATE_COMPANY, {
-      data: { name: 'Geo Firma', trade: 'Elektrik', address: 'Kaiserstraße 1, 76131 Karlsruhe', contact: 'geo@test.de', size: 's1to5' },
+      data: { name: 'Geo Firma', trade: 'Elektrik', street: 'Kaiserstraße', houseNumber: '1', plz: '76131', city: 'Karlsruhe', contact: 'geo@test.de', size: 's1to5' },
     });
     expect(geocodeAddress).toHaveBeenCalledWith('Kaiserstraße 1, 76131 Karlsruhe');
     expect(data?.createCompany?.latitude).toBeCloseTo(49.0069);
@@ -143,7 +143,7 @@ describe('Company update and delete permissions', () => {
 
   beforeAll(async () => {
     const { data } = await execute(publicContext, CREATE_COMPANY, {
-      data: { name: 'Zu aktualisieren', trade: 'Sanitär', address: 'Updateweg 7, 20095 Hamburg', contact: 'up@test.de', size: 's50to250' },
+      data: { name: 'Zu aktualisieren', trade: 'Sanitär', street: 'Updateweg', houseNumber: '7', plz: '20095', city: 'Hamburg', contact: 'up@test.de', size: 's50to250' },
     });
     companyId = data!.createCompany!.id;
   });

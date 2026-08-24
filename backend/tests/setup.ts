@@ -71,12 +71,15 @@ export async function createUser(overrides: Overrides<{ name: string; email: str
 }
 
 /** Inserts a single Company row, bypassing access control. Returns the created id/name/verified. */
-export async function createCompany(overrides: Overrides<{ name: string; trade: string; address: string; contact: string; size: string; verified: boolean }> = {}) {
+export async function createCompany(overrides: Overrides<{ name: string; trade: string; street: string; houseNumber: string; plz: string; city: string; contact: string; size: string; verified: boolean }> = {}) {
   return context.sudo().query.Company.createOne({
     data: {
       name: `Test Company ${uniqueSuffix()}`,
       trade: 'Elektronik',
-      address: 'Dürkheimer Str. 27, 76185 Karlsruhe',
+      street: 'Dürkheimer Str.',
+      houseNumber: '27',
+      plz: '76185',
+      city: 'Karlsruhe',
       size: 's10to30',
       verified: true,
       ...overrides,

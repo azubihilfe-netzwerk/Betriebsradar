@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "Company" 
+ADD COLUMN     "city" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "houseNumber" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "plz" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "street" TEXT NOT NULL DEFAULT '';

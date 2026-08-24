@@ -4,7 +4,7 @@ import { PageHeading } from '../../components/UI';
 
 const ReportSubmitted: FC = () => {
   return (
-    <div className="max-w-2xl mx-auto py-12 px-4">
+    <div className="max-w-2xl mx-auto py-12 px-4 space-y-6">
       <PageHeading>
         Vielen Dank für deinen Bericht!
       </PageHeading>
@@ -20,8 +20,8 @@ const ReportSubmitted: FC = () => {
             1
           </span>
           <div>
-            <p className="font-semibold text-gray-800">E-Mail bestätigen</p>
-            <p className="text-gray-600 text-sm mt-1">
+            <p className="font-semibold">E-Mail bestätigen</p>
+            <p className="text-sm mt-1">
               Wir haben dir eine E-Mail mit einem Bestätigungslink geschickt. Bitte klicke auf
               diesen Link, damit wir wissen, dass die Adresse dir gehört. Schau auch im
               Spamordner nach, wenn du nichts siehst.
@@ -34,8 +34,8 @@ const ReportSubmitted: FC = () => {
             2
           </span>
           <div>
-            <p className="font-semibold text-gray-800">Redaktionelle Prüfung</p>
-            <p className="text-gray-600 text-sm mt-1">
+            <p className="font-semibold ">Redaktionelle Prüfung</p>
+            <p className="text-sm mt-1">
               Nach der E-Mail-Bestätigung liest unser Team deinen Bericht durch und veröffentlicht
               ihn, wenn er unsere Richtlinien erfüllt. Falls nicht, melden wir uns bei dir per
               Mail. Das dauert in der Regel ein paar Tage.
@@ -44,7 +44,7 @@ const ReportSubmitted: FC = () => {
         </li>
       </ol>
 
-      <p className="text-gray-600 text-sm mb-8">
+      <p className="text-sm mb-8">
         Fragen? Schreib uns an{' '}
         <a href="mailto:kontakt@betriebsradar.org" className="text-brand hover:underline">
           kontakt@betriebsradar.org

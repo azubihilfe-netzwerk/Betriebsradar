@@ -20,16 +20,19 @@ model User {
 }
 
 model Company {
-  id        Int             @id @default(autoincrement())
-  name      String          @default("")
-  trade     String          @default("")
-  address   String          @default("")
-  contact   String          @default("")
-  size      CompanySizeType
-  verified  Boolean         @default(false)
-  latitude  Float?
-  longitude Float?
-  reviews   Review[]        @relation("Review_company")
+  id          Int             @id @default(autoincrement())
+  name        String          @default("")
+  trade       String          @default("")
+  street      String          @default("")
+  houseNumber String          @default("")
+  plz         String          @default("")
+  city        String          @default("")
+  contact     String          @default("")
+  size        CompanySizeType
+  verified    Boolean         @default(false)
+  latitude    Float?
+  longitude   Float?
+  reviews     Review[]        @relation("Review_company")
 }
 
 model Review {

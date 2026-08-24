@@ -25,7 +25,10 @@ const CREATE_COMPANY = gql`
 interface CompanyFormData {
   name: string;
   trade: string;
-  address: string;
+  street: string;
+  houseNumber: string;
+  plz: string;
+  city: string;
   contact: string;
   size: CompanySizeType | '';
 }
@@ -51,7 +54,10 @@ const RegisterCompany: FC = () => {
           data: {
             name: data.name,
             trade: data.trade || undefined,
-            address: data.address || undefined,
+            street: data.street || undefined,
+            houseNumber: data.houseNumber || undefined,
+            plz: data.plz || undefined,
+            city: data.city || undefined,
             contact: data.contact || undefined,
             size: data.size || undefined,
           },
@@ -96,13 +102,38 @@ const RegisterCompany: FC = () => {
             />
           )}
         />
-        <FormField
-          label="Stadt / Adresse"
-          required
-          placeholder="z. B. Berlin oder Musterstraße 1, 12345 Musterstadt"
-          error={errors.address?.message}
-          {...register('address')}
-        />
+        <div className="flex flex-col sm:flex-row gap-5">
+          <FormField
+            label="Straße"
+            required
+            placeholder="z. B. Musterstraße"
+            error={errors.street?.message}
+            {...register('street', { required: 'Bitte gib die Straße an.' })}
+          />
+          <FormField
+            label="Hausnummer"
+            required
+            placeholder="z. B. 1"
+            error={errors.houseNumber?.message}
+            {...register('houseNumber', { required: 'Bitte gib die Hausnummer an.' })}
+          />
+        </div>
+        <div className="flex flex-col sm:flex-row gap-5">
+          <FormField
+            label="PLZ"
+            required
+            placeholder="z. B. 12345"
+            error={errors.plz?.message}
+            {...register('plz', { required: 'Bitte gib die PLZ an.' })}
+          />
+          <FormField
+            label="Stadt"
+            required
+            placeholder="z. B. Musterstadt"
+            error={errors.city?.message}
+            {...register('city', { required: 'Bitte gib die Stadt an.' })}
+          />
+        </div>
         <FormField
           label="Kontakt (optional)"
           placeholder="z. B. info@musterbau.de"

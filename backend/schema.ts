@@ -1,5 +1,5 @@
-import { list } from '@keystone-6/core';
-import { text, relationship, select, integer, float, checkbox, timestamp, password, multiselect } from '@keystone-6/core/fields';
+import { list, g } from '@keystone-6/core';
+import { text, relationship, select, integer, float, checkbox, timestamp, password, multiselect, virtual } from '@keystone-6/core/fields';
 import { allowAll } from '@keystone-6/core/access';
 import { randomBytes } from 'crypto';
 import { sendVerificationEmail } from './mailer';
@@ -12,6 +12,12 @@ const isEditorOrAdmin = (session: any) =>
   isEditor(session) || session?.data?.roles?.includes('admin') || false;
 
 const generateAccessKey = () => randomBytes(32).toString('hex');
+
+const resolveAddress = (street?: unknown, houseNumber?: unknown, plz?: unknown, city?: unknown) =>
+  [
+    [street, houseNumber].filter(Boolean).join(' '),
+    [plz, city].filter(Boolean).join(' '),
+  ].filter(Boolean).join(', ');
 
 
 export const lists = {
@@ -63,7 +69,19 @@ export const lists = {
     fields: {
       name: text({ validation: { isRequired: true }, ui: { label: 'Name' } }),
       trade: text({ validation: { isRequired: true }, ui: { label: 'Gewerk' } }),
-      address: text({ validation: { isRequired: true }, ui: { label: 'Adresse' } }),
+      street: text({ validation: { isRequired: false }, ui: { label: 'Straße' } }),
+      houseNumber: text({ validation: { isRequired: false }, ui: { label: 'Hausnummer' } }),
+      plz: text({ validation: { isRequired: false }, ui: { label: 'PLZ' } }),
+      city: text({ validation: { isRequired: false }, ui: { label: 'Stadt' } }),
+      address: virtual({
+        field: g.field({
+          type: g.String,
+          resolve(item: any) {
+            return resolveAddress(item.street, item.houseNumber, item.plz, item.city);
+          },
+        }),
+        ui: { label: 'Adresse' },
+      }),
       contact: text({ validation: {isRequired: false}, ui: { label: 'Kontaktdaten (optional)' } }),
       size: select({
         type: 'enum',
@@ -85,10 +103,15 @@ export const lists = {
       reviews: relationship({ ref: 'Review.company', many: true, ui: { label: 'Anzahl Berichte' } }),
     },
     hooks: {
-      resolveInput: async ({ resolvedData, operation }) => {
+      resolveInput: async ({ resolvedData, operation, item }) => {
+        const street = resolvedData.street ?? item?.street;
+        const houseNumber = resolvedData.houseNumber ?? item?.houseNumber;
+        const plz = resolvedData.plz ?? item?.plz;
+        const city = resolvedData.city ?? item?.city;
+
         const hasCoords = resolvedData.latitude != null && resolvedData.longitude != null;
-        if (operation === 'create' && resolvedData.address && !hasCoords) {
-          const coords = await geocodeAddress(String(resolvedData.address));
+        if (operation === 'create' && (street || houseNumber || plz || city) && !hasCoords) {
+          const coords = await geocodeAddress(resolveAddress(street, houseNumber, plz, city));
           if (coords) {
             return { ...resolvedData, latitude: coords.lat, longitude: coords.lon };
           }

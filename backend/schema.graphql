@@ -129,6 +129,10 @@ type Company {
   id: ID!
   name: String
   trade: String
+  street: String
+  houseNumber: String
+  plz: String
+  city: String
   address: String
   contact: String
   size: CompanySizeType
@@ -159,7 +163,10 @@ input CompanyWhereInput {
   id: IDFilter
   name: StringFilter
   trade: StringFilter
-  address: StringFilter
+  street: StringFilter
+  houseNumber: StringFilter
+  plz: StringFilter
+  city: StringFilter
   contact: StringFilter
   size: CompanySizeTypeNullableFilter
   verified: BooleanFilter
@@ -201,7 +208,10 @@ input CompanyOrderByInput {
   id: OrderDirection
   name: OrderDirection
   trade: OrderDirection
-  address: OrderDirection
+  street: OrderDirection
+  houseNumber: OrderDirection
+  plz: OrderDirection
+  city: OrderDirection
   contact: OrderDirection
   size: OrderDirection
   verified: OrderDirection
@@ -212,7 +222,10 @@ input CompanyOrderByInput {
 input CompanyUpdateInput {
   name: String
   trade: String
-  address: String
+  street: String
+  houseNumber: String
+  plz: String
+  city: String
   contact: String
   size: CompanySizeType
   verified: Boolean
@@ -236,7 +249,10 @@ input CompanyUpdateArgs {
 input CompanyCreateInput {
   name: String
   trade: String
-  address: String
+  street: String
+  houseNumber: String
+  plz: String
+  city: String
   contact: String
   size: CompanySizeType
   verified: Boolean
