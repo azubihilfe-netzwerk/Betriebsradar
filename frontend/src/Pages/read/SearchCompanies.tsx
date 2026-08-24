@@ -5,8 +5,9 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { SlidersHorizontal, X } from 'lucide-react';
 import { GetCompaniesForMapQuery } from '../../api/__generated__/graphql';
 import CompanyMap, { MapView } from '../../components/Map/CompanyMap';
-import { TradeFilterDropdown } from '../../components/Form';
+import { TradeDropdown } from '../../components/Form';
 import { filterCompanies, MapBounds, MapCompany } from '../../lib/companyFilters';
+import { TRADES } from '../../lib/trades';
 
 const GET_COMPANIES_FOR_MAP = gql`
                     query GetCompaniesForMap {
@@ -41,11 +42,6 @@ const SearchCompanies: FC = () => {
 
   const trade = searchParams.get('trade');
   const companies = useMemo(() => data?.companies ?? [], [data]);
-
-  const trades = useMemo(
-    () => Array.from(new Set(companies.map((c) => c.trade).filter((t): t is string => Boolean(t)))).sort(),
-    [companies]
-  );
 
   const visibleCompanies = useMemo(
     () => filterCompanies(companies, { trade, bounds }),
@@ -151,7 +147,7 @@ const SearchCompanies: FC = () => {
             </button>
           </div>
 
-          <TradeFilterDropdown trades={trades} trade={trade} onSelect={selectTrade} onClear={clearTrade} />
+          <TradeDropdown trades={TRADES} trade={trade} onSelect={selectTrade} onClear={clearTrade} />
         </div>
 
         <div className="px-6 pb-2 flex-shrink-0">

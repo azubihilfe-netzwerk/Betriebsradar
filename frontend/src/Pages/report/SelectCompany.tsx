@@ -51,19 +51,14 @@ const SelectCompany: FC = () => {
       </p>
 
       <SearchAutocomplete
-        items={selected ? [] : filtered}
+        items={filtered}
         getKey={(company) => company.id}
         getLabel={(company) => company.name ?? ''}
         getSubtitle={(company) => [company.trade, company.address].filter(Boolean).join(' · ') || null}
+        getSelectedLabel={(company) => `${company.name} (${company.address})`}
         search={search}
-        onSearchChange={(value) => {
-          setSearch(value);
-          setSelected(null);
-        }}
-        onSelect={(company) => {
-          setSelected(company);
-          setSearch(company.name + " (" + company.address + ")" || "");
-        }}
+        onSearchChange={setSearch}
+        onSelectedChange={setSelected}
         placeholder={selected?.name ? selected?.name : "Nach Name oder Stadt suchen..."}
         emptyMessage="Kein Betrieb gefunden."
         className="mb-4"
@@ -71,7 +66,7 @@ const SelectCompany: FC = () => {
       />
 
       {loading && <p className="text-gray-500">Lädt...</p>}
-      {error && <p className="text-red-600">Fehler: {error.message}</p>}
+      {error && <p className="text-brand-error">Fehler: {error.message}</p>}
 
       <div className="flex flex-row gap-4 w-full">
         <LinkButton to="/unternehmeneintragen" variant="secondary" className='flex-1'>

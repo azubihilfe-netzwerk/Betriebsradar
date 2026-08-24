@@ -1,13 +1,14 @@
 import { gql } from 'graphql-tag';
 import React, { FC } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/client/react';
 import { useNavigate } from 'react-router-dom';
 import { CompanySizeType, Company, CompanyCreateInput } from '../../api/__generated__/graphql';
 import FormField from '../../components/Form/FormField';
 import SelectField from '../../components/Form/SelectField';
-import { Button } from '../../components/Form';
+import { Button, TradeDropdown } from '../../components/Form';
 import { PageHeading } from '../../components/UI';
+import { TRADES } from '../../lib/trades';
 
 type CreateCompanyMutation = { createCompany: Pick<Company, 'id' | 'name'> | null | undefined };
 type CreateCompanyMutationVariables = { data: CompanyCreateInput };
@@ -40,7 +41,7 @@ const SIZE_OPTIONS = [
 
 const RegisterCompany: FC = () => {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm<CompanyFormData>();
+  const { register, control, handleSubmit, formState: { errors } } = useForm<CompanyFormData>();
   const [createCompany, { loading, error }] = useMutation<CreateCompanyMutation, CreateCompanyMutationVariables>(CREATE_COMPANY);
 
   const onSubmit = async (data: CompanyFormData) => {
@@ -79,12 +80,21 @@ const RegisterCompany: FC = () => {
           error={errors.name?.message}
           {...register('name', { required: 'Bitte gib den Namen des Betriebs an.' })}
         />
-        <FormField
-          label="Gewerk / Branche"
-          required
-          placeholder="z. B. Elektroinstallation"
-          error={errors.trade?.message}
-          {...register('trade')}
+        <Controller
+          name="trade"
+          control={control}
+          rules={{ required: 'Bitte wähle ein Gewerk aus.' }}
+          render={({ field }) => (
+            <TradeDropdown
+              label="Gewerk / Branche"
+              required
+              trades={TRADES}
+              trade={field.value || null}
+              onSelect={field.onChange}
+              placeholder="Gewerk auswählen"
+              error={errors.trade?.message}
+            />
+          )}
         />
         <FormField
           label="Stadt / Adresse"
@@ -108,7 +118,7 @@ const RegisterCompany: FC = () => {
         />
 
         {error && (
-          <p className="text-red-600 text-sm">Fehler: {error.message}</p>
+          <p className="text-brand-error text-sm">Fehler: {error.message}</p>
         )}
 
         <Button
