@@ -130,7 +130,7 @@ const SearchCompanies: FC = () => {
         className={`fixed z-30 bg-brand-bg border-blackish shadow-lg transition-transform duration-300 ease-in-out
           flex flex-col
           inset-x-0 bottom-0 rounded-t-2xl border-t-2 h-[90vh]
-          md:inset-x-auto md:top-28 md:bottom-0 md:left-0 md:w-96 md:h-auto md:rounded-t-none md:rounded-r-2xl md:border-t-0 md:border-r-2
+          md:absolute md:inset-x-auto md:top-0 md:bottom-0 md:left-0 md:w-96 md:h-auto md:rounded-t-none md:rounded-r-2xl md:border-t-0 md:border-r-2
           ${filterOpen ? 'translate-y-0 md:translate-x-0' : 'translate-y-full md:-translate-x-full'}
           xl:translate-x-0 xl:translate-y-0`}
       >

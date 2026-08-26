@@ -1,22 +1,24 @@
 import { gql } from 'graphql-tag';
 import { FC } from 'react';
 import { useQuery } from '@apollo/client/react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { GetCompanyDetailQuery } from '../../api/__generated__/graphql';
 import Card from '../../components/UI/Card';
 import { PageHeading } from '../../components/UI/Heading';
 import ReportCard from '../../components/Company/ReportCard';
+import { Button } from '../../components/Form';
 
 const companySizeLabels: Record<string, string> = {
-    _1to5: '1–5 Mitarbeitende',
-    _5to10: '5–10 Mitarbeitende',
-    _10to30: '10–30 Mitarbeitende',
-    _30to50: '30–50 Mitarbeitende',
-    _50to250: '50–250 Mitarbeitende',
-    _250plus: 'ab 250 Mitarbeitende',
+    s1to5: '1–5 Mitarbeitende',
+    s5to10: '5–10 Mitarbeitende',
+    s10to30: '10–30 Mitarbeitende',
+    s30to50: '30–50 Mitarbeitende',
+    s50to250: '50–250 Mitarbeitende',
+    size250plus: 'ab 250 Mitarbeitende',
 };
 
 const CompanyDetail: FC = () => {
+    const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const { loading, error, data } = useQuery<GetCompanyDetailQuery>(
         gql`
@@ -83,6 +85,7 @@ const CompanyDetail: FC = () => {
         (a, b) => Number(b.yearOfHiring ?? 0) - Number(a.yearOfHiring ?? 0)
     );
 
+
     return (
         <div className="max-w-4xl">
             <Card className="mb-8">
@@ -109,7 +112,7 @@ const CompanyDetail: FC = () => {
                 </div>
             </Card>
 
-            <div>
+            <div className='space-y-4'>
                 <h2 className="text-xl font-bold text-brand mb-4">Berichte ({company.reviewsCount ?? reviews.length})</h2>
                 {reviews.length === 0 ? (
                     <p className="text-gray-600">Noch keine Berichte vorhanden.</p>
@@ -120,6 +123,12 @@ const CompanyDetail: FC = () => {
                         ))}
                     </div>
                 )}
+                <Button
+                          className="w-full"
+                          onClick={() => navigate(`/berichtschreiben?companyId=${company.id}`)}
+                        >
+                          Bericht zu {company.name} schreiben
+                        </Button>
             </div>
         </div>
     );

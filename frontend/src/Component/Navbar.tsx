@@ -19,7 +19,7 @@ const Navbar: React.FC = () => {
     const closeMenu = () => setMenuOpen(false);
 
     return (
-        <nav className="bg-brand-navbar shadow-md border-b-2 border-blackish fixed w-full z-10">
+        <nav className="bg-brand-navbar shadow-md border-b-2 border-blackish fixed w-full z-50">
             <div className="max-w-7xl mx-auto pl-2 pr-4 py-6 flex justify-between items-center">
                 {/* Logo + Schriftzug */}
                 <div className="flex items-center space-x-3">

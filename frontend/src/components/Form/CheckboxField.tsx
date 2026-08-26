@@ -1,7 +1,8 @@
 import React from 'react';
+import FieldLabel from './FieldLabel';
 
 export interface CheckboxFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label: string;
+  label: React.ReactNode;
   error?: string;
   helperText?: string;
 }
@@ -10,17 +11,16 @@ const CheckboxField = React.forwardRef<HTMLInputElement, CheckboxFieldProps>(
   ({ label, error, helperText, className, ...props }, ref) => {
     return (
       <div className="w-full">
-        <label className="flex items-center">
+        <FieldLabel className="flex items-center cursor-pointer" required={props.required}>
           <input
             ref={ref}
             type="checkbox"
-            className={`w-4 h-4 rounded border-gray-300 text-brand-button accent-brand-button focus:ring-brand-button-hover cursor-pointer ${
-              error ? 'border-brand-error' : ''
-            } ${className || ''}`}
+            className={`w-4 h-4  outline-solid outline-3 outline-black bg-brand-input text-brand-button  focus:ring-brand-button-hover cursor-pointer
+             ${className || ''}`}
             {...props}
           />
-          <span className="ml-3 text-gray-700">{label}</span>
-        </label>
+          <span className="ml-3">{label}</span>
+        </FieldLabel>
         {error && <p className="text-brand-error text-sm mt-1">{error}</p>}
         {helperText && <p className="text-gray-500 text-sm mt-1">{helperText}</p>}
       </div>

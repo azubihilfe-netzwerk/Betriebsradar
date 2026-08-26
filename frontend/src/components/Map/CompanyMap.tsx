@@ -4,6 +4,7 @@ import L from 'leaflet';
 import { Link } from 'react-router-dom';
 import 'leaflet/dist/leaflet.css';
 import { MapBounds, MapCompany } from '../../lib/companyFilters';
+import { LinkButton } from '../Form';
 
 const pinIcon = L.divIcon({
   className: '',
@@ -80,14 +81,13 @@ const CompanyMap: FC<CompanyMapProps> = ({ companies, center, zoom, onViewChange
         <MapEventsListener onViewChange={onViewChange} />
         {markers.map((company) => (
           <Marker key={company.id} position={[company.latitude, company.longitude]} icon={pinIcon}>
-            <Popup>
+            <Popup className='border-standard bg-input'>
               <div className="min-w-[180px]">
                 <p className="font-semibold text-blackish">{company.name}</p>
-                {company.trade && <p className="text-sm text-gray-600">{company.trade}</p>}
-                <p className="text-sm text-gray-600 mb-2">{company.reviewsCount ?? 0} Berichte</p>
-                <Link to={`/unternehmen/${company.id}`} className="text-sm font-semibold underline text-blackish">
-                  Zum Betrieb
-                </Link>
+                {company.trade && <p className="text-sm text-blackish">{company.trade}</p>}
+                <LinkButton to={`/unternehmen/${company.id}`} size="sm">
+                     {company.reviewsCount ?? 0} Berichte lesen
+                </LinkButton>
               </div>
             </Popup>
           </Marker>

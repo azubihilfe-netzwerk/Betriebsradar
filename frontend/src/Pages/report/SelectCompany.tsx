@@ -48,6 +48,7 @@ const SelectCompany: FC = () => {
 
       <p >
         Suche den Betrieb, über den du berichten möchtest. Vielleicht ist er schon im Betriebsradar eingetragen.
+        Falls nicht, kannst du den Betrieb neu eintragen.
       </p>
 
       <SearchAutocomplete

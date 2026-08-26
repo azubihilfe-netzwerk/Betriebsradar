@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useForm, RegisterOptions } from 'react-hook-form';
-import { Button, FormField, SelectField, CheckboxField, TextAreaField } from '../Form';
+import {
+  Button,
+  FormField,
+  SelectField,
+  CheckboxField,
+  CheckboxGroup,
+  TextAreaField,
+} from '../Form';
 import { SectionHeading, Paragraph } from '../UI/Heading';
 import {
   ReviewGenderType,
@@ -289,6 +297,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
   submitError,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
 
   const {
     register,
@@ -446,8 +455,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
             label="Sprachen im Betrieb"
             placeholder="z.B. Deutsch, Englisch"
           />
-          <div className="space-y-3 pt-2">
-            <h3 className="font-semibold text-gray-800">Besonderheiten</h3>
+          <CheckboxGroup label="Besonderheiten">
             <CheckboxField {...register('collective')} label="Kollektiv" checked={collective} />
             <CheckboxField
               {...register('trainingShortenable')}
@@ -459,15 +467,13 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
               label="Teilzeit möglich"
               checked={partTime}
             />
-            <div className="pt-2">
-              <TextAreaField
-                {...register('specialtiesOther')}
-                label="Sonstiges"
-                rows={3}
-                placeholder="Weitere Besonderheiten des Betriebs..."
-              />
-            </div>
-          </div>
+          </CheckboxGroup>
+          <TextAreaField
+            {...register('specialtiesOther')}
+            label="Sonstiges"
+            rows={3}
+            placeholder="Weitere Besonderheiten des Betriebs..."
+          />
         </>
       ),
     },
@@ -526,23 +532,16 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
             label="Hast du dich wertgeschätzt gefühlt?"
             options={appreciatedOptions}
           />
-          <div className="space-y-3 pt-2">
-            <h3 className="font-semibold text-gray-800">Meine Grenzen wurden respektiert</h3>
-            <p className="text-sm text-gray-500">Mehrfachauswahl möglich</p>
-            <div className="space-y-2">
-              {boundaryTypes.map(bt => (
-                <label key={bt.value} className="flex items-center gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    value={bt.value}
-                    {...register('boundariesRespected')}
-                    className="w-4 h-4 accent-brand"
-                  />
-                  <span className="text-sm text-gray-700">{bt.label}</span>
-                </label>
-              ))}
-            </div>
-          </div>
+          <CheckboxGroup label="Meine Grenzen wurden respektiert">
+            {boundaryTypes.map(bt => (
+              <CheckboxField
+                key={bt.value}
+                value={bt.value}
+                {...register('boundariesRespected')}
+                label={bt.label}
+              />
+            ))}
+          </CheckboxGroup>
           <TextAreaField
             {...register('experienceText')}
             label="Meine Erfahrung"
@@ -577,8 +576,8 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
             </Paragraph>
           </div>
           <div className="space-y-4">
-            <h3 className="font-semibold text-gray-800 text-lg border-b pb-1">Geschlecht</h3>
-            <SelectField {...register('gender')} label="Geschlecht" options={genderOptions} />
+            <h3 className="font-semibold text-blackish text-lg border-b pb-1">Geschlecht</h3>
+            <SelectField {...register('gender')} label="Deine Geschlechtsidentität" options={genderOptions} />
             <SelectField
               {...register('sharedWithCompany')}
               label="War dem Betrieb deine Geschlechtsidentität bekannt?"
@@ -590,22 +589,19 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
               options={feltComfortableSharingOptions}
             />
           </div>
-          <div className="space-y-4">
-            <h3 className="font-semibold text-gray-800 text-lg border-b pb-1">Beeinträchtigung</h3>
-            <div className="space-y-2">
-              <p className="text-sm text-gray-600">Wähle aus, was auf dich zutrifft.</p>
+          <div className="space-y-2">
+            <h3 className="font-semibold text-blackish text-lg border-b pb-1">Beeinträchtigung</h3>
+            <CheckboxGroup label="Wähle aus, was auf dich zutrifft">
               {disabilityTypeOptions.map(dt => (
-                <label key={dt.value} className="flex items-center gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    value={dt.value}
-                    {...register('disabilityTypes')}
-                    className="w-4 h-4 accent-brand"
-                  />
-                  <span className="text-sm text-gray-700">{dt.label}</span>
-                </label>
+                <CheckboxField
+                  key={dt.value}
+                  value={dt.value}
+                  {...register('disabilityTypes')}
+                  label={dt.label}
+                />
               ))}
-            </div>
+            </CheckboxGroup>
+
             <SelectField
               {...register('disabilitySharedWithCompany')}
               label="War dem Betrieb deine Beeinträchtigung bekannt?"
@@ -621,20 +617,16 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
             <h3 className="font-semibold text-gray-800 text-lg border-b pb-1">
               Herkunft & Erscheinungsbild
             </h3>
-            <div className="space-y-2">
-              <p className="text-sm text-gray-600">Mehrfachauswahl möglich</p>
+            <CheckboxGroup label="Wähle aus, was auf dich zutrifft">
               {ethnicityTypeOptions.map(et => (
-                <label key={et.value} className="flex items-center gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    value={et.value}
-                    {...register('ethnicityTypes')}
-                    className="w-4 h-4 accent-brand"
-                  />
-                  <span className="text-sm text-gray-700">{et.label}</span>
-                </label>
+                <CheckboxField
+                  key={et.value}
+                  value={et.value}
+                  {...register('ethnicityTypes')}
+                  label={et.label}
+                />
               ))}
-            </div>
+            </CheckboxGroup>
             <SelectField
               {...register('ethnicitySharedWithCompany')}
               label="War dem Betrieb deine Herkunft/Erscheinungsbild bekannt?"
@@ -727,6 +719,20 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
           {pages[currentPage - 1].render()}
         </div>
 
+        {currentPage === pageCount && (
+          <div className="mb-4">
+            <CheckboxField
+              label={
+                <>
+                  Ich habe die <Link to="/datenschutz" target="_blank" className="underline">Datenschutzerklärung</Link> gelesen und stimme der Datenverarbeitung zu.
+                </>
+              }
+              checked={privacyAccepted}
+              onChange={e => setPrivacyAccepted(e.target.checked)}
+            />
+          </div>
+        )}
+
         <div className="flex gap-4">
           {currentPage > 1 && (
             <Button
@@ -754,7 +760,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
               type="button"
               variant="primary"
               isLoading={isSubmitting}
-              disabled={isSubmitting}
+              disabled={isSubmitting || !privacyAccepted}
               className="flex-1"
               onClick={handleSubmit(data => onSubmit(sanitize(data)))}
             >

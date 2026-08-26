@@ -1,4 +1,5 @@
 import React from 'react';
+import FieldLabel from './FieldLabel';
 
 export interface FormFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -11,10 +12,9 @@ const FormField = React.forwardRef<HTMLInputElement, FormFieldProps>(
     return (
       <div className="w-full">
         {label && (
-          <label className="block text-sm font-medium mb-2">
+          <FieldLabel className="block mb-2" required={props.required}>
             {label}
-            {props.required && <span className="text-brand-error ml-1">*</span>}
-          </label>
+          </FieldLabel>
         )}
         <input
           ref={ref}
