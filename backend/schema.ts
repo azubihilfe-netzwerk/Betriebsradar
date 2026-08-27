@@ -80,6 +80,7 @@ export const lists = {
         ],
         ui: { label: 'Rollen' },
         access: {
+          read: (args) => args.kind !== 'item' || isAdmin(args.session) || isOwnItem(args.session, args.item),
           update: ({ session }) => isAdmin(session),
         },
       }),
@@ -440,7 +441,7 @@ export const lists = {
         validation: {isRequired: false},
         ui: { label: 'Zugriffsschlüssel' },
         access: {
-          read: ({ session }) => session?.data?.roles?.includes('editor') || session?.data?.roles?.includes('admin') || true,
+          read: ({ session }) => isEditorOrAdmin(session),
           create: () => true,
           update: () => false,
         },

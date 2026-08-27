@@ -137,6 +137,27 @@ describe('User read access', () => {
     expect(data?.user?.email).toBe('alice@example.com');
   });
 
+  it('a visitor cannot see a user\'s roles', async () => {
+    const { data, errors } = await execute(publicContext, GET_USER, { id: aliceId });
+    expect(errors).toBeUndefined();
+    expect(data?.user?.roles).toBeNull();
+  });
+
+  it('a user sees their own roles', async () => {
+    const { data } = await execute(aliceContext, GET_USER, { id: aliceId });
+    expect(data?.user?.roles).toEqual([]);
+  });
+
+  it("a user does not see another user's roles", async () => {
+    const { data } = await execute(bobContext, GET_USER, { id: aliceId });
+    expect(data?.user?.roles).toBeNull();
+  });
+
+  it("an admin sees another user's roles", async () => {
+    const { data } = await execute(adminContext, GET_USER, { id: aliceId });
+    expect(data?.user?.roles).toEqual([]);
+  });
+
   it('a visitor cannot list users', async () => {
     const { data, errors } = await execute(publicContext, LIST_USERS);
     expect(errors).toBeUndefined();

@@ -39,9 +39,13 @@ const { withAuth } = createAuth({
 const sessionMaxAge = 60 * 60 * 24 * 30
 
 // you can find out more at https://keystonejs.com/docs/apis/session#session-api
+if (!process.env.SESSION_SECRET) {
+  throw new Error('SESSION_SECRET environment variable must be set (see .env.example)')
+}
+
 const session = statelessSessions({
   maxAge: sessionMaxAge,
-  secret: process.env.SESSION_SECRET || "my-secret daskfhaksdhf28z qojfp2jö3j24j2l",
+  secret: process.env.SESSION_SECRET,
   sameSite: false, //this is required as long as the frontend is hosted under a different dominain (i.e. github pages)
 })
 
