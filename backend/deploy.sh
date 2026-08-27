@@ -20,7 +20,7 @@ case "$ENV" in
   live)
     SERVER=ahn@ahn.uber.space
     PATH_ON_SERVER=/home/ahn/Betriebsradar/live
-    SERVICE_NAME=betriebsradar-backend
+    SERVICE_NAME=betriebsradar-backend-live
     ;;
   *)
     echo "Usage: $0 <test|live> [--skip-build] [--reset]"
@@ -62,7 +62,7 @@ FILES_TO_SYNC=(
 )
 
 # sample/seed data must never end up on the live server
-if [ "$ENV" = "dev" ]; then
+if [ "$ENV" = "test" ]; then
   FILES_TO_SYNC+=(seed/seed_data.ts seed/sample_companies.json)
 fi
 
@@ -79,6 +79,7 @@ rsync -avrz --relative --exclude 'tests/gql' "${FILES_TO_SYNC[@]}" $SERVER:$PATH
 
 PRISMA_CMD="npx prisma migrate deploy"
 if [ "$RESET" = true ]; then
+  # only on test environment
   PRISMA_CMD="npx prisma migrate reset --force  && npm run seed_data && echo ✓ Database seeded"
 fi
 

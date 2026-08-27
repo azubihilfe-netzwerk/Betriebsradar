@@ -8,8 +8,14 @@ import { geocodeAddress } from './geocoder';
 const isEditor = (session: any) =>
   session?.data?.roles?.includes('editor') ;
 
+const isAdmin = (session: any) =>
+  session?.data?.roles?.includes('admin') || false;
+
 const isEditorOrAdmin = (session: any) =>
-  isEditor(session) || session?.data?.roles?.includes('admin') || false;
+  isEditor(session) || isAdmin(session);
+
+const isOwnItem = (session: any, item: { id: unknown }) =>
+  session != null && String(session.itemId) === String(item.id);
 
 const generateAccessKey = () => randomBytes(32).toString('hex');
 
@@ -22,7 +28,24 @@ const resolveAddress = (street?: unknown, houseNumber?: unknown, plz?: unknown, 
 
 export const lists = {
   User: list({
-    access: allowAll,
+    access: {
+      operation: {
+        query: {
+          one: allowAll,
+          many: ({ session }) => isEditorOrAdmin(session),
+          count: ({ session }) => isEditorOrAdmin(session),
+        },
+        create: ({ session }) => isAdmin(session),
+        update: ({ session }) => session != null, 
+        delete: ({ session }) => isAdmin(session),
+      },
+      filter: {
+        update: ({ session }) => {
+          if (isAdmin(session)) return true;
+          return { id: { equals: Number(session.itemId) } };
+        },
+      },
+    },
     ui: {
       singular: "Nutzer:in",
       plural: "Nutzer:innen",
@@ -30,13 +53,25 @@ export const lists = {
     },
     fields: {
       name: text({
-        validation: { isRequired: true }
+        validation: { isRequired: true },
+        access: {
+          update: ({ session, item }) => isAdmin(session) || isOwnItem(session, item),
+        },
       }),
       email: text({
         validation: { isRequired: true },
         isIndexed: 'unique',
+        access: {
+          read: (args) => args.kind !== 'item' || isAdmin(args.session) || isOwnItem(args.session, args.item),
+          update: ({ session, item }) => isAdmin(session) || isOwnItem(session, item),
+        },
       }),
-      password: password({ validation: { isRequired: true } }),
+      password: password({
+        validation: { isRequired: true },
+        access: {
+          update: ({ session, item }) => isAdmin(session) || isOwnItem(session, item),
+        },
+      }),
       roles: multiselect({
         type: 'enum',
         options: [
@@ -44,6 +79,9 @@ export const lists = {
           { label: 'Editor*in', value: 'editor' },
         ],
         ui: { label: 'Rollen' },
+        access: {
+          update: ({ session }) => isAdmin(session),
+        },
       }),
       createdAt: timestamp({
         defaultValue: { kind: 'now' },
