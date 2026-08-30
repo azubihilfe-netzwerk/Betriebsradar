@@ -38,7 +38,7 @@ const ReportSubmitted: FC = () => {
             <p className="text-sm mt-1">
               Nach der E-Mail-Bestätigung liest unser Team deinen Bericht durch und veröffentlicht
               ihn, wenn er unsere Richtlinien erfüllt. Falls nicht, melden wir uns bei dir per
-              Mail. Das dauert in der Regel ein paar Tage.
+              Mail.
             </p>
           </div>
         </li>

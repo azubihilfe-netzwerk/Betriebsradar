@@ -195,8 +195,19 @@ export const lists = {
       specialtiesOther: text({ validation: {isRequired: false}, ui: { displayMode: 'textarea', label: 'Sonstiges (Besonderheiten)' } }),
       ageAtEmployment: integer({ validation: {isRequired: false}, ui: { label: 'Alter zum Zeitpunkt der Anstellung' } }),
       yearOfHiring: text({ validation: { isRequired: true }, ui: { label: 'Beginn Arbeitszeit (Jahr)' } }),
-      yearOfLeaving: text({ validation: {isRequired: false}, ui: { label: 'Ende Arbeitszeit (Jahr)' } }),
-      ongoing: checkbox({ defaultValue: false, ui: { label: 'Dauert an' } }),
+      employmentDuration: select({
+        type: 'enum',
+        options: [
+          { label: '1 Woche oder weniger', value: 'one_week_or_less' },
+          { label: '1-4 Wochen', value: 'one_to_four_weeks' },
+          { label: '1-3 Monate', value: 'one_to_three_months' },
+          { label: '3-6 Monate', value: 'three_to_six_months' },
+          { label: '6-12 Monate', value: 'six_to_twelve_months' },
+          { label: '1-3 Jahre', value: 'one_to_three_years' },
+          { label: 'Mehr als 3 Jahre', value: 'more_than_three_years' },
+        ],
+        ui: { displayMode: 'select', label: 'Dauer des Arbeitsverhältnisses' },
+      }),
       genderIdentityRespected: checkbox({ ui: { label: 'Geschlechtliche Identität wurde im Betrieb respektiert' } }),
       position: select({
         type: 'enum',
@@ -221,7 +232,7 @@ export const lists = {
           { label: 'selten', value: 'rarely' },
           { label: 'niemals', value: 'never' },
         ],
-        ui: { displayMode: 'select', label: 'Wurde dir zugehört?' },
+        ui: { displayMode: 'select', label: 'Wurde ich ernst genommen?' },
       }),
       canAskColleagues: select({
         type: 'enum',
@@ -245,6 +256,17 @@ export const lists = {
         ],
         ui: { displayMode: 'select', label: 'Konnte ich mit Fragen/Problemen zu meine*r Chef*in gehen?' },
       }),
+      canAskTrainer: select({
+        type: 'enum',
+        options: [
+          { label: 'immer', value: 'always' },
+          { label: 'meistens', value: 'mostly' },
+          { label: 'ab und zu', value: 'sometimes' },
+          { label: 'selten', value: 'rarely' },
+          { label: 'niemals', value: 'never' },
+        ],
+        ui: { displayMode: 'select', label: 'Konnte ich mit Fragen/Problemen zur Ausbilder*in gehen?' },
+      }),
       tone: select({
         type: 'enum',
         options: [
@@ -266,15 +288,6 @@ export const lists = {
         ],
         ui: { displayMode: 'select', label: 'Wurde dir genug erklärt?' },
       }),
-      proximity: select({
-        options: [
-          { label: 'zu nah', value: 'too_close' },
-          { label: 'locker', value: 'casual' },
-          { label: 'professionell', value: 'professional' },
-          { label: 'zu distant', value: 'too_distant' },
-        ],
-        ui: { displayMode: 'select', label: 'Wie war das kollegiale Nähe/Distanz-Verhältnis?' },
-      }),
       boundariesRespected: multiselect({
         type: 'enum',
         options: [
@@ -283,7 +296,7 @@ export const lists = {
           { label: 'verantwortungstechnisch', value: 'responsibility' },
           { label: 'körperlich-distanztechnisch', value: 'physical_distance' },
         ],
-        ui: { label: 'Meine Grenzen wurden respektiert (Mehrfachauswahl)' },
+        ui: { label: 'Folgende Grenzen wurden nicht respektiert (Mehrfachauswahl)' },
       }),
       appreciated: select({
         type: 'enum',
@@ -334,28 +347,33 @@ export const lists = {
       disabilityTypes: multiselect({
         type: 'enum',
         options: [
-          { label: 'Autismus-Spektrum', value: 'autism_spectrum' },
-          { label: 'Autoimmunerkrankung', value: 'autoimmune' },
-          { label: 'blinde/sehbehinderte Personen', value: 'blind_visually_impaired' },
-          { label: 'gehörlose/hörbehinderte Personen', value: 'deaf_hearing_impaired' },
-          { label: 'körperlich behindert', value: 'physically_disabled' },
-          { label: 'psychische Erkrankung', value: 'mental_illness' },
+          { label: 'Autismus-Spektrum / Autismus', value: 'autism_spectrum' },
+          { label: 'ADHS (Aufmerksamkeitsdefizit-/Hyperaktivitätsstörung)', value: 'adhs' },
+          { label: 'andere Neurodivergenz / neurodivergente Wahrnehmungs- oder Verarbeitungsweisen', value: 'other_neurodivergence' },
+          { label: 'psychische Erkrankung oder psychische Beeinträchtigung', value: 'mental_illness' },
           { label: 'chronische Erkrankung', value: 'chronic_illness' },
+          { label: 'Autoimmunerkrankung', value: 'autoimmune' },
+          { label: 'neurologische Erkrankung', value: 'neurological' },
           { label: 'Herz-Kreislauf-Erkrankung', value: 'cardiovascular' },
-          { label: 'Skelett-/Muskelerkrankung', value: 'musculoskeletal' },
+          { label: 'Erkrankung oder Beeinträchtigung des Bewegungsapparats (Muskeln, Knochen, Gelenke)', value: 'musculoskeletal' },
+          { label: 'körperliche Behinderung', value: 'physically_disabled' },
+          { label: 'Mobilitätseinschränkung / Rollstuhlnutzung', value: 'wheelchair_mobility' },
+          { label: 'Sehbehinderung / Blindheit', value: 'blind_visually_impaired' },
+          { label: 'Hörbehinderung / Gehörlosigkeit', value: 'deaf_hearing_impaired' },
+          { label: 'Sprach- oder Kommunikationsbeeinträchtigung', value: 'speech_communication' },
+          { label: 'Lernschwierigkeiten / Lernbehinderung', value: 'learning_disability' },
+          { label: 'kognitive Beeinträchtigung / geistige Behinderung', value: 'cognitive_disability' },
           { label: 'Stoffwechselerkrankung', value: 'metabolic' },
-          { label: 'Erkrankung des Verdauungssystems', value: 'digestive' },
-          { label: 'Spastik', value: 'spasticity' },
-          { label: 'Lernschwierigkeiten / sog. geistige Behinderung', value: 'learning_disability' },
-          { label: 'neurodivergent', value: 'neurodivergent' },
-          { label: 'Rollstuhlnutzend / Mobilitätseinschränkung', value: 'wheelchair_mobility' },
-          { label: 'Drogenkonsument*in', value: 'drug_use' },
-          { label: 'Erfahrung sexualisierter Gewalt', value: 'sexual_violence' },
-          { label: 'mehrgewichtig/hochgewichtig', value: 'overweight' },
-          { label: 'wenigergewichtig', value: 'underweight' },
+          { label: 'Erkrankung oder Beeinträchtigung des Verdauungssystems', value: 'digestive' },
+          { label: 'Spastik / motorische Beeinträchtigung', value: 'spasticity' },
+          { label: 'höheres Körpergewicht', value: 'higher_body_weight' },
+          { label: 'niedrigeres Körpergewicht', value: 'lower_body_weight' },
+          { label: 'Suchterkrankung / problematischer Substanzkonsum', value: 'addiction' },
+          { label: 'Erfahrungen mit sexualisierter Gewalt / Trauma', value: 'sexual_violence_trauma' },
         ],
         ui: { label: 'Beeinträchtigungen (Mehrfachauswahl)' },
       }),
+      disabilityOther: text({ validation: { isRequired: false }, ui: { displayMode: 'textarea', label: 'Sonstige Beeinträchtigung' } }),
       disabilitySharedWithCompany: select({
         type: 'enum',
         options: [
@@ -372,9 +390,9 @@ export const lists = {
           { label: 'teilweise', value: 'partly' },
           { label: 'nein', value: 'no' },
         ],
-        ui: { displayMode: 'select', label: 'Hast du dich damit wohlgefühlt, dass dem Betrieb deine Beeinträchtigung bekannt war?' },
+        ui: { displayMode: 'select', label: 'Ist dein Betrieb respektvoll mit deiner Beeinträchtigung umgegangen?' },
       }),
-      // Herkunft & Erscheinungsbild
+      // Herkunft, Erscheinungsbild & Religion
       ethnicityTypes: multiselect({
         type: 'enum',
         options: [
@@ -387,7 +405,7 @@ export const lists = {
           { label: 'Migrant*in', value: 'migrant' },
           { label: 'Rom*nja/Sinti*zze', value: 'roma_sinti' },
         ],
-        ui: { label: 'Herkunft & Erscheinungsbild (Mehrfachauswahl)' },
+        ui: { label: 'Herkunft, Erscheinungsbild & Religion (Mehrfachauswahl)' },
       }),
       ethnicitySharedWithCompany: select({
         type: 'enum',
@@ -405,7 +423,7 @@ export const lists = {
           { label: 'teilweise', value: 'partly' },
           { label: 'nein', value: 'no' },
         ],
-        ui: { displayMode: 'select', label: 'Hast du dich damit wohlgefühlt, dass dem Betrieb deine Herkunft/Erscheinungsbild bekannt war?' },
+        ui: { displayMode: 'select', label: 'Ist dein Betrieb respektvoll mit deiner Herkunft/ Erscheinungsbild/ Religion umgegangen?' },
       }),
       needsRespected: select({
         type: 'enum',
@@ -414,10 +432,19 @@ export const lists = {
           { label: 'teilweise', value: 'partly' },
           { label: 'nein', value: 'no' },
         ],
-        ui: { displayMode: 'select', label: 'Wurde insgesamt auf deine Bedürfnisse bezüglich deiner Identität Rücksicht genommen?' },
+        ui: { displayMode: 'select', label: 'Hast du dich insgesamt respektvoll behandelt gefühlt mit deiner Identität?' },
       }),
       feedback: text({ ui: { displayMode: 'textarea', label: 'Feedback zum Betrieb' } }),
       moreWishes: text({ ui: { displayMode: 'textarea', label: 'Wünsche an das Betriebsradar / weiteres Feedback' } }),
+      recommend: select({
+        type: 'enum',
+        options: [
+          { label: 'ja', value: 'yes' },
+          { label: 'teilweise', value: 'partly' },
+          { label: 'nein', value: 'no' },
+        ],
+        ui: { displayMode: 'select', label: 'Würdest du deinen Betrieb weiter empfehlen?' },
+      }),
 
       /**Internal fields -> cannot be updated by reviewing person*/
       status: select({

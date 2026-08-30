@@ -53,7 +53,7 @@ const POSITIONS = ['intern', 'apprentice', 'journey', 'master', 'helper', 'other
 const RATINGS = ['always', 'mostly', 'sometimes', 'rarely', 'never'];
 const TONES = ['very_good', 'good', 'ok', 'bad', 'awful'];
 const EXPLAINED = ['too_much', 'just_right', 'enough', 'too_little'];
-const PROXIMITY = ['too_close', 'casual', 'professional', 'too_distant'];
+const EMPLOYMENT_DURATIONS = ['one_week_or_less', 'one_to_four_weeks', 'one_to_three_months', 'three_to_six_months', 'six_to_twelve_months', 'one_to_three_years', 'more_than_three_years'];
 const YES_PARTLY_NO = ['yes', 'partly', 'no'];
 const BOUNDARIES = ['physical_strength', 'emotional', 'responsibility', 'physical_distance'];
 const EXPERIENCE_TEXTS = [
@@ -79,7 +79,6 @@ function pickSome<T>(options: T[]): T[] {
 function randomReviewData(company: { id: string }) {
   const firstName = pick(FIRST_NAMES);
   const yearOfHiring = String(randomInt(2015, 2024));
-  const ongoing = Math.random() < 0.4;
   return {
     name: `${firstName}s Erfahrungsbericht`,
     email: `${firstName.toLowerCase()}.${randomInt(1000, 9999)}@example.com`,
@@ -92,8 +91,7 @@ function randomReviewData(company: { id: string }) {
     trainingShortenable: Math.random() < 0.5,
     partTime: Math.random() < 0.2,
     yearOfHiring,
-    yearOfLeaving: ongoing ? undefined : String(randomInt(Number(yearOfHiring), 2026)),
-    ongoing,
+    employmentDuration: pick(EMPLOYMENT_DURATIONS),
     genderIdentityRespected: Math.random() < 0.7,
     position: pick(POSITIONS),
     listenedTo: pick(RATINGS),
@@ -101,7 +99,7 @@ function randomReviewData(company: { id: string }) {
     explained: pick(EXPLAINED),
     canAskColleagues: pick(RATINGS),
     canAskBoss: pick(RATINGS),
-    proximity: pick(PROXIMITY),
+    canAskTrainer: pick(RATINGS),
     boundariesRespected: pickSome(BOUNDARIES),
     appreciated: pick(YES_PARTLY_NO),
     experienceText: pick(EXPERIENCE_TEXTS),
@@ -204,7 +202,7 @@ export async function createSampleData(ctx?: any): Promise<SampleData> {
       explained: 'just_right',
       canAskColleagues: 'always',
       canAskBoss: 'always',
-      proximity: 'professional',
+      canAskTrainer: 'always',
       boundariesRespected: ['physical_strength', 'emotional'],
       appreciated: 'yes',
       experienceText: 'Sehr gute Erfahrung.',
@@ -229,7 +227,7 @@ export async function createSampleData(ctx?: any): Promise<SampleData> {
       explained: 'enough',
       canAskColleagues: 'never',
       canAskBoss: 'never',
-      proximity: 'casual',
+      canAskTrainer: 'never',
       boundariesRespected: [],
       appreciated: 'partly',
       experienceText: 'Durchwachsene Erfahrung.',

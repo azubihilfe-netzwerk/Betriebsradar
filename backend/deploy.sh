@@ -59,6 +59,7 @@ FILES_TO_SYNC=(
   package.json
   package-lock.json
   tsconfig.json
+  scripts/backup_db.sh
 )
 
 # sample/seed data must never end up on the live server

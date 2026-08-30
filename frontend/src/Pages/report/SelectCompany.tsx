@@ -41,14 +41,14 @@ const SelectCompany: FC = () => {
         Teile deine Erfahrung zu einem Betrieb. Deine offene Rückmeldung hilft anderen, die richtige Wahl zu treffen.
       </p>
       <p >Berichte nur über Betriebe, in denen du selbst
-        arbeitest oder gearbeitet hast. Bei dem Bericht geht es um deine
-        subjektive Erfahrung und Empfindung. Alle Berichte werden anonym veröffentlicht.
+        arbeitest oder gearbeitet hast.
       </p>
-
+      <p>Wenn du deinen Bericht verfasst, kannst du deine subjektive Meinung äußern und wahrheitsgemäße Tatsachen berichten.
+        Dein Recht auf Meinungsfreiheit bleibt dabei gewahrt – solange deine Beiträge nicht strafrechtlich relevant, beleidigend oder diffamierend sind.
+      </p>
 
       <p >
         Suche den Betrieb, über den du berichten möchtest. Vielleicht ist er schon im Betriebsradar eingetragen.
-        Falls nicht, kannst du den Betrieb neu eintragen.
       </p>
 
       <SearchAutocomplete
@@ -74,14 +74,14 @@ const SelectCompany: FC = () => {
           Neuen Betrieb eintragen
         </LinkButton>
 
-      {selected && (
-        <Button
-          className="flex-1"
-          onClick={() => navigate(`/berichtschreiben?companyId=${selected.id}`)}
-        >
-          Bericht zu {selected.name} schreiben
-        </Button>
-      )}
+        {selected && (
+          <Button
+            className="flex-1"
+            onClick={() => navigate(`/berichtschreiben?companyId=${selected.id}`)}
+          >
+            Bericht zu {selected.name} schreiben
+          </Button>
+        )}
       </div>
     </div>
 

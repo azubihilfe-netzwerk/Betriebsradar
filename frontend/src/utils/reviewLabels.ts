@@ -4,6 +4,7 @@ import {
   ReviewListenedToType,
   ReviewCanAskBossType,
   ReviewCanAskColleaguesType,
+  ReviewCanAskTrainerType,
   ReviewToneType,
   ReviewExplainedType,
   ReviewAppreciatedType,
@@ -17,6 +18,8 @@ import {
   ReviewBoundariesRespectedType,
   ReviewDisabilityTypesType,
   ReviewEthnicityTypesType,
+  ReviewEmploymentDurationType,
+  ReviewRecommendType,
 } from '../api/__generated__/graphql';
 
 export const positionLabels: Record<ReviewPositionType, string> = {
@@ -63,6 +66,13 @@ export const canAskColleaguesLabels: Record<ReviewCanAskColleaguesType, string> 
   [ReviewCanAskColleaguesType.Rarely]: 'selten',
   [ReviewCanAskColleaguesType.Never]: 'niemals',
 };
+export const canAskTrainerLabels: Record<ReviewCanAskTrainerType, string> = {
+  [ReviewCanAskTrainerType.Always]: 'immer',
+  [ReviewCanAskTrainerType.Mostly]: 'meistens',
+  [ReviewCanAskTrainerType.Sometimes]: 'ab und zu',
+  [ReviewCanAskTrainerType.Rarely]: 'selten',
+  [ReviewCanAskTrainerType.Never]: 'niemals',
+};
 
 export const toneLabels: Record<ReviewToneType, string> = {
   [ReviewToneType.VeryGood]: 'sehr angenehm',
@@ -79,11 +89,14 @@ export const explainedLabels: Record<ReviewExplainedType, string> = {
   [ReviewExplainedType.TooLittle]: 'zu wenig',
 };
 
-export const proximityLabels: Record<string, string> = {
-  too_close: 'zu nah',
-  casual: 'locker',
-  professional: 'professionell',
-  too_distant: 'zu distant',
+export const employmentDurationLabels: Record<ReviewEmploymentDurationType, string> = {
+  [ReviewEmploymentDurationType.OneWeekOrLess]: '1 Woche oder weniger',
+  [ReviewEmploymentDurationType.OneToFourWeeks]: '1-4 Wochen',
+  [ReviewEmploymentDurationType.OneToThreeMonths]: '1-3 Monate',
+  [ReviewEmploymentDurationType.ThreeToSixMonths]: '3-6 Monate',
+  [ReviewEmploymentDurationType.SixToTwelveMonths]: '6-12 Monate',
+  [ReviewEmploymentDurationType.OneToThreeYears]: '1-3 Jahre',
+  [ReviewEmploymentDurationType.MoreThanThreeYears]: 'Mehr als 3 Jahre',
 };
 
 export const appreciatedLabels: Record<ReviewAppreciatedType, string> = {
@@ -129,6 +142,11 @@ export const needsRespectedLabels: Record<ReviewNeedsRespectedType, string> = {
   [ReviewNeedsRespectedType.Partly]: yesPartlyNo.Partly,
   [ReviewNeedsRespectedType.No]: yesPartlyNo.No,
 };
+export const recommendLabels: Record<ReviewRecommendType, string> = {
+  [ReviewRecommendType.Yes]: yesPartlyNo.Yes,
+  [ReviewRecommendType.Partly]: yesPartlyNo.Partly,
+  [ReviewRecommendType.No]: yesPartlyNo.No,
+};
 
 export const boundariesRespectedLabels: Record<ReviewBoundariesRespectedType, string> = {
   [ReviewBoundariesRespectedType.PhysicalStrength]: 'körperlich-kräftetechnisch',
@@ -138,25 +156,29 @@ export const boundariesRespectedLabels: Record<ReviewBoundariesRespectedType, st
 };
 
 export const disabilityTypeLabels: Record<ReviewDisabilityTypesType, string> = {
-  [ReviewDisabilityTypesType.AutismSpectrum]: 'Autismus-Spektrum',
-  [ReviewDisabilityTypesType.Autoimmune]: 'Autoimmunerkrankung',
-  [ReviewDisabilityTypesType.BlindVisuallyImpaired]: 'blind/sehbehindert',
-  [ReviewDisabilityTypesType.DeafHearingImpaired]: 'gehörlos/hörbehindert',
-  [ReviewDisabilityTypesType.PhysicallyDisabled]: 'körperlich behindert',
-  [ReviewDisabilityTypesType.MentalIllness]: 'psychische Erkrankung',
+  [ReviewDisabilityTypesType.AutismSpectrum]: 'Autismus-Spektrum / Autismus',
+  [ReviewDisabilityTypesType.Adhs]: 'ADHS (Aufmerksamkeitsdefizit-/Hyperaktivitätsstörung)',
+  [ReviewDisabilityTypesType.OtherNeurodivergence]: 'andere Neurodivergenz / neurodivergente Wahrnehmungs- oder Verarbeitungsweisen',
+  [ReviewDisabilityTypesType.MentalIllness]: 'psychische Erkrankung oder psychische Beeinträchtigung',
   [ReviewDisabilityTypesType.ChronicIllness]: 'chronische Erkrankung',
+  [ReviewDisabilityTypesType.Autoimmune]: 'Autoimmunerkrankung',
+  [ReviewDisabilityTypesType.Neurological]: 'neurologische Erkrankung',
   [ReviewDisabilityTypesType.Cardiovascular]: 'Herz-Kreislauf-Erkrankung',
-  [ReviewDisabilityTypesType.Musculoskeletal]: 'Skelett-/Muskelerkrankung',
+  [ReviewDisabilityTypesType.Musculoskeletal]: 'Erkrankung oder Beeinträchtigung des Bewegungsapparats (Muskeln, Knochen, Gelenke)',
+  [ReviewDisabilityTypesType.PhysicallyDisabled]: 'körperliche Behinderung',
+  [ReviewDisabilityTypesType.WheelchairMobility]: 'Mobilitätseinschränkung / Rollstuhlnutzung',
+  [ReviewDisabilityTypesType.BlindVisuallyImpaired]: 'Sehbehinderung / Blindheit',
+  [ReviewDisabilityTypesType.DeafHearingImpaired]: 'Hörbehinderung / Gehörlosigkeit',
+  [ReviewDisabilityTypesType.SpeechCommunication]: 'Sprach- oder Kommunikationsbeeinträchtigung',
+  [ReviewDisabilityTypesType.LearningDisability]: 'Lernschwierigkeiten / Lernbehinderung',
+  [ReviewDisabilityTypesType.CognitiveDisability]: 'kognitive Beeinträchtigung / geistige Behinderung',
   [ReviewDisabilityTypesType.Metabolic]: 'Stoffwechselerkrankung',
-  [ReviewDisabilityTypesType.Digestive]: 'Erkrankung des Verdauungssystems',
-  [ReviewDisabilityTypesType.Spasticity]: 'Spastik',
-  [ReviewDisabilityTypesType.LearningDisability]: 'Lernschwierigkeiten / sog. geistige Behinderung',
-  [ReviewDisabilityTypesType.Neurodivergent]: 'neurodivergent',
-  [ReviewDisabilityTypesType.WheelchairMobility]: 'Rollstuhlnutzend / Mobilitätseinschränkung',
-  [ReviewDisabilityTypesType.DrugUse]: 'Drogenkonsument*in',
-  [ReviewDisabilityTypesType.SexualViolence]: 'Erfahrung sexualisierter Gewalt',
-  [ReviewDisabilityTypesType.Overweight]: 'mehrgewichtig/hochgewichtig',
-  [ReviewDisabilityTypesType.Underweight]: 'wenigergewichtig',
+  [ReviewDisabilityTypesType.Digestive]: 'Erkrankung oder Beeinträchtigung des Verdauungssystems',
+  [ReviewDisabilityTypesType.Spasticity]: 'Spastik / motorische Beeinträchtigung',
+  [ReviewDisabilityTypesType.HigherBodyWeight]: 'höheres Körpergewicht',
+  [ReviewDisabilityTypesType.LowerBodyWeight]: 'niedrigeres Körpergewicht',
+  [ReviewDisabilityTypesType.Addiction]: 'Suchterkrankung / problematischer Substanzkonsum',
+  [ReviewDisabilityTypesType.SexualViolenceTrauma]: 'Erfahrungen mit sexualisierter Gewalt / Trauma',
 };
 
 export const ethnicityTypeLabels: Record<ReviewEthnicityTypesType, string> = {
@@ -170,14 +192,12 @@ export const ethnicityTypeLabels: Record<ReviewEthnicityTypesType, string> = {
   [ReviewEthnicityTypesType.RomaSinti]: 'Rom*nja/Sinti*zze',
 };
 
-/** "seit 2024" while ongoing, "2024–2026" once ended, or just "2024" if neither is known. */
+/** "2024, 1-3 Jahre" if a duration is known, or just "2024" otherwise. */
 export function formatEmploymentPeriod(
   yearOfHiring?: string | null,
-  yearOfLeaving?: string | null,
-  ongoing?: boolean | null
+  employmentDuration?: ReviewEmploymentDurationType | null
 ): string {
   if (!yearOfHiring) return '';
-  if (ongoing) return `seit ${yearOfHiring}`;
-  if (yearOfLeaving) return `${yearOfHiring}–${yearOfLeaving}`;
+  if (employmentDuration) return `${yearOfHiring}, ${employmentDurationLabels[employmentDuration]}`;
   return `${yearOfHiring}`;
 }

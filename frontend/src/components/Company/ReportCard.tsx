@@ -7,9 +7,9 @@ import {
   listenedToLabels,
   canAskBossLabels,
   canAskColleaguesLabels,
+  canAskTrainerLabels,
   toneLabels,
   explainedLabels,
-  proximityLabels,
   appreciatedLabels,
   sharedWithCompanyLabels,
   feltComfortableSharingLabels,
@@ -18,6 +18,7 @@ import {
   ethnicitySharedWithCompanyLabels,
   ethnicityFeltComfortableSharingLabels,
   needsRespectedLabels,
+  recommendLabels,
   boundariesRespectedLabels,
   disabilityTypeLabels,
   ethnicityTypeLabels,
@@ -29,8 +30,7 @@ export type ReportCardReview = Pick<
   | 'id'
   | 'position'
   | 'yearOfHiring'
-  | 'yearOfLeaving'
-  | 'ongoing'
+  | 'employmentDuration'
   | 'experienceText'
   | 'feedback'
   | 'moreWishes'
@@ -46,16 +46,18 @@ export type ReportCardReview = Pick<
   | 'listenedTo'
   | 'canAskBoss'
   | 'canAskColleagues'
+  | 'canAskTrainer'
   | 'tone'
   | 'explained'
-  | 'proximity'
   | 'appreciated'
   | 'boundariesRespected'
   | 'genderIdentityRespected'
   | 'needsRespected'
+  | 'recommend'
   | 'sharedWithCompany'
   | 'feltComfortableSharing'
   | 'disabilityTypes'
+  | 'disabilityOther'
   | 'disabilitySharedWithCompany'
   | 'disabilityFeltComfortableSharing'
   | 'ethnicityTypes'
@@ -123,14 +125,14 @@ function buildSections(review: ReportCardReview): Section[] {
         review.canAskColleagues
           ? { label: 'Fragen an Kolleg*innen möglich', value: canAskColleaguesLabels[review.canAskColleagues] }
           : null,
+        review.canAskTrainer
+          ? { label: 'Fragen an Ausbilder*in möglich', value: canAskTrainerLabels[review.canAskTrainer] }
+          : null,
         review.boundariesRespected && review.boundariesRespected.length > 0
           ? {
-              label: 'Respektierte Grenzen',
+              label: 'Nicht respektierte Grenzen',
               value: review.boundariesRespected.map((v) => boundariesRespectedLabels[v]).join(', '),
             }
-          : null,
-        review.proximity
-          ? { label: 'Nähe/Distanz', value: proximityLabels[review.proximity] ?? review.proximity }
           : null,
         review.appreciated ? { label: 'Wertschätzung', value: appreciatedLabels[review.appreciated] } : null,
       ].filter((entry): entry is QaEntry => entry !== null),
@@ -188,11 +190,15 @@ function buildSections(review: ReportCardReview): Section[] {
             }
           : null,
       ].filter((entry): entry is QaEntry => entry !== null),
-      textBlocks: [],
+      textBlocks: [review.disabilityOther ? { label: 'Sonstige Beeinträchtigung', text: review.disabilityOther } : null].filter(
+        (block): block is TextBlock => block !== null
+      ),
     },
     {
       title: 'Feedback zum Betrieb',
-      qaItems: [],
+      qaItems: [
+        review.recommend ? { label: 'Weiterempfehlung', value: recommendLabels[review.recommend] } : null,
+      ].filter((entry): entry is QaEntry => entry !== null),
       textBlocks: [
         review.feedback ? { label: 'Feedback zum Betrieb', text: review.feedback } : null,
         review.moreWishes ? { label: 'Wünsche ans Betriebsradar', text: review.moreWishes } : null,
@@ -208,7 +214,7 @@ interface ReportCardProps {
 }
 
 const ReportCard: React.FC<ReportCardProps> = ({ review }) => {
-  const period = formatEmploymentPeriod(review.yearOfHiring, review.yearOfLeaving, review.ongoing);
+  const period = formatEmploymentPeriod(review.yearOfHiring, review.employmentDuration);
   const positionLabel = review.position ? positionLabels[review.position] : 'Bericht';
   const sections = buildSections(review);
 

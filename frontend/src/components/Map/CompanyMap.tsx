@@ -4,7 +4,6 @@ import L from 'leaflet';
 import { Link } from 'react-router-dom';
 import 'leaflet/dist/leaflet.css';
 import { MapBounds, MapCompany } from '../../lib/companyFilters';
-import { LinkButton } from '../Form';
 
 const pinIcon = L.divIcon({
   className: '',
@@ -81,14 +80,16 @@ const CompanyMap: FC<CompanyMapProps> = ({ companies, center, zoom, onViewChange
         <MapEventsListener onViewChange={onViewChange} />
         {markers.map((company) => (
           <Marker key={company.id} position={[company.latitude, company.longitude]} icon={pinIcon}>
-            <Popup className='border-standard bg-input'>
-              <div className="min-w-[180px]">
-                <p className="font-semibold text-blackish">{company.name}</p>
-                {company.trade && <p className="text-sm text-blackish">{company.trade}</p>}
-                <LinkButton to={`/unternehmen/${company.id}`} size="sm">
-                     {company.reviewsCount ?? 0} Berichte lesen
-                </LinkButton>
-              </div>
+            <Popup className="company-popup border-standard" minWidth={200}>
+                <div className="bg-brand-surface px-4 py-2 text-center">
+                  <p className="font-bold leading-snug text-blackish">{company.name}</p>
+                  {company.trade && <p className="mt-1 text-sm text-blackish">{company.trade}</p>}
+                </div>
+                 <Link to={`/unternehmen/${company.id}`} className="block">
+                <div className="bg-brand-button px-4 py-3 text-center border-standard -mr-1 -ml-1 -mb-1 font-bold text-blackish underline active:bg-brand-button-hover">
+                  {company.reviewsCount ?? 0} Berichte lesen
+                </div>
+              </Link>
             </Popup>
           </Marker>
         ))}

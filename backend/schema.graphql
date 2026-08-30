@@ -280,16 +280,15 @@ type Review {
   specialtiesOther: String
   ageAtEmployment: Int
   yearOfHiring: String
-  yearOfLeaving: String
-  ongoing: Boolean
+  employmentDuration: ReviewEmploymentDurationType
   genderIdentityRespected: Boolean
   position: ReviewPositionType
   listenedTo: ReviewListenedToType
   canAskColleagues: ReviewCanAskColleaguesType
   canAskBoss: ReviewCanAskBossType
+  canAskTrainer: ReviewCanAskTrainerType
   tone: ReviewToneType
   explained: ReviewExplainedType
-  proximity: String
   boundariesRespected: [ReviewBoundariesRespectedType!]
   appreciated: ReviewAppreciatedType
   experienceText: String
@@ -298,6 +297,7 @@ type Review {
   sharedWithCompany: ReviewSharedWithCompanyType
   feltComfortableSharing: ReviewFeltComfortableSharingType
   disabilityTypes: [ReviewDisabilityTypesType!]
+  disabilityOther: String
   disabilitySharedWithCompany: ReviewDisabilitySharedWithCompanyType
   disabilityFeltComfortableSharing: ReviewDisabilityFeltComfortableSharingType
   ethnicityTypes: [ReviewEthnicityTypesType!]
@@ -306,9 +306,20 @@ type Review {
   needsRespected: ReviewNeedsRespectedType
   feedback: String
   moreWishes: String
+  recommend: ReviewRecommendType
   status: ReviewStatusType
   emailVerified: Boolean
   accessKey: String
+}
+
+enum ReviewEmploymentDurationType {
+  one_week_or_less
+  one_to_four_weeks
+  one_to_three_months
+  three_to_six_months
+  six_to_twelve_months
+  one_to_three_years
+  more_than_three_years
 }
 
 enum ReviewPositionType {
@@ -337,6 +348,14 @@ enum ReviewCanAskColleaguesType {
 }
 
 enum ReviewCanAskBossType {
+  always
+  mostly
+  sometimes
+  rarely
+  never
+}
+
+enum ReviewCanAskTrainerType {
   always
   mostly
   sometimes
@@ -398,24 +417,28 @@ enum ReviewFeltComfortableSharingType {
 
 enum ReviewDisabilityTypesType {
   autism_spectrum
-  autoimmune
-  blind_visually_impaired
-  deaf_hearing_impaired
-  physically_disabled
+  adhs
+  other_neurodivergence
   mental_illness
   chronic_illness
+  autoimmune
+  neurological
   cardiovascular
   musculoskeletal
+  physically_disabled
+  wheelchair_mobility
+  blind_visually_impaired
+  deaf_hearing_impaired
+  speech_communication
+  learning_disability
+  cognitive_disability
   metabolic
   digestive
   spasticity
-  learning_disability
-  neurodivergent
-  wheelchair_mobility
-  drug_use
-  sexual_violence
-  overweight
-  underweight
+  higher_body_weight
+  lower_body_weight
+  addiction
+  sexual_violence_trauma
 }
 
 enum ReviewDisabilitySharedWithCompanyType {
@@ -459,6 +482,12 @@ enum ReviewNeedsRespectedType {
   no
 }
 
+enum ReviewRecommendType {
+  yes
+  partly
+  no
+}
+
 enum ReviewStatusType {
   awaitingReview
   changesRequested
@@ -486,22 +515,22 @@ input ReviewWhereInput {
   specialtiesOther: StringFilter
   ageAtEmployment: IntNullableFilter
   yearOfHiring: StringFilter
-  yearOfLeaving: StringFilter
-  ongoing: BooleanFilter
+  employmentDuration: ReviewEmploymentDurationTypeNullableFilter
   genderIdentityRespected: BooleanFilter
   position: ReviewPositionTypeNullableFilter
   listenedTo: ReviewListenedToTypeNullableFilter
   canAskColleagues: ReviewCanAskColleaguesTypeNullableFilter
   canAskBoss: ReviewCanAskBossTypeNullableFilter
+  canAskTrainer: ReviewCanAskTrainerTypeNullableFilter
   tone: ReviewToneTypeNullableFilter
   explained: ReviewExplainedTypeNullableFilter
-  proximity: StringNullableFilter
   appreciated: ReviewAppreciatedTypeNullableFilter
   experienceText: StringFilter
   languages: StringFilter
   gender: ReviewGenderTypeNullableFilter
   sharedWithCompany: ReviewSharedWithCompanyTypeNullableFilter
   feltComfortableSharing: ReviewFeltComfortableSharingTypeNullableFilter
+  disabilityOther: StringFilter
   disabilitySharedWithCompany: ReviewDisabilitySharedWithCompanyTypeNullableFilter
   disabilityFeltComfortableSharing: ReviewDisabilityFeltComfortableSharingTypeNullableFilter
   ethnicitySharedWithCompany: ReviewEthnicitySharedWithCompanyTypeNullableFilter
@@ -509,6 +538,7 @@ input ReviewWhereInput {
   needsRespected: ReviewNeedsRespectedTypeNullableFilter
   feedback: StringFilter
   moreWishes: StringFilter
+  recommend: ReviewRecommendTypeNullableFilter
   status: ReviewStatusTypeNullableFilter
   emailVerified: BooleanFilter
   accessKey: StringFilter
@@ -523,6 +553,13 @@ input IntNullableFilter {
   gt: Int
   gte: Int
   not: IntNullableFilter
+}
+
+input ReviewEmploymentDurationTypeNullableFilter {
+  equals: ReviewEmploymentDurationType
+  in: [ReviewEmploymentDurationType!]
+  notIn: [ReviewEmploymentDurationType!]
+  not: ReviewEmploymentDurationTypeNullableFilter
 }
 
 input ReviewPositionTypeNullableFilter {
@@ -553,6 +590,13 @@ input ReviewCanAskBossTypeNullableFilter {
   not: ReviewCanAskBossTypeNullableFilter
 }
 
+input ReviewCanAskTrainerTypeNullableFilter {
+  equals: ReviewCanAskTrainerType
+  in: [ReviewCanAskTrainerType!]
+  notIn: [ReviewCanAskTrainerType!]
+  not: ReviewCanAskTrainerTypeNullableFilter
+}
+
 input ReviewToneTypeNullableFilter {
   equals: ReviewToneType
   in: [ReviewToneType!]
@@ -565,21 +609,6 @@ input ReviewExplainedTypeNullableFilter {
   in: [ReviewExplainedType!]
   notIn: [ReviewExplainedType!]
   not: ReviewExplainedTypeNullableFilter
-}
-
-input StringNullableFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  mode: QueryMode
-  not: StringNullableFilter
 }
 
 input ReviewAppreciatedTypeNullableFilter {
@@ -645,6 +674,13 @@ input ReviewNeedsRespectedTypeNullableFilter {
   not: ReviewNeedsRespectedTypeNullableFilter
 }
 
+input ReviewRecommendTypeNullableFilter {
+  equals: ReviewRecommendType
+  in: [ReviewRecommendType!]
+  notIn: [ReviewRecommendType!]
+  not: ReviewRecommendTypeNullableFilter
+}
+
 input ReviewStatusTypeNullableFilter {
   equals: ReviewStatusType
   in: [ReviewStatusType!]
@@ -664,22 +700,22 @@ input ReviewOrderByInput {
   specialtiesOther: OrderDirection
   ageAtEmployment: OrderDirection
   yearOfHiring: OrderDirection
-  yearOfLeaving: OrderDirection
-  ongoing: OrderDirection
+  employmentDuration: OrderDirection
   genderIdentityRespected: OrderDirection
   position: OrderDirection
   listenedTo: OrderDirection
   canAskColleagues: OrderDirection
   canAskBoss: OrderDirection
+  canAskTrainer: OrderDirection
   tone: OrderDirection
   explained: OrderDirection
-  proximity: OrderDirection
   appreciated: OrderDirection
   experienceText: OrderDirection
   languages: OrderDirection
   gender: OrderDirection
   sharedWithCompany: OrderDirection
   feltComfortableSharing: OrderDirection
+  disabilityOther: OrderDirection
   disabilitySharedWithCompany: OrderDirection
   disabilityFeltComfortableSharing: OrderDirection
   ethnicitySharedWithCompany: OrderDirection
@@ -687,6 +723,7 @@ input ReviewOrderByInput {
   needsRespected: OrderDirection
   feedback: OrderDirection
   moreWishes: OrderDirection
+  recommend: OrderDirection
   status: OrderDirection
   emailVerified: OrderDirection
   accessKey: OrderDirection
@@ -704,16 +741,15 @@ input ReviewUpdateInput {
   specialtiesOther: String
   ageAtEmployment: Int
   yearOfHiring: String
-  yearOfLeaving: String
-  ongoing: Boolean
+  employmentDuration: ReviewEmploymentDurationType
   genderIdentityRespected: Boolean
   position: ReviewPositionType
   listenedTo: ReviewListenedToType
   canAskColleagues: ReviewCanAskColleaguesType
   canAskBoss: ReviewCanAskBossType
+  canAskTrainer: ReviewCanAskTrainerType
   tone: ReviewToneType
   explained: ReviewExplainedType
-  proximity: String
   boundariesRespected: [ReviewBoundariesRespectedType!]
   appreciated: ReviewAppreciatedType
   experienceText: String
@@ -722,6 +758,7 @@ input ReviewUpdateInput {
   sharedWithCompany: ReviewSharedWithCompanyType
   feltComfortableSharing: ReviewFeltComfortableSharingType
   disabilityTypes: [ReviewDisabilityTypesType!]
+  disabilityOther: String
   disabilitySharedWithCompany: ReviewDisabilitySharedWithCompanyType
   disabilityFeltComfortableSharing: ReviewDisabilityFeltComfortableSharingType
   ethnicityTypes: [ReviewEthnicityTypesType!]
@@ -730,6 +767,7 @@ input ReviewUpdateInput {
   needsRespected: ReviewNeedsRespectedType
   feedback: String
   moreWishes: String
+  recommend: ReviewRecommendType
   status: ReviewStatusType
   emailVerified: Boolean
   accessKey: String
@@ -758,16 +796,15 @@ input ReviewCreateInput {
   specialtiesOther: String
   ageAtEmployment: Int
   yearOfHiring: String
-  yearOfLeaving: String
-  ongoing: Boolean
+  employmentDuration: ReviewEmploymentDurationType
   genderIdentityRespected: Boolean
   position: ReviewPositionType
   listenedTo: ReviewListenedToType
   canAskColleagues: ReviewCanAskColleaguesType
   canAskBoss: ReviewCanAskBossType
+  canAskTrainer: ReviewCanAskTrainerType
   tone: ReviewToneType
   explained: ReviewExplainedType
-  proximity: String
   boundariesRespected: [ReviewBoundariesRespectedType!]
   appreciated: ReviewAppreciatedType
   experienceText: String
@@ -776,6 +813,7 @@ input ReviewCreateInput {
   sharedWithCompany: ReviewSharedWithCompanyType
   feltComfortableSharing: ReviewFeltComfortableSharingType
   disabilityTypes: [ReviewDisabilityTypesType!]
+  disabilityOther: String
   disabilitySharedWithCompany: ReviewDisabilitySharedWithCompanyType
   disabilityFeltComfortableSharing: ReviewDisabilityFeltComfortableSharingType
   ethnicityTypes: [ReviewEthnicityTypesType!]
@@ -784,6 +822,7 @@ input ReviewCreateInput {
   needsRespected: ReviewNeedsRespectedType
   feedback: String
   moreWishes: String
+  recommend: ReviewRecommendType
   status: ReviewStatusType
   emailVerified: Boolean
   accessKey: String

@@ -49,16 +49,15 @@ model Review {
   specialtiesOther                 String                                      @default("")
   ageAtEmployment                  Int?
   yearOfHiring                     String                                      @default("")
-  yearOfLeaving                    String                                      @default("")
-  ongoing                          Boolean                                     @default(false)
+  employmentDuration               ReviewEmploymentDurationType?
   genderIdentityRespected          Boolean                                     @default(false)
   position                         ReviewPositionType
   listenedTo                       ReviewListenedToType?
   canAskColleagues                 ReviewCanAskColleaguesType?
   canAskBoss                       ReviewCanAskBossType?
+  canAskTrainer                    ReviewCanAskTrainerType?
   tone                             ReviewToneType?
   explained                        ReviewExplainedType?
-  proximity                        String?
   boundariesRespected              Json                                        @default("[]")
   appreciated                      ReviewAppreciatedType?
   experienceText                   String                                      @default("")
@@ -67,6 +66,7 @@ model Review {
   sharedWithCompany                ReviewSharedWithCompanyType?
   feltComfortableSharing           ReviewFeltComfortableSharingType?
   disabilityTypes                  Json                                        @default("[]")
+  disabilityOther                  String                                      @default("")
   disabilitySharedWithCompany      ReviewDisabilitySharedWithCompanyType?
   disabilityFeltComfortableSharing ReviewDisabilityFeltComfortableSharingType?
   ethnicityTypes                   Json                                        @default("[]")
@@ -75,6 +75,7 @@ model Review {
   needsRespected                   ReviewNeedsRespectedType?
   feedback                         String                                      @default("")
   moreWishes                       String                                      @default("")
+  recommend                        ReviewRecommendType?
   status                           ReviewStatusType?                           @default(awaitingReview)
   emailVerified                    Boolean                                     @default(false)
   accessKey                        String                                      @unique @default("")
@@ -89,6 +90,16 @@ enum CompanySizeType {
   s30to50
   s50to250
   size250plus
+}
+
+enum ReviewEmploymentDurationType {
+  one_week_or_less
+  one_to_four_weeks
+  one_to_three_months
+  three_to_six_months
+  six_to_twelve_months
+  one_to_three_years
+  more_than_three_years
 }
 
 enum ReviewPositionType {
@@ -117,6 +128,14 @@ enum ReviewCanAskColleaguesType {
 }
 
 enum ReviewCanAskBossType {
+  always
+  mostly
+  sometimes
+  rarely
+  never
+}
+
+enum ReviewCanAskTrainerType {
   always
   mostly
   sometimes
@@ -194,6 +213,12 @@ enum ReviewEthnicityFeltComfortableSharingType {
 }
 
 enum ReviewNeedsRespectedType {
+  yes
+  partly
+  no
+}
+
+enum ReviewRecommendType {
   yes
   partly
   no

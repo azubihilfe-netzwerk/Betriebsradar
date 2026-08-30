@@ -37,8 +37,7 @@ const CompanyDetail: FC = () => {
                         id
                         position
                         yearOfHiring
-                        yearOfLeaving
-                        ongoing
+                        employmentDuration
                         experienceText
                         feedback
                         moreWishes
@@ -54,9 +53,9 @@ const CompanyDetail: FC = () => {
                         listenedTo
                         canAskBoss
                         canAskColleagues
+                        canAskTrainer
                         tone
                         explained
-                        proximity
                         appreciated
                         boundariesRespected
                         genderIdentityRespected
@@ -64,11 +63,13 @@ const CompanyDetail: FC = () => {
                         sharedWithCompany
                         feltComfortableSharing
                         disabilityTypes
+                        disabilityOther
                         disabilitySharedWithCompany
                         disabilityFeltComfortableSharing
                         ethnicityTypes
                         ethnicitySharedWithCompany
                         ethnicityFeltComfortableSharing
+                        recommend
                     }
                 }
             }

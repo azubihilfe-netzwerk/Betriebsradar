@@ -22,6 +22,7 @@ import {
   ReviewListenedToType,
   ReviewCanAskBossType,
   ReviewCanAskColleaguesType,
+  ReviewCanAskTrainerType,
   ReviewBoundariesRespectedType,
   ReviewDisabilityTypesType,
   ReviewDisabilitySharedWithCompanyType,
@@ -29,6 +30,8 @@ import {
   ReviewEthnicityTypesType,
   ReviewEthnicitySharedWithCompanyType,
   ReviewEthnicityFeltComfortableSharingType,
+  ReviewEmploymentDurationType,
+  ReviewRecommendType,
 } from '../../api/__generated__/graphql';
 
 export interface ReviewFormData {
@@ -39,14 +42,13 @@ export interface ReviewFormData {
   ageAtEmployment: string;
   position?: ReviewPositionType;
   yearOfHiring: string;
-  yearOfLeaving: string;
-  ongoing: boolean;
+  employmentDuration?: ReviewEmploymentDurationType;
   listenedTo?: ReviewListenedToType;
   tone?: ReviewToneType;
   explained?: ReviewExplainedType;
   canAskColleagues?: ReviewCanAskColleaguesType;
   canAskBoss?: ReviewCanAskBossType;
-  proximity: string;
+  canAskTrainer?: ReviewCanAskTrainerType;
   boundariesRespected: ReviewBoundariesRespectedType[];
   appreciated?: ReviewAppreciatedType;
   experienceText: string;
@@ -60,6 +62,7 @@ export interface ReviewFormData {
   sharedWithCompany?: ReviewSharedWithCompanyType;
   feltComfortableSharing?: ReviewFeltComfortableSharingType;
   disabilityTypes: ReviewDisabilityTypesType[];
+  disabilityOther: string;
   disabilitySharedWithCompany?: ReviewDisabilitySharedWithCompanyType;
   disabilityFeltComfortableSharing?: ReviewDisabilityFeltComfortableSharingType;
   ethnicityTypes: ReviewEthnicityTypesType[];
@@ -68,6 +71,7 @@ export interface ReviewFormData {
   needsRespected?: ReviewNeedsRespectedType;
   feedback: string;
   moreWishes: string;
+  recommend?: ReviewRecommendType;
 }
 
 export interface ReviewFormProps {
@@ -85,14 +89,13 @@ const defaultFormData: ReviewFormData = {
   ageAtEmployment: '',
   position: undefined,
   yearOfHiring: new Date().getFullYear().toString(),
-  yearOfLeaving: '',
-  ongoing: false,
+  employmentDuration: undefined,
   listenedTo: undefined,
   tone: undefined,
   explained: undefined,
   canAskColleagues: undefined,
   canAskBoss: undefined,
-  proximity: '',
+  canAskTrainer: undefined,
   boundariesRespected: [],
   appreciated: undefined,
   experienceText: '',
@@ -106,6 +109,7 @@ const defaultFormData: ReviewFormData = {
   sharedWithCompany: undefined,
   feltComfortableSharing: undefined,
   disabilityTypes: [],
+  disabilityOther: '',
   disabilitySharedWithCompany: undefined,
   disabilityFeltComfortableSharing: undefined,
   ethnicityTypes: [],
@@ -114,6 +118,7 @@ const defaultFormData: ReviewFormData = {
   needsRespected: undefined,
   feedback: '',
   moreWishes: '',
+  recommend: undefined,
 };
 
 const genderOptions = [
@@ -164,6 +169,15 @@ const canAskColleaguesOptions = [
   { value: ReviewCanAskColleaguesType.Never, label: 'niemals' },
 ];
 
+const canAskTrainerOptions = [
+  { value: undefined, label: 'Bitte wählen' },
+  { value: ReviewCanAskTrainerType.Always, label: 'immer' },
+  { value: ReviewCanAskTrainerType.Mostly, label: 'meistens' },
+  { value: ReviewCanAskTrainerType.Sometimes, label: 'ab und zu' },
+  { value: ReviewCanAskTrainerType.Rarely, label: 'selten' },
+  { value: ReviewCanAskTrainerType.Never, label: 'niemals' },
+];
+
 const toneOptions = [
   { value: undefined, label: 'Bitte wählen' },
   { value: ReviewToneType.VeryGood, label: 'sehr angenehm' },
@@ -181,12 +195,15 @@ const explainedOptions = [
   { value: ReviewExplainedType.TooLittle, label: 'zu wenig' },
 ];
 
-const proximityOptions = [
+const employmentDurationOptions = [
   { value: undefined, label: 'Bitte wählen' },
-  { value: 'too_close', label: 'zu nah' },
-  { value: 'casual', label: 'locker' },
-  { value: 'professional', label: 'professionell' },
-  { value: 'too_distant', label: 'zu distant' },
+  { value: ReviewEmploymentDurationType.OneWeekOrLess, label: '1 Woche oder weniger' },
+  { value: ReviewEmploymentDurationType.OneToFourWeeks, label: '1-4 Wochen' },
+  { value: ReviewEmploymentDurationType.OneToThreeMonths, label: '1-3 Monate' },
+  { value: ReviewEmploymentDurationType.ThreeToSixMonths, label: '3-6 Monate' },
+  { value: ReviewEmploymentDurationType.SixToTwelveMonths, label: '6-12 Monate' },
+  { value: ReviewEmploymentDurationType.OneToThreeYears, label: '1-3 Jahre' },
+  { value: ReviewEmploymentDurationType.MoreThanThreeYears, label: 'Mehr als 3 Jahre' },
 ];
 
 const appreciatedOptions = [
@@ -245,6 +262,13 @@ const needsRespectedOptions = [
   { value: ReviewNeedsRespectedType.No, label: 'nein' },
 ];
 
+const recommendOptions = [
+  { value: undefined, label: 'Bitte wählen' },
+  { value: ReviewRecommendType.Yes, label: 'ja' },
+  { value: ReviewRecommendType.Partly, label: 'teilweise' },
+  { value: ReviewRecommendType.No, label: 'nein' },
+];
+
 const boundaryTypes: { value: ReviewBoundariesRespectedType; label: string }[] = [
   { value: ReviewBoundariesRespectedType.PhysicalStrength, label: 'körperlich-kräftetechnisch' },
   { value: ReviewBoundariesRespectedType.Emotional, label: 'emotional' },
@@ -253,25 +277,29 @@ const boundaryTypes: { value: ReviewBoundariesRespectedType; label: string }[] =
 ];
 
 const disabilityTypeOptions: { value: ReviewDisabilityTypesType; label: string }[] = [
-  { value: ReviewDisabilityTypesType.AutismSpectrum, label: 'Autismus-Spektrum' },
-  { value: ReviewDisabilityTypesType.Autoimmune, label: 'Autoimmunerkrankung' },
-  { value: ReviewDisabilityTypesType.BlindVisuallyImpaired, label: 'blind/sehbehindert' },
-  { value: ReviewDisabilityTypesType.DeafHearingImpaired, label: 'gehörlos/hörbehindert' },
-  { value: ReviewDisabilityTypesType.PhysicallyDisabled, label: 'körperlich behindert' },
-  { value: ReviewDisabilityTypesType.MentalIllness, label: 'psychische Erkrankung' },
+  { value: ReviewDisabilityTypesType.AutismSpectrum, label: 'Autismus-Spektrum / Autismus' },
+  { value: ReviewDisabilityTypesType.Adhs, label: 'ADHS (Aufmerksamkeitsdefizit-/Hyperaktivitätsstörung)' },
+  { value: ReviewDisabilityTypesType.OtherNeurodivergence, label: 'andere Neurodivergenz / neurodivergente Wahrnehmungs- oder Verarbeitungsweisen' },
+  { value: ReviewDisabilityTypesType.MentalIllness, label: 'psychische Erkrankung oder psychische Beeinträchtigung' },
   { value: ReviewDisabilityTypesType.ChronicIllness, label: 'chronische Erkrankung' },
+  { value: ReviewDisabilityTypesType.Autoimmune, label: 'Autoimmunerkrankung' },
+  { value: ReviewDisabilityTypesType.Neurological, label: 'neurologische Erkrankung' },
   { value: ReviewDisabilityTypesType.Cardiovascular, label: 'Herz-Kreislauf-Erkrankung' },
-  { value: ReviewDisabilityTypesType.Musculoskeletal, label: 'Skelett-/Muskelerkrankung' },
+  { value: ReviewDisabilityTypesType.Musculoskeletal, label: 'Erkrankung oder Beeinträchtigung des Bewegungsapparats (Muskeln, Knochen, Gelenke)' },
+  { value: ReviewDisabilityTypesType.PhysicallyDisabled, label: 'körperliche Behinderung' },
+  { value: ReviewDisabilityTypesType.WheelchairMobility, label: 'Mobilitätseinschränkung / Rollstuhlnutzung' },
+  { value: ReviewDisabilityTypesType.BlindVisuallyImpaired, label: 'Sehbehinderung / Blindheit' },
+  { value: ReviewDisabilityTypesType.DeafHearingImpaired, label: 'Hörbehinderung / Gehörlosigkeit' },
+  { value: ReviewDisabilityTypesType.SpeechCommunication, label: 'Sprach- oder Kommunikationsbeeinträchtigung' },
+  { value: ReviewDisabilityTypesType.LearningDisability, label: 'Lernschwierigkeiten / Lernbehinderung' },
+  { value: ReviewDisabilityTypesType.CognitiveDisability, label: 'kognitive Beeinträchtigung / geistige Behinderung' },
   { value: ReviewDisabilityTypesType.Metabolic, label: 'Stoffwechselerkrankung' },
-  { value: ReviewDisabilityTypesType.Digestive, label: 'Erkrankung des Verdauungssystems' },
-  { value: ReviewDisabilityTypesType.Spasticity, label: 'Spastik' },
-  { value: ReviewDisabilityTypesType.LearningDisability, label: 'Lernschwierigkeiten / sog. geistige Behinderung' },
-  { value: ReviewDisabilityTypesType.Neurodivergent, label: 'neurodivergent' },
-  { value: ReviewDisabilityTypesType.WheelchairMobility, label: 'Rollstuhlnutzend / Mobilitätseinschränkung' },
-  { value: ReviewDisabilityTypesType.DrugUse, label: 'Drogenkonsument*in' },
-  { value: ReviewDisabilityTypesType.SexualViolence, label: 'Erfahrung sexualisierter Gewalt' },
-  { value: ReviewDisabilityTypesType.Overweight, label: 'mehrgewichtig/hochgewichtig' },
-  { value: ReviewDisabilityTypesType.Underweight, label: 'wenigergewichtig' },
+  { value: ReviewDisabilityTypesType.Digestive, label: 'Erkrankung oder Beeinträchtigung des Verdauungssystems' },
+  { value: ReviewDisabilityTypesType.Spasticity, label: 'Spastik / motorische Beeinträchtigung' },
+  { value: ReviewDisabilityTypesType.HigherBodyWeight, label: 'höheres Körpergewicht' },
+  { value: ReviewDisabilityTypesType.LowerBodyWeight, label: 'niedrigeres Körpergewicht' },
+  { value: ReviewDisabilityTypesType.Addiction, label: 'Suchterkrankung / problematischer Substanzkonsum' },
+  { value: ReviewDisabilityTypesType.SexualViolenceTrauma, label: 'Erfahrungen mit sexualisierter Gewalt / Trauma' },
 ];
 
 const ethnicityTypeOptions: { value: ReviewEthnicityTypesType; label: string }[] = [
@@ -322,12 +350,13 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
     return {
       ...data,
       position: e(data.position),
+      employmentDuration: e(data.employmentDuration),
       listenedTo: e(data.listenedTo),
       canAskBoss: e(data.canAskBoss),
       canAskColleagues: e(data.canAskColleagues),
+      canAskTrainer: e(data.canAskTrainer),
       tone: e(data.tone),
       explained: e(data.explained),
-      proximity: data.proximity || '',
       appreciated: e(data.appreciated),
       sharedWithCompany: e(data.sharedWithCompany),
       feltComfortableSharing: e(data.feltComfortableSharing),
@@ -336,6 +365,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
       ethnicitySharedWithCompany: e(data.ethnicitySharedWithCompany),
       ethnicityFeltComfortableSharing: e(data.ethnicityFeltComfortableSharing),
       needsRespected: e(data.needsRespected),
+      recommend: e(data.recommend),
     };
   };
 
@@ -350,14 +380,6 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
     value: (currentYear - i).toString(),
     label: (currentYear - i).toString(),
   }));
-  const leavingYearOptions = [
-    { value: '', label: 'Dauert an' },
-    ...Array.from({ length: currentYear - 1969 }, (_, i) => ({
-      value: (currentYear - i).toString(),
-      label: (currentYear - i).toString(),
-    })),
-  ];
-
   const pages: FormPage[] = [
     {
       fields: ['name', 'email'],
@@ -390,7 +412,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
       fields: [
         'position',
         'yearOfHiring',
-        'yearOfLeaving',
+        'employmentDuration',
         'ageAtEmployment',
         'hoursPerWeek',
         'overtimePerMonth',
@@ -416,9 +438,9 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
             options={hiringYearOptions}
           />
           <SelectField
-            {...register('yearOfLeaving')}
-            label="Ende Arbeitszeit (Jahr)"
-            options={leavingYearOptions}
+            {...register('employmentDuration')}
+            label="Dauer des Arbeitsverhältnisses"
+            options={employmentDurationOptions}
           />
           <FormField
             {...field('ageAtEmployment')}
@@ -453,7 +475,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
           <FormField
             {...register('languages')}
             label="Sprachen im Betrieb"
-            placeholder="z.B. Deutsch, Englisch"
+            placeholder=" z.B. Deutsch, Chef spricht Englisch, Gesellin spricht Spanisch"
           />
           <CheckboxGroup label="Besonderheiten">
             <CheckboxField {...register('collective')} label="Kollektiv" checked={collective} />
@@ -484,8 +506,8 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
         'explained',
         'canAskBoss',
         'canAskColleagues',
+        'canAskTrainer',
         'boundariesRespected',
-        'proximity',
         'appreciated',
         'experienceText',
       ],
@@ -499,17 +521,22 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
           </div>
           <SelectField
             {...register('canAskBoss')}
-            label="Ich konnte mit Fragen/Problemen zu meine*r Chef*in gehen"
+            label="Ich konnte mit Fragen/Problemen zu meine*r Chef*in gehen."
             options={canAskBossOptions}
           />
           <SelectField
             {...register('canAskColleagues')}
-            label="Ich konnte mit Fragen/Problemen zu Kolleg*innen gehen"
+            label="Ich konnte mit Fragen/Problemen zu Kolleg*innen gehen."
             options={canAskColleaguesOptions}
           />
           <SelectField
+            {...register('canAskTrainer')}
+            label="Ich konnte mit Fragen/Problemen zur Ausbilder*in gehen."
+            options={canAskTrainerOptions}
+          />
+          <SelectField
             {...register('listenedTo')}
-            label="Mir wurde zugehört"
+            label="Ich wurde ernst genommen."
             options={listenedToOptions}
           />
           <SelectField
@@ -523,16 +550,11 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
             options={explainedOptions}
           />
           <SelectField
-            {...register('proximity')}
-            label="Nähe/Distanz-Verhältnis"
-            options={proximityOptions}
-          />
-          <SelectField
             {...register('appreciated')}
             label="Hast du dich wertgeschätzt gefühlt?"
             options={appreciatedOptions}
           />
-          <CheckboxGroup label="Meine Grenzen wurden respektiert">
+          <CheckboxGroup label="Folgende Grenzen wurden nicht respektiert">
             {boundaryTypes.map(bt => (
               <CheckboxField
                 key={bt.value}
@@ -557,6 +579,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
         'sharedWithCompany',
         'feltComfortableSharing',
         'disabilityTypes',
+        'disabilityOther',
         'disabilitySharedWithCompany',
         'disabilityFeltComfortableSharing',
         'ethnicityTypes',
@@ -601,6 +624,12 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
                 />
               ))}
             </CheckboxGroup>
+            <TextAreaField
+              {...register('disabilityOther')}
+              label="Sonstige Beeinträchtigung"
+              rows={3}
+              placeholder="Falls deine Beeinträchtigung nicht in der Liste vorkam..."
+            />
 
             <SelectField
               {...register('disabilitySharedWithCompany')}
@@ -609,13 +638,13 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
             />
             <SelectField
               {...register('disabilityFeltComfortableSharing')}
-              label="Hast du dich damit wohlgefühlt, dass dem Betrieb deine Beeinträchtigung bekannt war?"
+              label="Ist dein Betrieb respektvoll mit deiner Beeinträchtigung umgegangen?"
               options={disabilityFeltOptions}
             />
           </div>
           <div className="space-y-4">
             <h3 className="font-semibold text-gray-800 text-lg border-b pb-1">
-              Herkunft & Erscheinungsbild
+              Herkunft, Erscheinungsbild & Religion
             </h3>
             <CheckboxGroup label="Wähle aus, was auf dich zutrifft">
               {ethnicityTypeOptions.map(et => (
@@ -634,7 +663,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
             />
             <SelectField
               {...register('ethnicityFeltComfortableSharing')}
-              label="Hast du dich damit wohlgefühlt, dass dem Betrieb deine Herkunft/Erscheinungsbild bekannt war?"
+              label="Ist dein Betrieb respektvoll mit deiner Herkunft/ Erscheinungsbild/ Religion umgegangen?"
               options={ethnicityFeltOptions}
             />
           </div>
@@ -642,7 +671,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
             <h3 className="font-semibold text-gray-800 text-lg border-b pb-1">Gesamt</h3>
             <SelectField
               {...register('needsRespected')}
-              label="Wurde insgesamt auf deine Bedürfnisse bezüglich deiner Identität Rücksicht genommen?"
+              label="Hast du dich insgesamt respektvoll behandelt gefühlt mit deiner Identität?"
               options={needsRespectedOptions}
             />
           </div>
@@ -650,13 +679,18 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
       ),
     },
     {
-      fields: ['feedback', 'moreWishes'],
+      fields: ['recommend', 'feedback', 'moreWishes'],
       render: () => (
         <>
           <div>
             <SectionHeading className="mb-3">Feedback zum Betrieb</SectionHeading>
             <Paragraph className="mb-6">Fast geschafft!</Paragraph>
           </div>
+          <SelectField
+            {...register('recommend')}
+            label="Würdest du deinen Betrieb weiter empfehlen?"
+            options={recommendOptions}
+          />
           <TextAreaField
             {...register('feedback')}
             label="Feedback zum Betrieb"
