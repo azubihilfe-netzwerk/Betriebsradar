@@ -658,12 +658,12 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
             </CheckboxGroup>
             <SelectField
               {...register('ethnicitySharedWithCompany')}
-              label="War dem Betrieb deine Herkunft/Erscheinungsbild bekannt?"
+              label="War dem Betrieb deine Herkunft / Erscheinungsbild / Religion bekannt?"
               options={ethnicitySharedOptions}
             />
             <SelectField
               {...register('ethnicityFeltComfortableSharing')}
-              label="Ist dein Betrieb respektvoll mit deiner Herkunft/ Erscheinungsbild/ Religion umgegangen?"
+              label="Ist dein Betrieb respektvoll mit deiner Herkunft / Erscheinungsbild / Religion umgegangen?"
               options={ethnicityFeltOptions}
             />
           </div>
