@@ -12,6 +12,9 @@
   .card-standard {
     @apply border-standard bg-brand-input;
   }
+  .navbar-item {
+    @apply text-blackish hover:underline  text-lg uppercase font-semibold;
+  }
 }
 
 /* Full-bleed, mobile-friendly Leaflet popup for company map markers. */

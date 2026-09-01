@@ -11,8 +11,8 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 const baseStyles = 'inline-block text-center font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed border-standard';
 
  const variantStyles = {
-  primary: 'bg-brand-button text-blackish hover:bg-brand-button-hover',
-  secondary: 'bg-gray-200 text-blackish hover:bg-gray-300',
+  primary: 'bg-brand-button text-blackish hover:bg-brand-button-hover hover:underline',
+  secondary: 'bg-gray-200 text-blackish hover:bg-gray-300 hover:underline',
   danger: 'bg-brand-error text-white hover:opacity-90',
 };
 

@@ -86,7 +86,7 @@ const CompanyMap: FC<CompanyMapProps> = ({ companies, center, zoom, onViewChange
                   {company.trade && <p className="mt-1 text-sm text-blackish">{company.trade}</p>}
                 </div>
                  <Link to={`/unternehmen/${company.id}`} className="block">
-                <div className="bg-brand-button px-4 py-3 text-center border-standard -mr-1 -ml-1 -mb-1 font-bold text-blackish underline active:bg-brand-button-hover">
+                <div className="bg-brand-button hover:bg-brand-button-hover px-4 py-3 text-center border-standard -mr-1 -ml-1 -mb-1 font-bold text-blackish hover:underline active:bg-brand-button-hover">
                   {company.reviewsCount ?? 0} Berichte lesen
                 </div>
               </Link>

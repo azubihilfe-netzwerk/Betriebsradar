@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './Component/Navbar';
+import ScrollToTop from './Component/ScrollToTop';
 import Dashboard from './Pages/Dashboard';
 import Imprint from './Pages/misc/Imprint';
 import Footer from "./Component/Footer";
@@ -23,9 +24,10 @@ function App() {
         <div
             className="flex flex-col min-h-screen bg-brand-input bg-center"
         >
+            <ScrollToTop />
             <Navbar />
-                <div className="max-w-screen-2xl mx-auto w-full flex flex-col flex-1">
-                    <main className="max-w-3xl mx-auto py-8 px-6 mt-28 flex-1 w-full bg-brand-bg shadow-md">
+                <div className="max-w-screen-2xl mx-auto w-full flex flex-col flex-1 text-lg">
+                    <main className="max-w-3xl mx-auto py-8 px-6  flex-1 w-full bg-brand-bg shadow-md">
                         <Routes>
                             <Route path="/" element={<Dashboard />} />
                             <Route path="/login" element={<Login />} />

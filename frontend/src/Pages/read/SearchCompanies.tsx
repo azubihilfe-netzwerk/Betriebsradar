@@ -11,12 +11,12 @@ import { TRADES } from '../../lib/trades';
 
 const GET_COMPANIES_FOR_MAP = gql`
                     query GetCompaniesForMap {
-                        companies {
+                        companies(where: { reviews: { some: { status: { equals: published } } } }) {
                             id
                             name
                             trade
                             address
-                            reviewsCount
+                            reviewsCount(where: { status: { equals: published } })
                             latitude
                             longitude
                         }
