@@ -43,13 +43,15 @@ const CompanyDetail: FC = () => {
                         moreWishes
                         specialtiesOther
                         languages
-                        gender
                         ageAtEmployment
                         hoursPerWeek
                         overtimePerMonth
                         partTime
                         collective
                         trainingShortenable
+                        overtimeHandling
+                        overtimeHandlingOther
+                        workplaceSafety
                         listenedTo
                         canAskBoss
                         canAskColleagues
@@ -58,18 +60,14 @@ const CompanyDetail: FC = () => {
                         explained
                         appreciated
                         boundariesRespected
-                        genderIdentityRespected
-                        needsRespected
-                        sharedWithCompany
-                        feltComfortableSharing
-                        disabilityTypes
-                        disabilityOther
-                        disabilitySharedWithCompany
-                        disabilityFeltComfortableSharing
-                        ethnicityTypes
-                        ethnicitySharedWithCompany
-                        ethnicityFeltComfortableSharing
                         recommend
+                        genderDiscriminationExperienced
+                        genderDiscriminationObserved
+                        ethnicityDiscriminationExperienced
+                        ethnicityDiscriminationObserved
+                        disabilityDiscriminationExperienced
+                        disabilityDiscriminationObserved
+                        discriminationExperienceText
                     }
                 }
             }
@@ -91,7 +89,7 @@ const CompanyDetail: FC = () => {
         <div className="max-w-4xl">
             <Card className="mb-8">
                 <PageHeading className="text-brand mb-4">{company.name}</PageHeading>
-                <div className="grid grid-cols-1 gap-4 text-gray-700 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div>
                         <p className="font-semibold">Gewerk</p>
                         <p>{company.trade}</p>

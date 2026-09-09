@@ -281,7 +281,9 @@ type Review {
   ageAtEmployment: Int
   yearOfHiring: String
   employmentDuration: ReviewEmploymentDurationType
-  genderIdentityRespected: Boolean
+  overtimeHandling: [ReviewOvertimeHandlingType!]
+  overtimeHandlingOther: String
+  workplaceSafety: ReviewWorkplaceSafetyType
   position: ReviewPositionType
   listenedTo: ReviewListenedToType
   canAskColleagues: ReviewCanAskColleaguesType
@@ -293,17 +295,13 @@ type Review {
   appreciated: ReviewAppreciatedType
   experienceText: String
   languages: String
-  gender: ReviewGenderType
-  sharedWithCompany: ReviewSharedWithCompanyType
-  feltComfortableSharing: ReviewFeltComfortableSharingType
-  disabilityTypes: [ReviewDisabilityTypesType!]
-  disabilityOther: String
-  disabilitySharedWithCompany: ReviewDisabilitySharedWithCompanyType
-  disabilityFeltComfortableSharing: ReviewDisabilityFeltComfortableSharingType
-  ethnicityTypes: [ReviewEthnicityTypesType!]
-  ethnicitySharedWithCompany: ReviewEthnicitySharedWithCompanyType
-  ethnicityFeltComfortableSharing: ReviewEthnicityFeltComfortableSharingType
-  needsRespected: ReviewNeedsRespectedType
+  genderDiscriminationExperienced: ReviewGenderDiscriminationExperiencedType
+  genderDiscriminationObserved: ReviewGenderDiscriminationObservedType
+  ethnicityDiscriminationExperienced: ReviewEthnicityDiscriminationExperiencedType
+  ethnicityDiscriminationObserved: ReviewEthnicityDiscriminationObservedType
+  disabilityDiscriminationExperienced: ReviewDisabilityDiscriminationExperiencedType
+  disabilityDiscriminationObserved: ReviewDisabilityDiscriminationObservedType
+  discriminationExperienceText: String
   feedback: String
   moreWishes: String
   recommend: ReviewRecommendType
@@ -320,6 +318,20 @@ enum ReviewEmploymentDurationType {
   six_to_twelve_months
   one_to_three_years
   more_than_three_years
+}
+
+enum ReviewOvertimeHandlingType {
+  payout
+  time_off
+  bonus
+  forfeited
+  other
+}
+
+enum ReviewWorkplaceSafetyType {
+  strong
+  medium
+  none
 }
 
 enum ReviewPositionType {
@@ -391,95 +403,46 @@ enum ReviewAppreciatedType {
   no
 }
 
-enum ReviewGenderType {
-  prefer_not_to_say
-  cis_male
-  cis_female
-  enby
-  trans
-  trans_male
-  trans_female
-  diverse
-  other
-}
-
-enum ReviewSharedWithCompanyType {
-  yes
-  partly
+enum ReviewGenderDiscriminationExperiencedType {
   no
+  constantly
+  occasionally
+  rarely
 }
 
-enum ReviewFeltComfortableSharingType {
-  yes
-  partly
+enum ReviewGenderDiscriminationObservedType {
   no
+  constantly
+  occasionally
+  rarely
 }
 
-enum ReviewDisabilityTypesType {
-  autism_spectrum
-  adhs
-  other_neurodivergence
-  mental_illness
-  chronic_illness
-  autoimmune
-  neurological
-  cardiovascular
-  musculoskeletal
-  physically_disabled
-  wheelchair_mobility
-  blind_visually_impaired
-  deaf_hearing_impaired
-  speech_communication
-  learning_disability
-  cognitive_disability
-  metabolic
-  digestive
-  spasticity
-  higher_body_weight
-  lower_body_weight
-  addiction
-  sexual_violence_trauma
-}
-
-enum ReviewDisabilitySharedWithCompanyType {
-  yes
-  partly
+enum ReviewEthnicityDiscriminationExperiencedType {
   no
+  constantly
+  occasionally
+  rarely
 }
 
-enum ReviewDisabilityFeltComfortableSharingType {
-  yes
-  partly
+enum ReviewEthnicityDiscriminationObservedType {
   no
+  constantly
+  occasionally
+  rarely
 }
 
-enum ReviewEthnicityTypesType {
-  white
-  person_of_color
-  black
-  indigenous
-  jewish
-  muslim
-  migrant
-  roma_sinti
-}
-
-enum ReviewEthnicitySharedWithCompanyType {
-  yes
-  partly
+enum ReviewDisabilityDiscriminationExperiencedType {
   no
+  constantly
+  occasionally
+  rarely
 }
 
-enum ReviewEthnicityFeltComfortableSharingType {
-  yes
-  partly
+enum ReviewDisabilityDiscriminationObservedType {
   no
-}
-
-enum ReviewNeedsRespectedType {
-  yes
-  partly
-  no
+  constantly
+  occasionally
+  rarely
 }
 
 enum ReviewRecommendType {
@@ -516,7 +479,8 @@ input ReviewWhereInput {
   ageAtEmployment: IntNullableFilter
   yearOfHiring: StringFilter
   employmentDuration: ReviewEmploymentDurationTypeNullableFilter
-  genderIdentityRespected: BooleanFilter
+  overtimeHandlingOther: StringFilter
+  workplaceSafety: ReviewWorkplaceSafetyTypeNullableFilter
   position: ReviewPositionTypeNullableFilter
   listenedTo: ReviewListenedToTypeNullableFilter
   canAskColleagues: ReviewCanAskColleaguesTypeNullableFilter
@@ -527,15 +491,13 @@ input ReviewWhereInput {
   appreciated: ReviewAppreciatedTypeNullableFilter
   experienceText: StringFilter
   languages: StringFilter
-  gender: ReviewGenderTypeNullableFilter
-  sharedWithCompany: ReviewSharedWithCompanyTypeNullableFilter
-  feltComfortableSharing: ReviewFeltComfortableSharingTypeNullableFilter
-  disabilityOther: StringFilter
-  disabilitySharedWithCompany: ReviewDisabilitySharedWithCompanyTypeNullableFilter
-  disabilityFeltComfortableSharing: ReviewDisabilityFeltComfortableSharingTypeNullableFilter
-  ethnicitySharedWithCompany: ReviewEthnicitySharedWithCompanyTypeNullableFilter
-  ethnicityFeltComfortableSharing: ReviewEthnicityFeltComfortableSharingTypeNullableFilter
-  needsRespected: ReviewNeedsRespectedTypeNullableFilter
+  genderDiscriminationExperienced: ReviewGenderDiscriminationExperiencedTypeNullableFilter
+  genderDiscriminationObserved: ReviewGenderDiscriminationObservedTypeNullableFilter
+  ethnicityDiscriminationExperienced: ReviewEthnicityDiscriminationExperiencedTypeNullableFilter
+  ethnicityDiscriminationObserved: ReviewEthnicityDiscriminationObservedTypeNullableFilter
+  disabilityDiscriminationExperienced: ReviewDisabilityDiscriminationExperiencedTypeNullableFilter
+  disabilityDiscriminationObserved: ReviewDisabilityDiscriminationObservedTypeNullableFilter
+  discriminationExperienceText: StringFilter
   feedback: StringFilter
   moreWishes: StringFilter
   recommend: ReviewRecommendTypeNullableFilter
@@ -560,6 +522,13 @@ input ReviewEmploymentDurationTypeNullableFilter {
   in: [ReviewEmploymentDurationType!]
   notIn: [ReviewEmploymentDurationType!]
   not: ReviewEmploymentDurationTypeNullableFilter
+}
+
+input ReviewWorkplaceSafetyTypeNullableFilter {
+  equals: ReviewWorkplaceSafetyType
+  in: [ReviewWorkplaceSafetyType!]
+  notIn: [ReviewWorkplaceSafetyType!]
+  not: ReviewWorkplaceSafetyTypeNullableFilter
 }
 
 input ReviewPositionTypeNullableFilter {
@@ -618,60 +587,46 @@ input ReviewAppreciatedTypeNullableFilter {
   not: ReviewAppreciatedTypeNullableFilter
 }
 
-input ReviewGenderTypeNullableFilter {
-  equals: ReviewGenderType
-  in: [ReviewGenderType!]
-  notIn: [ReviewGenderType!]
-  not: ReviewGenderTypeNullableFilter
+input ReviewGenderDiscriminationExperiencedTypeNullableFilter {
+  equals: ReviewGenderDiscriminationExperiencedType
+  in: [ReviewGenderDiscriminationExperiencedType!]
+  notIn: [ReviewGenderDiscriminationExperiencedType!]
+  not: ReviewGenderDiscriminationExperiencedTypeNullableFilter
 }
 
-input ReviewSharedWithCompanyTypeNullableFilter {
-  equals: ReviewSharedWithCompanyType
-  in: [ReviewSharedWithCompanyType!]
-  notIn: [ReviewSharedWithCompanyType!]
-  not: ReviewSharedWithCompanyTypeNullableFilter
+input ReviewGenderDiscriminationObservedTypeNullableFilter {
+  equals: ReviewGenderDiscriminationObservedType
+  in: [ReviewGenderDiscriminationObservedType!]
+  notIn: [ReviewGenderDiscriminationObservedType!]
+  not: ReviewGenderDiscriminationObservedTypeNullableFilter
 }
 
-input ReviewFeltComfortableSharingTypeNullableFilter {
-  equals: ReviewFeltComfortableSharingType
-  in: [ReviewFeltComfortableSharingType!]
-  notIn: [ReviewFeltComfortableSharingType!]
-  not: ReviewFeltComfortableSharingTypeNullableFilter
+input ReviewEthnicityDiscriminationExperiencedTypeNullableFilter {
+  equals: ReviewEthnicityDiscriminationExperiencedType
+  in: [ReviewEthnicityDiscriminationExperiencedType!]
+  notIn: [ReviewEthnicityDiscriminationExperiencedType!]
+  not: ReviewEthnicityDiscriminationExperiencedTypeNullableFilter
 }
 
-input ReviewDisabilitySharedWithCompanyTypeNullableFilter {
-  equals: ReviewDisabilitySharedWithCompanyType
-  in: [ReviewDisabilitySharedWithCompanyType!]
-  notIn: [ReviewDisabilitySharedWithCompanyType!]
-  not: ReviewDisabilitySharedWithCompanyTypeNullableFilter
+input ReviewEthnicityDiscriminationObservedTypeNullableFilter {
+  equals: ReviewEthnicityDiscriminationObservedType
+  in: [ReviewEthnicityDiscriminationObservedType!]
+  notIn: [ReviewEthnicityDiscriminationObservedType!]
+  not: ReviewEthnicityDiscriminationObservedTypeNullableFilter
 }
 
-input ReviewDisabilityFeltComfortableSharingTypeNullableFilter {
-  equals: ReviewDisabilityFeltComfortableSharingType
-  in: [ReviewDisabilityFeltComfortableSharingType!]
-  notIn: [ReviewDisabilityFeltComfortableSharingType!]
-  not: ReviewDisabilityFeltComfortableSharingTypeNullableFilter
+input ReviewDisabilityDiscriminationExperiencedTypeNullableFilter {
+  equals: ReviewDisabilityDiscriminationExperiencedType
+  in: [ReviewDisabilityDiscriminationExperiencedType!]
+  notIn: [ReviewDisabilityDiscriminationExperiencedType!]
+  not: ReviewDisabilityDiscriminationExperiencedTypeNullableFilter
 }
 
-input ReviewEthnicitySharedWithCompanyTypeNullableFilter {
-  equals: ReviewEthnicitySharedWithCompanyType
-  in: [ReviewEthnicitySharedWithCompanyType!]
-  notIn: [ReviewEthnicitySharedWithCompanyType!]
-  not: ReviewEthnicitySharedWithCompanyTypeNullableFilter
-}
-
-input ReviewEthnicityFeltComfortableSharingTypeNullableFilter {
-  equals: ReviewEthnicityFeltComfortableSharingType
-  in: [ReviewEthnicityFeltComfortableSharingType!]
-  notIn: [ReviewEthnicityFeltComfortableSharingType!]
-  not: ReviewEthnicityFeltComfortableSharingTypeNullableFilter
-}
-
-input ReviewNeedsRespectedTypeNullableFilter {
-  equals: ReviewNeedsRespectedType
-  in: [ReviewNeedsRespectedType!]
-  notIn: [ReviewNeedsRespectedType!]
-  not: ReviewNeedsRespectedTypeNullableFilter
+input ReviewDisabilityDiscriminationObservedTypeNullableFilter {
+  equals: ReviewDisabilityDiscriminationObservedType
+  in: [ReviewDisabilityDiscriminationObservedType!]
+  notIn: [ReviewDisabilityDiscriminationObservedType!]
+  not: ReviewDisabilityDiscriminationObservedTypeNullableFilter
 }
 
 input ReviewRecommendTypeNullableFilter {
@@ -701,7 +656,8 @@ input ReviewOrderByInput {
   ageAtEmployment: OrderDirection
   yearOfHiring: OrderDirection
   employmentDuration: OrderDirection
-  genderIdentityRespected: OrderDirection
+  overtimeHandlingOther: OrderDirection
+  workplaceSafety: OrderDirection
   position: OrderDirection
   listenedTo: OrderDirection
   canAskColleagues: OrderDirection
@@ -712,15 +668,13 @@ input ReviewOrderByInput {
   appreciated: OrderDirection
   experienceText: OrderDirection
   languages: OrderDirection
-  gender: OrderDirection
-  sharedWithCompany: OrderDirection
-  feltComfortableSharing: OrderDirection
-  disabilityOther: OrderDirection
-  disabilitySharedWithCompany: OrderDirection
-  disabilityFeltComfortableSharing: OrderDirection
-  ethnicitySharedWithCompany: OrderDirection
-  ethnicityFeltComfortableSharing: OrderDirection
-  needsRespected: OrderDirection
+  genderDiscriminationExperienced: OrderDirection
+  genderDiscriminationObserved: OrderDirection
+  ethnicityDiscriminationExperienced: OrderDirection
+  ethnicityDiscriminationObserved: OrderDirection
+  disabilityDiscriminationExperienced: OrderDirection
+  disabilityDiscriminationObserved: OrderDirection
+  discriminationExperienceText: OrderDirection
   feedback: OrderDirection
   moreWishes: OrderDirection
   recommend: OrderDirection
@@ -742,7 +696,9 @@ input ReviewUpdateInput {
   ageAtEmployment: Int
   yearOfHiring: String
   employmentDuration: ReviewEmploymentDurationType
-  genderIdentityRespected: Boolean
+  overtimeHandling: [ReviewOvertimeHandlingType!]
+  overtimeHandlingOther: String
+  workplaceSafety: ReviewWorkplaceSafetyType
   position: ReviewPositionType
   listenedTo: ReviewListenedToType
   canAskColleagues: ReviewCanAskColleaguesType
@@ -754,17 +710,13 @@ input ReviewUpdateInput {
   appreciated: ReviewAppreciatedType
   experienceText: String
   languages: String
-  gender: ReviewGenderType
-  sharedWithCompany: ReviewSharedWithCompanyType
-  feltComfortableSharing: ReviewFeltComfortableSharingType
-  disabilityTypes: [ReviewDisabilityTypesType!]
-  disabilityOther: String
-  disabilitySharedWithCompany: ReviewDisabilitySharedWithCompanyType
-  disabilityFeltComfortableSharing: ReviewDisabilityFeltComfortableSharingType
-  ethnicityTypes: [ReviewEthnicityTypesType!]
-  ethnicitySharedWithCompany: ReviewEthnicitySharedWithCompanyType
-  ethnicityFeltComfortableSharing: ReviewEthnicityFeltComfortableSharingType
-  needsRespected: ReviewNeedsRespectedType
+  genderDiscriminationExperienced: ReviewGenderDiscriminationExperiencedType
+  genderDiscriminationObserved: ReviewGenderDiscriminationObservedType
+  ethnicityDiscriminationExperienced: ReviewEthnicityDiscriminationExperiencedType
+  ethnicityDiscriminationObserved: ReviewEthnicityDiscriminationObservedType
+  disabilityDiscriminationExperienced: ReviewDisabilityDiscriminationExperiencedType
+  disabilityDiscriminationObserved: ReviewDisabilityDiscriminationObservedType
+  discriminationExperienceText: String
   feedback: String
   moreWishes: String
   recommend: ReviewRecommendType
@@ -797,7 +749,9 @@ input ReviewCreateInput {
   ageAtEmployment: Int
   yearOfHiring: String
   employmentDuration: ReviewEmploymentDurationType
-  genderIdentityRespected: Boolean
+  overtimeHandling: [ReviewOvertimeHandlingType!]
+  overtimeHandlingOther: String
+  workplaceSafety: ReviewWorkplaceSafetyType
   position: ReviewPositionType
   listenedTo: ReviewListenedToType
   canAskColleagues: ReviewCanAskColleaguesType
@@ -809,17 +763,13 @@ input ReviewCreateInput {
   appreciated: ReviewAppreciatedType
   experienceText: String
   languages: String
-  gender: ReviewGenderType
-  sharedWithCompany: ReviewSharedWithCompanyType
-  feltComfortableSharing: ReviewFeltComfortableSharingType
-  disabilityTypes: [ReviewDisabilityTypesType!]
-  disabilityOther: String
-  disabilitySharedWithCompany: ReviewDisabilitySharedWithCompanyType
-  disabilityFeltComfortableSharing: ReviewDisabilityFeltComfortableSharingType
-  ethnicityTypes: [ReviewEthnicityTypesType!]
-  ethnicitySharedWithCompany: ReviewEthnicitySharedWithCompanyType
-  ethnicityFeltComfortableSharing: ReviewEthnicityFeltComfortableSharingType
-  needsRespected: ReviewNeedsRespectedType
+  genderDiscriminationExperienced: ReviewGenderDiscriminationExperiencedType
+  genderDiscriminationObserved: ReviewGenderDiscriminationObservedType
+  ethnicityDiscriminationExperienced: ReviewEthnicityDiscriminationExperiencedType
+  ethnicityDiscriminationObserved: ReviewEthnicityDiscriminationObservedType
+  disabilityDiscriminationExperienced: ReviewDisabilityDiscriminationExperiencedType
+  disabilityDiscriminationObserved: ReviewDisabilityDiscriminationObservedType
+  discriminationExperienceText: String
   feedback: String
   moreWishes: String
   recommend: ReviewRecommendType

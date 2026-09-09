@@ -195,6 +195,7 @@ async function submitReview(email = 'new-test@example.com'): Promise<string> {
       hoursPerWeek: 40,
       ageAtEmployment: 20,
       yearOfHiring: '2024',
+      employmentDuration: 'one_to_three_months',
       position: 'intern',
       company: { connect: { id: companyId } },
     },

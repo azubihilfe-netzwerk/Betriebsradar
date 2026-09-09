@@ -7,38 +7,46 @@ import {
   SelectField,
   CheckboxField,
   CheckboxGroup,
+  CheckboxSelectField,
   TextAreaField,
 } from '../Form';
 import { SectionHeading, Paragraph } from '../UI/Heading';
 import {
-  ReviewGenderType,
   ReviewToneType,
   ReviewExplainedType,
   ReviewAppreciatedType,
-  ReviewFeltComfortableSharingType,
-  ReviewSharedWithCompanyType,
-  ReviewNeedsRespectedType,
   ReviewPositionType,
   ReviewListenedToType,
   ReviewCanAskBossType,
   ReviewCanAskColleaguesType,
   ReviewCanAskTrainerType,
   ReviewBoundariesRespectedType,
-  ReviewDisabilityTypesType,
-  ReviewDisabilitySharedWithCompanyType,
-  ReviewDisabilityFeltComfortableSharingType,
-  ReviewEthnicityTypesType,
-  ReviewEthnicitySharedWithCompanyType,
-  ReviewEthnicityFeltComfortableSharingType,
   ReviewEmploymentDurationType,
   ReviewRecommendType,
+  ReviewOvertimeHandlingType,
+  ReviewWorkplaceSafetyType,
+  ReviewGenderDiscriminationExperiencedType,
+  ReviewGenderDiscriminationObservedType,
+  ReviewEthnicityDiscriminationExperiencedType,
+  ReviewEthnicityDiscriminationObservedType,
+  ReviewDisabilityDiscriminationExperiencedType,
+  ReviewDisabilityDiscriminationObservedType,
 } from '../../api/__generated__/graphql';
+
+/** Shared "wie oft?" values behind every checkbox+select discrimination combo. */
+type DiscriminationFrequency = 'no' | 'constantly' | 'occasionally' | 'rarely';
+
+type DiscriminationField =
+  | 'genderDiscriminationExperienced'
+  | 'genderDiscriminationObserved'
+  | 'ethnicityDiscriminationExperienced'
+  | 'ethnicityDiscriminationObserved'
+  | 'disabilityDiscriminationExperienced'
+  | 'disabilityDiscriminationObserved';
 
 export interface ReviewFormData {
   name: string;
   email: string;
-  gender: ReviewGenderType;
-  genderIdentityRespected: boolean;
   ageAtEmployment: string;
   position?: ReviewPositionType;
   yearOfHiring: string;
@@ -56,19 +64,19 @@ export interface ReviewFormData {
   collective: boolean;
   hoursPerWeek: string;
   overtimePerMonth: string;
+  overtimeHandling: ReviewOvertimeHandlingType[];
+  overtimeHandlingOther: string;
   trainingShortenable: boolean;
   partTime: boolean;
   specialtiesOther: string;
-  sharedWithCompany?: ReviewSharedWithCompanyType;
-  feltComfortableSharing?: ReviewFeltComfortableSharingType;
-  disabilityTypes: ReviewDisabilityTypesType[];
-  disabilityOther: string;
-  disabilitySharedWithCompany?: ReviewDisabilitySharedWithCompanyType;
-  disabilityFeltComfortableSharing?: ReviewDisabilityFeltComfortableSharingType;
-  ethnicityTypes: ReviewEthnicityTypesType[];
-  ethnicitySharedWithCompany?: ReviewEthnicitySharedWithCompanyType;
-  ethnicityFeltComfortableSharing?: ReviewEthnicityFeltComfortableSharingType;
-  needsRespected?: ReviewNeedsRespectedType;
+  workplaceSafety?: ReviewWorkplaceSafetyType;
+  genderDiscriminationExperienced: ReviewGenderDiscriminationExperiencedType;
+  genderDiscriminationObserved: ReviewGenderDiscriminationObservedType;
+  ethnicityDiscriminationExperienced: ReviewEthnicityDiscriminationExperiencedType;
+  ethnicityDiscriminationObserved: ReviewEthnicityDiscriminationObservedType;
+  disabilityDiscriminationExperienced: ReviewDisabilityDiscriminationExperiencedType;
+  disabilityDiscriminationObserved: ReviewDisabilityDiscriminationObservedType;
+  discriminationExperienceText: string;
   feedback: string;
   moreWishes: string;
   recommend?: ReviewRecommendType;
@@ -84,8 +92,6 @@ export interface ReviewFormProps {
 const defaultFormData: ReviewFormData = {
   name: '',
   email: '',
-  gender: ReviewGenderType.PreferNotToSay,
-  genderIdentityRespected: false,
   ageAtEmployment: '',
   position: undefined,
   yearOfHiring: new Date().getFullYear().toString(),
@@ -103,34 +109,23 @@ const defaultFormData: ReviewFormData = {
   collective: false,
   hoursPerWeek: '',
   overtimePerMonth: '',
+  overtimeHandling: [],
+  overtimeHandlingOther: '',
   trainingShortenable: false,
   partTime: false,
   specialtiesOther: '',
-  sharedWithCompany: undefined,
-  feltComfortableSharing: undefined,
-  disabilityTypes: [],
-  disabilityOther: '',
-  disabilitySharedWithCompany: undefined,
-  disabilityFeltComfortableSharing: undefined,
-  ethnicityTypes: [],
-  ethnicitySharedWithCompany: undefined,
-  ethnicityFeltComfortableSharing: undefined,
-  needsRespected: undefined,
+  workplaceSafety: undefined,
+  genderDiscriminationExperienced: ReviewGenderDiscriminationExperiencedType.No,
+  genderDiscriminationObserved: ReviewGenderDiscriminationObservedType.No,
+  ethnicityDiscriminationExperienced: ReviewEthnicityDiscriminationExperiencedType.No,
+  ethnicityDiscriminationObserved: ReviewEthnicityDiscriminationObservedType.No,
+  disabilityDiscriminationExperienced: ReviewDisabilityDiscriminationExperiencedType.No,
+  disabilityDiscriminationObserved: ReviewDisabilityDiscriminationObservedType.No,
+  discriminationExperienceText: '',
   feedback: '',
   moreWishes: '',
   recommend: undefined,
 };
-
-const genderOptions = [
-  { label: 'keine Angabe', value: ReviewGenderType.PreferNotToSay },
-  { label: 'cis-männlich', value: ReviewGenderType.CisMale },
-  { label: 'cis-weiblich', value: ReviewGenderType.CisFemale },
-  { label: 'nichtbinär', value: ReviewGenderType.Enby },
-  { label: 'transmännlich', value: ReviewGenderType.TransMale },
-  { label: 'transweiblich', value: ReviewGenderType.TransFemale },
-  { label: 'divers', value: ReviewGenderType.Diverse },
-  { label: 'offen', value: ReviewGenderType.Other },
-];
 
 const positionOptions = [
   { label: 'Bitte wählen', value: undefined },
@@ -206,60 +201,33 @@ const employmentDurationOptions = [
   { value: ReviewEmploymentDurationType.MoreThanThreeYears, label: 'Mehr als 3 Jahre' },
 ];
 
+const overtimeHandlingOptions: { value: ReviewOvertimeHandlingType; label: string }[] = [
+  { value: ReviewOvertimeHandlingType.Payout, label: 'Auszahlung' },
+  { value: ReviewOvertimeHandlingType.TimeOff, label: 'Arbeitszeitausgleich' },
+  { value: ReviewOvertimeHandlingType.Bonus, label: 'Überstundenzuschlag' },
+  { value: ReviewOvertimeHandlingType.Forfeited, label: 'Verfall' },
+  { value: ReviewOvertimeHandlingType.Other, label: 'Sonstiges' },
+];
+
+const workplaceSafetyOptions = [
+  { value: undefined, label: 'Bitte wählen' },
+  { value: ReviewWorkplaceSafetyType.Strong, label: 'stark' },
+  { value: ReviewWorkplaceSafetyType.Medium, label: 'mittel' },
+  { value: ReviewWorkplaceSafetyType.None, label: 'gar nicht' },
+];
+
+/** Options for the select revealed once a discrimination checkbox is ticked ('no' is the unticked state). */
+const discriminationFrequencyOptions: { value: DiscriminationFrequency; label: string }[] = [
+  { value: 'constantly', label: 'ja, dauernd' },
+  { value: 'occasionally', label: 'ja, ab und zu' },
+  { value: 'rarely', label: 'kaum' },
+];
+
 const appreciatedOptions = [
   { value: undefined, label: 'Bitte wählen' },
   { value: ReviewAppreciatedType.Yes, label: 'ja' },
   { value: ReviewAppreciatedType.Partly, label: 'teilweise' },
   { value: ReviewAppreciatedType.No, label: 'nein' },
-];
-
-const sharedWithCompanyOptions = [
-  { value: undefined, label: 'Bitte wählen' },
-  { value: ReviewSharedWithCompanyType.Yes, label: 'ja' },
-  { value: ReviewSharedWithCompanyType.Partly, label: 'teilweise' },
-  { value: ReviewSharedWithCompanyType.No, label: 'nein' },
-];
-
-const feltComfortableSharingOptions = [
-  { value: undefined, label: 'Bitte wählen' },
-  { value: ReviewFeltComfortableSharingType.Yes, label: 'ja' },
-  { value: ReviewFeltComfortableSharingType.Partly, label: 'teilweise' },
-  { value: ReviewFeltComfortableSharingType.No, label: 'nein' },
-];
-
-const disabilitySharedOptions = [
-  { value: undefined, label: 'Bitte wählen' },
-  { value: ReviewDisabilitySharedWithCompanyType.Yes, label: 'ja' },
-  { value: ReviewDisabilitySharedWithCompanyType.Partly, label: 'teilweise' },
-  { value: ReviewDisabilitySharedWithCompanyType.No, label: 'nein' },
-];
-
-const disabilityFeltOptions = [
-  { value: undefined, label: 'Bitte wählen' },
-  { value: ReviewDisabilityFeltComfortableSharingType.Yes, label: 'ja' },
-  { value: ReviewDisabilityFeltComfortableSharingType.Partly, label: 'teilweise' },
-  { value: ReviewDisabilityFeltComfortableSharingType.No, label: 'nein' },
-];
-
-const ethnicitySharedOptions = [
-  { value: undefined, label: 'Bitte wählen' },
-  { value: ReviewEthnicitySharedWithCompanyType.Yes, label: 'ja' },
-  { value: ReviewEthnicitySharedWithCompanyType.Partly, label: 'teilweise' },
-  { value: ReviewEthnicitySharedWithCompanyType.No, label: 'nein' },
-];
-
-const ethnicityFeltOptions = [
-  { value: undefined, label: 'Bitte wählen' },
-  { value: ReviewEthnicityFeltComfortableSharingType.Yes, label: 'ja' },
-  { value: ReviewEthnicityFeltComfortableSharingType.Partly, label: 'teilweise' },
-  { value: ReviewEthnicityFeltComfortableSharingType.No, label: 'nein' },
-];
-
-const needsRespectedOptions = [
-  { value: undefined, label: 'Bitte wählen' },
-  { value: ReviewNeedsRespectedType.Yes, label: 'ja' },
-  { value: ReviewNeedsRespectedType.Partly, label: 'teilweise' },
-  { value: ReviewNeedsRespectedType.No, label: 'nein' },
 ];
 
 const recommendOptions = [
@@ -274,43 +242,6 @@ const boundaryTypes: { value: ReviewBoundariesRespectedType; label: string }[] =
   { value: ReviewBoundariesRespectedType.Emotional, label: 'emotional' },
   { value: ReviewBoundariesRespectedType.Responsibility, label: 'verantwortungstechnisch' },
   { value: ReviewBoundariesRespectedType.PhysicalDistance, label: 'körperlich-distanztechnisch' },
-];
-
-const disabilityTypeOptions: { value: ReviewDisabilityTypesType; label: string }[] = [
-  { value: ReviewDisabilityTypesType.AutismSpectrum, label: 'Autismus-Spektrum / Autismus' },
-  { value: ReviewDisabilityTypesType.Adhs, label: 'ADHS (Aufmerksamkeitsdefizit-/Hyperaktivitätsstörung)' },
-  { value: ReviewDisabilityTypesType.OtherNeurodivergence, label: 'andere Neurodivergenz / neurodivergente Wahrnehmungs- oder Verarbeitungsweisen' },
-  { value: ReviewDisabilityTypesType.MentalIllness, label: 'psychische Erkrankung oder psychische Beeinträchtigung' },
-  { value: ReviewDisabilityTypesType.ChronicIllness, label: 'chronische Erkrankung' },
-  { value: ReviewDisabilityTypesType.Autoimmune, label: 'Autoimmunerkrankung' },
-  { value: ReviewDisabilityTypesType.Neurological, label: 'neurologische Erkrankung' },
-  { value: ReviewDisabilityTypesType.Cardiovascular, label: 'Herz-Kreislauf-Erkrankung' },
-  { value: ReviewDisabilityTypesType.Musculoskeletal, label: 'Erkrankung oder Beeinträchtigung des Bewegungsapparats (Muskeln, Knochen, Gelenke)' },
-  { value: ReviewDisabilityTypesType.PhysicallyDisabled, label: 'körperliche Behinderung' },
-  { value: ReviewDisabilityTypesType.WheelchairMobility, label: 'Mobilitätseinschränkung / Rollstuhlnutzung' },
-  { value: ReviewDisabilityTypesType.BlindVisuallyImpaired, label: 'Sehbehinderung / Blindheit' },
-  { value: ReviewDisabilityTypesType.DeafHearingImpaired, label: 'Hörbehinderung / Gehörlosigkeit' },
-  { value: ReviewDisabilityTypesType.SpeechCommunication, label: 'Sprach- oder Kommunikationsbeeinträchtigung' },
-  { value: ReviewDisabilityTypesType.LearningDisability, label: 'Lernschwierigkeiten / Lernbehinderung' },
-  { value: ReviewDisabilityTypesType.CognitiveDisability, label: 'kognitive Beeinträchtigung / geistige Behinderung' },
-  { value: ReviewDisabilityTypesType.Metabolic, label: 'Stoffwechselerkrankung' },
-  { value: ReviewDisabilityTypesType.Digestive, label: 'Erkrankung oder Beeinträchtigung des Verdauungssystems' },
-  { value: ReviewDisabilityTypesType.Spasticity, label: 'Spastik / motorische Beeinträchtigung' },
-  { value: ReviewDisabilityTypesType.HigherBodyWeight, label: 'höheres Körpergewicht' },
-  { value: ReviewDisabilityTypesType.LowerBodyWeight, label: 'niedrigeres Körpergewicht' },
-  { value: ReviewDisabilityTypesType.Addiction, label: 'Suchterkrankung / problematischer Substanzkonsum' },
-  { value: ReviewDisabilityTypesType.SexualViolenceTrauma, label: 'Erfahrungen mit sexualisierter Gewalt / Trauma' },
-];
-
-const ethnicityTypeOptions: { value: ReviewEthnicityTypesType; label: string }[] = [
-  { value: ReviewEthnicityTypesType.White, label: 'weiß' },
-  { value: ReviewEthnicityTypesType.PersonOfColor, label: 'Person of Color' },
-  { value: ReviewEthnicityTypesType.Black, label: 'Schwarz' },
-  { value: ReviewEthnicityTypesType.Indigenous, label: 'Indigen' },
-  { value: ReviewEthnicityTypesType.Jewish, label: 'Jüdisch' },
-  { value: ReviewEthnicityTypesType.Muslim, label: 'Muslim*in' },
-  { value: ReviewEthnicityTypesType.Migrant, label: 'Migrant*in' },
-  { value: ReviewEthnicityTypesType.RomaSinti, label: 'Rom*nja/Sinti*zze' },
 ];
 
 type FormPage = {
@@ -332,6 +263,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
     handleSubmit,
     trigger,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<ReviewFormData>({
     defaultValues: { ...defaultFormData, ...initialData },
@@ -342,6 +274,14 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
     ...register(name, { ...(requiredMsg ? { required: requiredMsg } : {}), ...extra }),
     ...(requiredMsg ? { required: true as const } : {}),
     error: errors[name]?.message,
+  });
+
+  const maxWordsRule = (max: number): RegisterOptions => ({
+    validate: (v: unknown) => {
+      const trimmed = (typeof v === 'string' ? v : '').trim();
+      const count = trimmed === '' ? 0 : trimmed.split(/\s+/).length;
+      return count <= max || `Bitte kürze auf maximal ${max} Wörter (aktuell ${count}).`;
+    },
   });
 
   const sanitize = (data: ReviewFormData): ReviewFormData => {
@@ -358,13 +298,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
       tone: e(data.tone),
       explained: e(data.explained),
       appreciated: e(data.appreciated),
-      sharedWithCompany: e(data.sharedWithCompany),
-      feltComfortableSharing: e(data.feltComfortableSharing),
-      disabilitySharedWithCompany: e(data.disabilitySharedWithCompany),
-      disabilityFeltComfortableSharing: e(data.disabilityFeltComfortableSharing),
-      ethnicitySharedWithCompany: e(data.ethnicitySharedWithCompany),
-      ethnicityFeltComfortableSharing: e(data.ethnicityFeltComfortableSharing),
-      needsRespected: e(data.needsRespected),
+      workplaceSafety: e(data.workplaceSafety),
       recommend: e(data.recommend),
     };
   };
@@ -374,6 +308,41 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
     'trainingShortenable',
     'partTime',
   ]);
+
+  const overtimeHandling = watch('overtimeHandling');
+  const showOvertimeHandlingOther = overtimeHandling?.includes(ReviewOvertimeHandlingType.Other);
+
+  const [
+    genderExperienced,
+    genderObserved,
+    ethnicityExperienced,
+    ethnicityObserved,
+    disabilityExperienced,
+    disabilityObserved,
+  ] = watch([
+    'genderDiscriminationExperienced',
+    'genderDiscriminationObserved',
+    'ethnicityDiscriminationExperienced',
+    'ethnicityDiscriminationObserved',
+    'disabilityDiscriminationExperienced',
+    'disabilityDiscriminationObserved',
+  ]);
+  const showDiscriminationExperienceText = [genderExperienced, ethnicityExperienced, disabilityExperienced].some(
+    v => v !== 'no'
+  );
+
+  const discriminationCombo = (name: DiscriminationField, value: string, label: React.ReactNode) => (
+    <CheckboxSelectField
+      label={label}
+      checked={value !== 'no'}
+      onCheckedChange={checked =>
+        setValue(name, (checked ? 'constantly' : 'no') as ReviewFormData[DiscriminationField])
+      }
+      options={discriminationFrequencyOptions}
+      selectValue={value}
+      onSelectChange={v => setValue(name, v as ReviewFormData[DiscriminationField])}
+    />
+  );
 
   const currentYear = new Date().getFullYear();
   const hiringYearOptions = Array.from({ length: currentYear - 1969 }, (_, i) => ({
@@ -416,6 +385,8 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
         'ageAtEmployment',
         'hoursPerWeek',
         'overtimePerMonth',
+        'overtimeHandling',
+        'overtimeHandlingOther',
       ],
       render: () => (
         <>
@@ -438,7 +409,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
             options={hiringYearOptions}
           />
           <SelectField
-            {...register('employmentDuration')}
+            {...field('employmentDuration', 'Dauer des Arbeitsverhältnisses ist erforderlich.')}
             label="Dauer des Arbeitsverhältnisses"
             options={employmentDurationOptions}
           />
@@ -459,11 +430,28 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
             type="number"
             label="Geschätztes (Jahres-)Mittel an Überstunden pro Monat (optional)"
           />
+          <CheckboxGroup label="Wie wird mit Überstunden umgegangen?">
+            {overtimeHandlingOptions.map(oh => (
+              <CheckboxField
+                key={oh.value}
+                value={oh.value}
+                {...register('overtimeHandling')}
+                label={oh.label}
+              />
+            ))}
+          </CheckboxGroup>
+          {showOvertimeHandlingOther && (
+            <FormField
+              {...field('overtimeHandlingOther', undefined, maxWordsRule(10))}
+              label="Sonstiges: Umgang mit Überstunden"
+              placeholder="Max. 10 Worte"
+            />
+          )}
         </>
       ),
     },
     {
-      fields: ['languages', 'collective', 'trainingShortenable', 'partTime', 'specialtiesOther'],
+      fields: ['languages', 'collective', 'trainingShortenable', 'partTime', 'specialtiesOther', 'workplaceSafety'],
       render: () => (
         <>
           <div>
@@ -490,9 +478,15 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
               checked={partTime}
             />
           </CheckboxGroup>
+          <SelectField
+            {...register('workplaceSafety')}
+            label="Arbeitssicherheit: Wie sehr wird auf die Arbeitssicherheit der Mitarbeitenden geachtet?"
+            options={workplaceSafetyOptions}
+          />
           <TextAreaField
-            {...register('specialtiesOther')}
+            {...field('specialtiesOther', undefined, maxWordsRule(50))}
             label="Sonstiges"
+            maxWords={50}
             rows={3}
             placeholder="Weitere Besonderheiten des Betriebs..."
           />
@@ -565,8 +559,9 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
             ))}
           </CheckboxGroup>
           <TextAreaField
-            {...register('experienceText')}
+            {...field('experienceText', undefined, maxWordsRule(150))}
             label="Meine Erfahrung"
+            maxWords={150}
             rows={6}
             placeholder="Erzähle etwas genauer, wie du das Betriebsklima und den Umgang miteinander erlebt hast."
           />
@@ -575,106 +570,92 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
     },
     {
       fields: [
-        'gender',
-        'sharedWithCompany',
-        'feltComfortableSharing',
-        'disabilityTypes',
-        'disabilityOther',
-        'disabilitySharedWithCompany',
-        'disabilityFeltComfortableSharing',
-        'ethnicityTypes',
-        'ethnicitySharedWithCompany',
-        'ethnicityFeltComfortableSharing',
-        'genderIdentityRespected',
-        'needsRespected',
+        'genderDiscriminationExperienced',
+        'genderDiscriminationObserved',
+        'ethnicityDiscriminationExperienced',
+        'ethnicityDiscriminationObserved',
+        'disabilityDiscriminationExperienced',
+        'disabilityDiscriminationObserved',
+        'discriminationExperienceText',
       ],
       render: () => (
         <>
           <div>
-            <SectionHeading className="mb-3">Gleichstellung & Diskriminierung</SectionHeading>
+            <SectionHeading className="mb-3">Gleichstellung und Diskriminierung</SectionHeading>
             <Paragraph className="mb-2">
-              Dieser Abschnitt widmet sich Fragen zu Geschlecht und anderen Formen der
-              Diskriminierung. Deine Erfahrungen helfen, Benachteiligung sichtbar zu machen und
-              andere vor diskriminierendem Verhalten zu warnen.
+              Diese Seite widmet sich Fragen zu verschiedenen Formen der Diskriminierung im
+              Betrieb. Deine Erfahrungen helfen, Benachteiligung sichtbar zu machen und andere vor
+              abwertendem Verhalten zu warnen.
             </Paragraph>
           </div>
           <div className="space-y-4">
             <h3 className="font-semibold text-blackish text-lg border-b pb-1">Geschlecht</h3>
-            <SelectField {...register('gender')} label="Deine Geschlechtsidentität" options={genderOptions} />
-            <SelectField
-              {...register('sharedWithCompany')}
-              label="War dem Betrieb deine Geschlechtsidentität bekannt?"
-              options={sharedWithCompanyOptions}
-            />
-            <SelectField
-              {...register('feltComfortableSharing')}
-              label="Hast du dich damit wohlgefühlt, dass dem Betrieb deine Geschlechtsidentität bekannt war?"
-              options={feltComfortableSharingOptions}
-            />
-          </div>
-          <div className="space-y-2">
-            <h3 className="font-semibold text-blackish text-lg border-b pb-1">Beeinträchtigung</h3>
-            <CheckboxGroup label="Wähle aus, was auf dich zutrifft">
-              {disabilityTypeOptions.map(dt => (
-                <CheckboxField
-                  key={dt.value}
-                  value={dt.value}
-                  {...register('disabilityTypes')}
-                  label={dt.label}
-                />
-              ))}
-            </CheckboxGroup>
-            <TextAreaField
-              {...register('disabilityOther')}
-              label="Sonstige Beeinträchtigung"
-              rows={3}
-              placeholder="Falls deine Beeinträchtigung nicht in der Liste vorkam..."
-            />
-
-            <SelectField
-              {...register('disabilitySharedWithCompany')}
-              label="War dem Betrieb deine Beeinträchtigung bekannt?"
-              options={disabilitySharedOptions}
-            />
-            <SelectField
-              {...register('disabilityFeltComfortableSharing')}
-              label="Ist dein Betrieb respektvoll mit deiner Beeinträchtigung umgegangen?"
-              options={disabilityFeltOptions}
-            />
+            {discriminationCombo(
+              'genderDiscriminationExperienced',
+              genderExperienced,
+              'Ich habe im Betrieb selbst Diskriminierung aufgrund meines Geschlechts oder meiner Sexualität* erfahren.'
+            )}
+            {discriminationCombo(
+              'genderDiscriminationObserved',
+              genderObserved,
+              'Ich habe die Diskriminierung anderer aufgrund ihres Geschlechts oder ihrer Sexualität* im Betrieb beobachtet.'
+            )}
+            <Paragraph className="text-sm text-gray-600">
+              *Sexismus, Homophobie und Queerfeinlichkeit sind Formen der Diskriminierung, bei
+              denen Personen aufgrund ihrer Geschlechtsidentität (zB. trans, nicht-binär, inter)
+              oder ihrer Sexualität (zB. homosexuell, asexuell) Benachteiligung und Gewalt
+              erfahren.
+            </Paragraph>
           </div>
           <div className="space-y-4">
             <h3 className="font-semibold text-gray-800 text-lg border-b pb-1">
-              Herkunft, Erscheinungsbild & Religion
+              Herkunft, Religion, Erscheinungsbild
             </h3>
-            <CheckboxGroup label="Wähle aus, was auf dich zutrifft">
-              {ethnicityTypeOptions.map(et => (
-                <CheckboxField
-                  key={et.value}
-                  value={et.value}
-                  {...register('ethnicityTypes')}
-                  label={et.label}
-                />
-              ))}
-            </CheckboxGroup>
-            <SelectField
-              {...register('ethnicitySharedWithCompany')}
-              label="War dem Betrieb deine Herkunft / Erscheinungsbild / Religion bekannt?"
-              options={ethnicitySharedOptions}
-            />
-            <SelectField
-              {...register('ethnicityFeltComfortableSharing')}
-              label="Ist dein Betrieb respektvoll mit deiner Herkunft / Erscheinungsbild / Religion umgegangen?"
-              options={ethnicityFeltOptions}
-            />
+            {discriminationCombo(
+              'ethnicityDiscriminationExperienced',
+              ethnicityExperienced,
+              'Ich habe im Betrieb selbst Diskriminierung aufgrund meiner Herkunft, meiner Religion oder meines Erscheinungsbildes* erfahren.'
+            )}
+            {discriminationCombo(
+              'ethnicityDiscriminationObserved',
+              ethnicityObserved,
+              'Ich habe die Diskriminierung anderer aufgrund ihrer Herkunft, Religion oder ihres Erscheinungsbildes* im Betrieb beobachtet.'
+            )}
+            <Paragraph className="text-sm text-gray-600">
+              *Rassismus, Muslimfeindlichkeit und Antisemitismus sind Formen der Diskriminierung,
+              bei der Menschen zum Beispiel wegen ihrer Hautfarbe, ihrer Haare, ihres Namens, ihrer
+              Sprache oder ihres Glaubens ausgegrenzt und abgewertet werden.
+            </Paragraph>
           </div>
-          <div className="space-y-4">
-            <h3 className="font-semibold text-gray-800 text-lg border-b pb-1">Gesamt</h3>
-            <SelectField
-              {...register('needsRespected')}
-              label="Hast du dich insgesamt respektvoll behandelt gefühlt mit deiner Identität?"
-              options={needsRespectedOptions}
-            />
+          <div className="space-y-2">
+            <h3 className="font-semibold text-blackish text-lg border-b pb-1">Beeinträchtigung</h3>
+            {discriminationCombo(
+              'disabilityDiscriminationExperienced',
+              disabilityExperienced,
+              'Ich habe im Betrieb selbst Diskriminierung aufgrund meiner Behinderung, meiner Krankheit oder meiner Neurodivergenz* erfahren.'
+            )}
+            {discriminationCombo(
+              'disabilityDiscriminationObserved',
+              disabilityObserved,
+              'Ich habe die Diskriminierung anderer aufgrund ihrer Behinderung, ihrer Krankheit oder ihrer Neurodivergenz* im Betrieb beobachtet.'
+            )}
+            <Paragraph className="text-sm text-gray-600">
+              *Ableismus ist eine Form von Diskriminierung, bei der Menschen mit Behinderung von
+              Menschen ohne Behinderung auf die Merkmale reduziert werden, in denen sie sich vom
+              „Normal" unterscheiden. Diese Merkmale können sichtbar (zB. Rollstuhl) oder
+              unsichtbar (zB. Psychische Erkrankung) sein. Wenn von diesen Merkmalen darauf
+              geschlossen wird, was die Person vermeintlich kann oder nicht kann oder wie sich die
+              Person fühlt, ist das eine diskriminierende Ungleichbehandlung.
+            </Paragraph>
           </div>
+          {showDiscriminationExperienceText && (
+            <TextAreaField
+              {...field('discriminationExperienceText', undefined, maxWordsRule(250))}
+              label="Du hast selbst Diskriminierung erlebt? Hier kannst du genauer beschreiben, in welchem Umfang und Form."
+              maxWords={250}
+              rows={5}
+            />
+          )}
         </>
       ),
     },
@@ -701,7 +682,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
             {...register('moreWishes')}
             label="Wünsche an das Betriebsradar"
             rows={3}
-            placeholder="Möchtest du uns Feedback geben oder weitere Dinge ergänzen?"
+            placeholder="Möchtest du uns zu dieser Website Feedback geben oder hast du Ideen für Verbesserungen?"
           />
           {submitError && (
             <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-brand-error">
@@ -756,6 +737,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
         {currentPage === pageCount && (
           <div className="mb-4">
             <CheckboxField
+              required
               label={
                 <>
                   Ich habe die <Link to="/datenschutz" target="_blank" className="underline">Datenschutzerklärung</Link> gelesen und stimme der Datenverarbeitung zu.

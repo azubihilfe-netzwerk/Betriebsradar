@@ -3,7 +3,6 @@ import Collapsible from '../UI/Collapsible';
 import { Review } from '../../api/__generated__/graphql';
 import {
   positionLabels,
-  genderLabels,
   listenedToLabels,
   canAskBossLabels,
   canAskColleaguesLabels,
@@ -11,17 +10,11 @@ import {
   toneLabels,
   explainedLabels,
   appreciatedLabels,
-  sharedWithCompanyLabels,
-  feltComfortableSharingLabels,
-  disabilitySharedWithCompanyLabels,
-  disabilityFeltComfortableSharingLabels,
-  ethnicitySharedWithCompanyLabels,
-  ethnicityFeltComfortableSharingLabels,
-  needsRespectedLabels,
   recommendLabels,
   boundariesRespectedLabels,
-  disabilityTypeLabels,
-  ethnicityTypeLabels,
+  overtimeHandlingLabels,
+  workplaceSafetyLabels,
+  discriminationFrequencyLabels,
   formatEmploymentPeriod,
 } from '../../utils/reviewLabels';
 
@@ -36,13 +29,15 @@ export type ReportCardReview = Pick<
   | 'moreWishes'
   | 'specialtiesOther'
   | 'languages'
-  | 'gender'
   | 'ageAtEmployment'
   | 'hoursPerWeek'
   | 'overtimePerMonth'
   | 'partTime'
   | 'collective'
   | 'trainingShortenable'
+  | 'overtimeHandling'
+  | 'overtimeHandlingOther'
+  | 'workplaceSafety'
   | 'listenedTo'
   | 'canAskBoss'
   | 'canAskColleagues'
@@ -51,18 +46,14 @@ export type ReportCardReview = Pick<
   | 'explained'
   | 'appreciated'
   | 'boundariesRespected'
-  | 'genderIdentityRespected'
-  | 'needsRespected'
   | 'recommend'
-  | 'sharedWithCompany'
-  | 'feltComfortableSharing'
-  | 'disabilityTypes'
-  | 'disabilityOther'
-  | 'disabilitySharedWithCompany'
-  | 'disabilityFeltComfortableSharing'
-  | 'ethnicityTypes'
-  | 'ethnicitySharedWithCompany'
-  | 'ethnicityFeltComfortableSharing'
+  | 'genderDiscriminationExperienced'
+  | 'genderDiscriminationObserved'
+  | 'ethnicityDiscriminationExperienced'
+  | 'ethnicityDiscriminationObserved'
+  | 'disabilityDiscriminationExperienced'
+  | 'disabilityDiscriminationObserved'
+  | 'discriminationExperienceText'
 >;
 
 interface QaEntry {
@@ -110,10 +101,22 @@ function buildSections(review: ReportCardReview): Section[] {
           ? { label: 'Ausbildung verkürzbar', value: review.trainingShortenable ? 'ja' : 'nein' }
           : null,
         review.partTime != null ? { label: 'Teilzeit möglich', value: review.partTime ? 'ja' : 'nein' } : null,
+        review.overtimeHandling && review.overtimeHandling.length > 0
+          ? {
+              label: 'Umgang mit Überstunden',
+              value: review.overtimeHandling.map((v) => overtimeHandlingLabels[v]).join(', '),
+            }
+          : null,
+        review.workplaceSafety
+          ? { label: 'Arbeitssicherheit', value: workplaceSafetyLabels[review.workplaceSafety] }
+          : null,
       ].filter((entry): entry is QaEntry => entry !== null),
-      textBlocks: [review.specialtiesOther ? { label: 'Sonstiges', text: review.specialtiesOther } : null].filter(
-        (block): block is TextBlock => block !== null
-      ),
+      textBlocks: [
+        review.specialtiesOther ? { label: 'Sonstiges', text: review.specialtiesOther } : null,
+        review.overtimeHandlingOther
+          ? { label: 'Umgang mit Überstunden: Sonstiges', text: review.overtimeHandlingOther }
+          : null,
+      ].filter((block): block is TextBlock => block !== null),
     },
     {
       title: 'Betriebsklima & Respekt',
@@ -143,56 +146,48 @@ function buildSections(review: ReportCardReview): Section[] {
     {
       title: 'Gleichstellung & Diskriminierung',
       qaItems: [
-        review.gender ? { label: 'Geschlecht', value: genderLabels[review.gender] } : null,
-        review.genderIdentityRespected != null
-          ? { label: 'Geschlechtliche Identität respektiert', value: review.genderIdentityRespected ? 'ja' : 'nein' }
-          : null,
-        review.needsRespected
-          ? { label: 'Bedürfnisse respektiert', value: needsRespectedLabels[review.needsRespected] }
-          : null,
-        review.sharedWithCompany
-          ? { label: 'Mit Betrieb geteilt', value: sharedWithCompanyLabels[review.sharedWithCompany] }
-          : null,
-        review.feltComfortableSharing
-          ? { label: 'Wohl beim Teilen gefühlt', value: feltComfortableSharingLabels[review.feltComfortableSharing] }
-          : null,
-        review.disabilityTypes && review.disabilityTypes.length > 0
+        review.genderDiscriminationExperienced && review.genderDiscriminationExperienced !== 'no'
           ? {
-              label: 'Behinderung/Beeinträchtigung',
-              value: review.disabilityTypes.map((v) => disabilityTypeLabels[v]).join(', '),
+              label: 'Diskriminierung (Geschlecht/Sexualität) selbst erfahren',
+              value: discriminationFrequencyLabels[review.genderDiscriminationExperienced],
             }
           : null,
-        review.disabilitySharedWithCompany
+        review.genderDiscriminationObserved && review.genderDiscriminationObserved !== 'no'
           ? {
-              label: 'Behinderung mit Betrieb geteilt',
-              value: disabilitySharedWithCompanyLabels[review.disabilitySharedWithCompany],
+              label: 'Diskriminierung (Geschlecht/Sexualität) bei anderen beobachtet',
+              value: discriminationFrequencyLabels[review.genderDiscriminationObserved],
             }
           : null,
-        review.disabilityFeltComfortableSharing
+        review.ethnicityDiscriminationExperienced && review.ethnicityDiscriminationExperienced !== 'no'
           ? {
-              label: 'Wohl beim Teilen (Behinderung)',
-              value: disabilityFeltComfortableSharingLabels[review.disabilityFeltComfortableSharing],
+              label: 'Diskriminierung (Herkunft/Religion/Erscheinungsbild) selbst erfahren',
+              value: discriminationFrequencyLabels[review.ethnicityDiscriminationExperienced],
             }
           : null,
-        review.ethnicityTypes && review.ethnicityTypes.length > 0
-          ? { label: 'Ethnizität', value: review.ethnicityTypes.map((v) => ethnicityTypeLabels[v]).join(', ') }
-          : null,
-        review.ethnicitySharedWithCompany
+        review.ethnicityDiscriminationObserved && review.ethnicityDiscriminationObserved !== 'no'
           ? {
-              label: 'Ethnizität mit Betrieb geteilt',
-              value: ethnicitySharedWithCompanyLabels[review.ethnicitySharedWithCompany],
+              label: 'Diskriminierung (Herkunft/Religion/Erscheinungsbild) bei anderen beobachtet',
+              value: discriminationFrequencyLabels[review.ethnicityDiscriminationObserved],
             }
           : null,
-        review.ethnicityFeltComfortableSharing
+        review.disabilityDiscriminationExperienced && review.disabilityDiscriminationExperienced !== 'no'
           ? {
-              label: 'Wohl beim Teilen (Ethnizität)',
-              value: ethnicityFeltComfortableSharingLabels[review.ethnicityFeltComfortableSharing],
+              label: 'Diskriminierung (Behinderung/Krankheit/Neurodivergenz) selbst erfahren',
+              value: discriminationFrequencyLabels[review.disabilityDiscriminationExperienced],
+            }
+          : null,
+        review.disabilityDiscriminationObserved && review.disabilityDiscriminationObserved !== 'no'
+          ? {
+              label: 'Diskriminierung (Behinderung/Krankheit/Neurodivergenz) bei anderen beobachtet',
+              value: discriminationFrequencyLabels[review.disabilityDiscriminationObserved],
             }
           : null,
       ].filter((entry): entry is QaEntry => entry !== null),
-      textBlocks: [review.disabilityOther ? { label: 'Sonstige Beeinträchtigung', text: review.disabilityOther } : null].filter(
-        (block): block is TextBlock => block !== null
-      ),
+      textBlocks: [
+        review.discriminationExperienceText
+          ? { label: 'Beschreibung der selbst erlebten Diskriminierung', text: review.discriminationExperienceText }
+          : null,
+      ].filter((block): block is TextBlock => block !== null),
     },
     {
       title: 'Feedback zum Betrieb',
@@ -223,7 +218,7 @@ const ReportCard: React.FC<ReportCardProps> = ({ review }) => {
       header={
         <h3 className="text-lg font-semibold text-blackish">
           {positionLabel}
-          {period && <span className="font-normal text-gray-600"> ({period})</span>}
+          {period && <span className="font-normal"> ({period})</span>}
         </h3>
       }
     >
@@ -236,7 +231,7 @@ const ReportCard: React.FC<ReportCardProps> = ({ review }) => {
                 <dl className="grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-2">
                   {section.qaItems.map((entry) => (
                     <div key={entry.label}>
-                      <dt className="text-sm font-semibold text-gray-600">{entry.label}</dt>
+                      <dt className="text-sm font-bold text-blackish">{entry.label}</dt>
                       <dd className="text-gray-800">{entry.value}</dd>
                     </div>
                   ))}
@@ -244,7 +239,7 @@ const ReportCard: React.FC<ReportCardProps> = ({ review }) => {
               )}
               {section.textBlocks.map((block) => (
                 <div key={block.label}>
-                  <p className="text-sm font-semibold text-gray-600">{block.label}</p>
+                  <p className="text-sm font-bold text-blackish">{block.label}</p>
                   <p className="whitespace-pre-line text-gray-800">{block.text}</p>
                 </div>
               ))}

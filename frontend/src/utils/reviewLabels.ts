@@ -1,6 +1,5 @@
 import {
   ReviewPositionType,
-  ReviewGenderType,
   ReviewListenedToType,
   ReviewCanAskBossType,
   ReviewCanAskColleaguesType,
@@ -8,18 +7,12 @@ import {
   ReviewToneType,
   ReviewExplainedType,
   ReviewAppreciatedType,
-  ReviewSharedWithCompanyType,
-  ReviewFeltComfortableSharingType,
-  ReviewDisabilitySharedWithCompanyType,
-  ReviewDisabilityFeltComfortableSharingType,
-  ReviewEthnicitySharedWithCompanyType,
-  ReviewEthnicityFeltComfortableSharingType,
-  ReviewNeedsRespectedType,
   ReviewBoundariesRespectedType,
-  ReviewDisabilityTypesType,
-  ReviewEthnicityTypesType,
   ReviewEmploymentDurationType,
   ReviewRecommendType,
+  ReviewOvertimeHandlingType,
+  ReviewWorkplaceSafetyType,
+  ReviewGenderDiscriminationExperiencedType,
 } from '../api/__generated__/graphql';
 
 export const positionLabels: Record<ReviewPositionType, string> = {
@@ -29,18 +22,6 @@ export const positionLabels: Record<ReviewPositionType, string> = {
   [ReviewPositionType.Master]: 'Meister*in',
   [ReviewPositionType.Helper]: 'Bauhelfer*in',
   [ReviewPositionType.Other]: 'Andere',
-};
-
-export const genderLabels: Record<ReviewGenderType, string> = {
-  [ReviewGenderType.PreferNotToSay]: 'keine Angabe',
-  [ReviewGenderType.CisMale]: 'cis-männlich',
-  [ReviewGenderType.CisFemale]: 'cis-weiblich',
-  [ReviewGenderType.Enby]: 'nichtbinär',
-  [ReviewGenderType.Trans]: 'trans',
-  [ReviewGenderType.TransMale]: 'transmännlich',
-  [ReviewGenderType.TransFemale]: 'transweiblich',
-  [ReviewGenderType.Diverse]: 'divers',
-  [ReviewGenderType.Other]: 'offen',
 };
 
 const frequencyLabels = {
@@ -107,41 +88,6 @@ export const appreciatedLabels: Record<ReviewAppreciatedType, string> = {
 
 const yesPartlyNo = { Yes: 'ja', Partly: 'teilweise', No: 'nein' };
 
-export const sharedWithCompanyLabels: Record<ReviewSharedWithCompanyType, string> = {
-  [ReviewSharedWithCompanyType.Yes]: yesPartlyNo.Yes,
-  [ReviewSharedWithCompanyType.Partly]: yesPartlyNo.Partly,
-  [ReviewSharedWithCompanyType.No]: yesPartlyNo.No,
-};
-export const feltComfortableSharingLabels: Record<ReviewFeltComfortableSharingType, string> = {
-  [ReviewFeltComfortableSharingType.Yes]: yesPartlyNo.Yes,
-  [ReviewFeltComfortableSharingType.Partly]: yesPartlyNo.Partly,
-  [ReviewFeltComfortableSharingType.No]: yesPartlyNo.No,
-};
-export const disabilitySharedWithCompanyLabels: Record<ReviewDisabilitySharedWithCompanyType, string> = {
-  [ReviewDisabilitySharedWithCompanyType.Yes]: yesPartlyNo.Yes,
-  [ReviewDisabilitySharedWithCompanyType.Partly]: yesPartlyNo.Partly,
-  [ReviewDisabilitySharedWithCompanyType.No]: yesPartlyNo.No,
-};
-export const disabilityFeltComfortableSharingLabels: Record<ReviewDisabilityFeltComfortableSharingType, string> = {
-  [ReviewDisabilityFeltComfortableSharingType.Yes]: yesPartlyNo.Yes,
-  [ReviewDisabilityFeltComfortableSharingType.Partly]: yesPartlyNo.Partly,
-  [ReviewDisabilityFeltComfortableSharingType.No]: yesPartlyNo.No,
-};
-export const ethnicitySharedWithCompanyLabels: Record<ReviewEthnicitySharedWithCompanyType, string> = {
-  [ReviewEthnicitySharedWithCompanyType.Yes]: yesPartlyNo.Yes,
-  [ReviewEthnicitySharedWithCompanyType.Partly]: yesPartlyNo.Partly,
-  [ReviewEthnicitySharedWithCompanyType.No]: yesPartlyNo.No,
-};
-export const ethnicityFeltComfortableSharingLabels: Record<ReviewEthnicityFeltComfortableSharingType, string> = {
-  [ReviewEthnicityFeltComfortableSharingType.Yes]: yesPartlyNo.Yes,
-  [ReviewEthnicityFeltComfortableSharingType.Partly]: yesPartlyNo.Partly,
-  [ReviewEthnicityFeltComfortableSharingType.No]: yesPartlyNo.No,
-};
-export const needsRespectedLabels: Record<ReviewNeedsRespectedType, string> = {
-  [ReviewNeedsRespectedType.Yes]: yesPartlyNo.Yes,
-  [ReviewNeedsRespectedType.Partly]: yesPartlyNo.Partly,
-  [ReviewNeedsRespectedType.No]: yesPartlyNo.No,
-};
 export const recommendLabels: Record<ReviewRecommendType, string> = {
   [ReviewRecommendType.Yes]: yesPartlyNo.Yes,
   [ReviewRecommendType.Partly]: yesPartlyNo.Partly,
@@ -155,41 +101,30 @@ export const boundariesRespectedLabels: Record<ReviewBoundariesRespectedType, st
   [ReviewBoundariesRespectedType.PhysicalDistance]: 'körperlich-distanztechnisch',
 };
 
-export const disabilityTypeLabels: Record<ReviewDisabilityTypesType, string> = {
-  [ReviewDisabilityTypesType.AutismSpectrum]: 'Autismus-Spektrum / Autismus',
-  [ReviewDisabilityTypesType.Adhs]: 'ADHS (Aufmerksamkeitsdefizit-/Hyperaktivitätsstörung)',
-  [ReviewDisabilityTypesType.OtherNeurodivergence]: 'andere Neurodivergenz / neurodivergente Wahrnehmungs- oder Verarbeitungsweisen',
-  [ReviewDisabilityTypesType.MentalIllness]: 'psychische Erkrankung oder psychische Beeinträchtigung',
-  [ReviewDisabilityTypesType.ChronicIllness]: 'chronische Erkrankung',
-  [ReviewDisabilityTypesType.Autoimmune]: 'Autoimmunerkrankung',
-  [ReviewDisabilityTypesType.Neurological]: 'neurologische Erkrankung',
-  [ReviewDisabilityTypesType.Cardiovascular]: 'Herz-Kreislauf-Erkrankung',
-  [ReviewDisabilityTypesType.Musculoskeletal]: 'Erkrankung oder Beeinträchtigung des Bewegungsapparats (Muskeln, Knochen, Gelenke)',
-  [ReviewDisabilityTypesType.PhysicallyDisabled]: 'körperliche Behinderung',
-  [ReviewDisabilityTypesType.WheelchairMobility]: 'Mobilitätseinschränkung / Rollstuhlnutzung',
-  [ReviewDisabilityTypesType.BlindVisuallyImpaired]: 'Sehbehinderung / Blindheit',
-  [ReviewDisabilityTypesType.DeafHearingImpaired]: 'Hörbehinderung / Gehörlosigkeit',
-  [ReviewDisabilityTypesType.SpeechCommunication]: 'Sprach- oder Kommunikationsbeeinträchtigung',
-  [ReviewDisabilityTypesType.LearningDisability]: 'Lernschwierigkeiten / Lernbehinderung',
-  [ReviewDisabilityTypesType.CognitiveDisability]: 'kognitive Beeinträchtigung / geistige Behinderung',
-  [ReviewDisabilityTypesType.Metabolic]: 'Stoffwechselerkrankung',
-  [ReviewDisabilityTypesType.Digestive]: 'Erkrankung oder Beeinträchtigung des Verdauungssystems',
-  [ReviewDisabilityTypesType.Spasticity]: 'Spastik / motorische Beeinträchtigung',
-  [ReviewDisabilityTypesType.HigherBodyWeight]: 'höheres Körpergewicht',
-  [ReviewDisabilityTypesType.LowerBodyWeight]: 'niedrigeres Körpergewicht',
-  [ReviewDisabilityTypesType.Addiction]: 'Suchterkrankung / problematischer Substanzkonsum',
-  [ReviewDisabilityTypesType.SexualViolenceTrauma]: 'Erfahrungen mit sexualisierter Gewalt / Trauma',
+export const overtimeHandlingLabels: Record<ReviewOvertimeHandlingType, string> = {
+  [ReviewOvertimeHandlingType.Payout]: 'Auszahlung',
+  [ReviewOvertimeHandlingType.TimeOff]: 'Arbeitszeitausgleich',
+  [ReviewOvertimeHandlingType.Bonus]: 'Überstundenzuschlag',
+  [ReviewOvertimeHandlingType.Forfeited]: 'Verfall',
+  [ReviewOvertimeHandlingType.Other]: 'Sonstiges',
 };
 
-export const ethnicityTypeLabels: Record<ReviewEthnicityTypesType, string> = {
-  [ReviewEthnicityTypesType.White]: 'weiß',
-  [ReviewEthnicityTypesType.PersonOfColor]: 'Person of Color',
-  [ReviewEthnicityTypesType.Black]: 'Schwarz',
-  [ReviewEthnicityTypesType.Indigenous]: 'Indigen',
-  [ReviewEthnicityTypesType.Jewish]: 'Jüdisch',
-  [ReviewEthnicityTypesType.Muslim]: 'Muslim*in',
-  [ReviewEthnicityTypesType.Migrant]: 'Migrant*in',
-  [ReviewEthnicityTypesType.RomaSinti]: 'Rom*nja/Sinti*zze',
+export const workplaceSafetyLabels: Record<ReviewWorkplaceSafetyType, string> = {
+  [ReviewWorkplaceSafetyType.Strong]: 'stark',
+  [ReviewWorkplaceSafetyType.Medium]: 'mittel',
+  [ReviewWorkplaceSafetyType.None]: 'gar nicht',
+};
+
+/**
+ * Shared "wie oft?" scale used by every checkbox+select discrimination combo
+ * (gender/ethnicity/disability x experienced/observed). All six generated enum
+ * types share the same underlying values, so one label map covers all of them.
+ */
+export const discriminationFrequencyLabels: Record<'no' | 'constantly' | 'occasionally' | 'rarely', string> = {
+  [ReviewGenderDiscriminationExperiencedType.No]: 'nein',
+  [ReviewGenderDiscriminationExperiencedType.Constantly]: 'ja, dauernd',
+  [ReviewGenderDiscriminationExperiencedType.Occasionally]: 'ja, ab und zu',
+  [ReviewGenderDiscriminationExperiencedType.Rarely]: 'kaum',
 };
 
 /** "2024, 1-3 Jahre" if a duration is known, or just "2024" otherwise. */

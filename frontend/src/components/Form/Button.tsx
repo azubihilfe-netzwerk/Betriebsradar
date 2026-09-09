@@ -17,8 +17,8 @@ const baseStyles = 'inline-block text-center font-semibold transition disabled:o
 };
 
 const sizeStyles = {
-  sm: 'px-3 py-2 text-sm',
-  md: 'px-4 py-2 text-base',
+  sm: 'px-3 py-2 text-md',
+  md: 'px-4 py-2 text-lg',
   lg: 'px-6 py-3 text-lg',
 };
 

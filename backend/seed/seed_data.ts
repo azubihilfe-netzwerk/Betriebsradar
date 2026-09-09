@@ -48,7 +48,6 @@ const FIRST_NAMES = [
   'Sophie', 'Luca', 'Mila', 'Elias', 'Marie', 'Felix', 'Anna', 'Leon', 'Ida', 'Tom',
 ];
 
-const GENDERS = ['prefer_not_to_say', 'cis_male', 'cis_female', 'enby', 'trans', 'trans_male', 'trans_female', 'diverse', 'other'];
 const POSITIONS = ['intern', 'apprentice', 'journey', 'master', 'helper', 'other'];
 const RATINGS = ['always', 'mostly', 'sometimes', 'rarely', 'never'];
 const TONES = ['very_good', 'good', 'ok', 'bad', 'awful'];
@@ -56,12 +55,19 @@ const EXPLAINED = ['too_much', 'just_right', 'enough', 'too_little'];
 const EMPLOYMENT_DURATIONS = ['one_week_or_less', 'one_to_four_weeks', 'one_to_three_months', 'three_to_six_months', 'six_to_twelve_months', 'one_to_three_years', 'more_than_three_years'];
 const YES_PARTLY_NO = ['yes', 'partly', 'no'];
 const BOUNDARIES = ['physical_strength', 'emotional', 'responsibility', 'physical_distance'];
+const OVERTIME_HANDLING = ['payout', 'time_off', 'bonus', 'forfeited', 'other'];
+const WORKPLACE_SAFETY = ['strong', 'medium', 'none'];
+const DISCRIMINATION_FREQUENCIES = ['no', 'no', 'no', 'constantly', 'occasionally', 'rarely'];
 const EXPERIENCE_TEXTS = [
   'Insgesamt eine gute Erfahrung gemacht.',
   'Es gab sowohl gute als auch schwierige Phasen.',
   'Das Team war hilfsbereit und offen.',
   'Die Kommunikation hätte besser sein können.',
   'Ich habe mich wohl und respektiert gefühlt.',
+];
+const DISCRIMINATION_EXPERIENCE_TEXTS = [
+  'Es gab abwertende Kommentare, die ich als verletzend empfunden habe.',
+  'Ich wurde bei bestimmten Aufgaben übergangen.',
 ];
 
 function randomInt(min: number, max: number): number {
@@ -79,20 +85,26 @@ function pickSome<T>(options: T[]): T[] {
 function randomReviewData(company: { id: string }) {
   const firstName = pick(FIRST_NAMES);
   const yearOfHiring = String(randomInt(2015, 2024));
+  const overtimeHandling = pickSome(OVERTIME_HANDLING);
+  const genderExperienced = pick(DISCRIMINATION_FREQUENCIES);
+  const ethnicityExperienced = pick(DISCRIMINATION_FREQUENCIES);
+  const disabilityExperienced = pick(DISCRIMINATION_FREQUENCIES);
+  const anyExperienced = [genderExperienced, ethnicityExperienced, disabilityExperienced].some(v => v !== 'no');
   return {
     name: `${firstName}s Erfahrungsbericht`,
     email: `${firstName.toLowerCase()}.${randomInt(1000, 9999)}@example.com`,
     company: { connect: { id: company.id } },
-    gender: pick(GENDERS),
     ageAtEmployment: randomInt(16, 45),
     collective: Math.random() < 0.2,
     hoursPerWeek: randomInt(20, 45),
     overtimePerMonth: randomInt(0, 15),
+    overtimeHandling,
+    overtimeHandlingOther: overtimeHandling.includes('other') ? 'Individuelle Absprache mit der Chefin' : '',
     trainingShortenable: Math.random() < 0.5,
     partTime: Math.random() < 0.2,
     yearOfHiring,
     employmentDuration: pick(EMPLOYMENT_DURATIONS),
-    genderIdentityRespected: Math.random() < 0.7,
+    workplaceSafety: pick(WORKPLACE_SAFETY),
     position: pick(POSITIONS),
     listenedTo: pick(RATINGS),
     tone: pick(TONES),
@@ -104,6 +116,13 @@ function randomReviewData(company: { id: string }) {
     appreciated: pick(YES_PARTLY_NO),
     experienceText: pick(EXPERIENCE_TEXTS),
     languages: 'Deutsch',
+    genderDiscriminationExperienced: genderExperienced,
+    genderDiscriminationObserved: pick(DISCRIMINATION_FREQUENCIES),
+    ethnicityDiscriminationExperienced: ethnicityExperienced,
+    ethnicityDiscriminationObserved: pick(DISCRIMINATION_FREQUENCIES),
+    disabilityDiscriminationExperienced: disabilityExperienced,
+    disabilityDiscriminationObserved: pick(DISCRIMINATION_FREQUENCIES),
+    discriminationExperienceText: anyExperienced ? pick(DISCRIMINATION_EXPERIENCE_TEXTS) : '',
     status: Math.random() < 0.85 ? 'published' : 'awaitingReview',
   };
 }
@@ -188,15 +207,16 @@ export async function createSampleData(ctx?: any): Promise<SampleData> {
      name : 'Lucas Erfahrungsbericht',
      email: 'luca@example.com',
       company: { connect: { id: theCompany.id } },
-      gender: 'diverse',
       ageAtEmployment: 22,
       collective: false,
       hoursPerWeek: 38,
+      overtimeHandling: ['time_off'],
       trainingShortenable: true,
       partTime: false,
-      genderIdentityRespected: true,
       position: 'apprentice',
       yearOfHiring: '2022',
+      employmentDuration: 'one_to_three_years',
+      workplaceSafety: 'strong',
       listenedTo: 'mostly',
       tone: 'good',
       explained: 'just_right',
@@ -207,21 +227,28 @@ export async function createSampleData(ctx?: any): Promise<SampleData> {
       appreciated: 'yes',
       experienceText: 'Sehr gute Erfahrung.',
       languages: 'Deutsch',
+      genderDiscriminationExperienced: 'no',
+      genderDiscriminationObserved: 'no',
+      ethnicityDiscriminationExperienced: 'no',
+      ethnicityDiscriminationObserved: 'no',
+      disabilityDiscriminationExperienced: 'no',
+      disabilityDiscriminationObserved: 'no',
       status: 'published',});
 
  const joelsReview = await getOrCreateEntityByName(context, 'Review', {
         name : 'Joels Erfahrungsbericht',
         email: 'joel@example.com',
         company: { connect: { id: theCompany.id } },
-        gender: 'enby',
         ageAtEmployment: 25,
         collective: false,
         hoursPerWeek: 40,
+        overtimeHandling: ['forfeited'],
         trainingShortenable: false,
         partTime: false,
-        genderIdentityRespected: false,
       position: 'intern',
       yearOfHiring: '2023',
+      employmentDuration: 'six_to_twelve_months',
+      workplaceSafety: 'medium',
       listenedTo: 'mostly',
       tone: 'ok',
       explained: 'enough',
@@ -232,6 +259,13 @@ export async function createSampleData(ctx?: any): Promise<SampleData> {
       appreciated: 'partly',
       experienceText: 'Durchwachsene Erfahrung.',
       languages: 'Deutsch, Englisch',
+      genderDiscriminationExperienced: 'occasionally',
+      genderDiscriminationObserved: 'rarely',
+      ethnicityDiscriminationExperienced: 'no',
+      ethnicityDiscriminationObserved: 'no',
+      disabilityDiscriminationExperienced: 'no',
+      disabilityDiscriminationObserved: 'no',
+      discriminationExperienceText: 'Es gab abwertende Kommentare, die ich als verletzend empfunden habe.',
       status: 'awaitingReview',
  });
 

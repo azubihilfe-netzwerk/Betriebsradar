@@ -36,49 +36,47 @@ model Company {
 }
 
 model Review {
-  id                               Int                                         @id @default(autoincrement())
-  name                             String                                      @default("")
-  email                            String                                      @default("")
-  company                          Company?                                    @relation("Review_company", fields: [companyId], references: [id])
-  companyId                        Int?                                        @map("company")
-  collective                       Boolean                                     @default(false)
-  hoursPerWeek                     Int?
-  overtimePerMonth                 Int?
-  trainingShortenable              Boolean                                     @default(false)
-  partTime                         Boolean                                     @default(false)
-  specialtiesOther                 String                                      @default("")
-  ageAtEmployment                  Int?
-  yearOfHiring                     String                                      @default("")
-  employmentDuration               ReviewEmploymentDurationType?
-  genderIdentityRespected          Boolean                                     @default(false)
-  position                         ReviewPositionType
-  listenedTo                       ReviewListenedToType?
-  canAskColleagues                 ReviewCanAskColleaguesType?
-  canAskBoss                       ReviewCanAskBossType?
-  canAskTrainer                    ReviewCanAskTrainerType?
-  tone                             ReviewToneType?
-  explained                        ReviewExplainedType?
-  boundariesRespected              Json                                        @default("[]")
-  appreciated                      ReviewAppreciatedType?
-  experienceText                   String                                      @default("")
-  languages                        String                                      @default("")
-  gender                           ReviewGenderType?
-  sharedWithCompany                ReviewSharedWithCompanyType?
-  feltComfortableSharing           ReviewFeltComfortableSharingType?
-  disabilityTypes                  Json                                        @default("[]")
-  disabilityOther                  String                                      @default("")
-  disabilitySharedWithCompany      ReviewDisabilitySharedWithCompanyType?
-  disabilityFeltComfortableSharing ReviewDisabilityFeltComfortableSharingType?
-  ethnicityTypes                   Json                                        @default("[]")
-  ethnicitySharedWithCompany       ReviewEthnicitySharedWithCompanyType?
-  ethnicityFeltComfortableSharing  ReviewEthnicityFeltComfortableSharingType?
-  needsRespected                   ReviewNeedsRespectedType?
-  feedback                         String                                      @default("")
-  moreWishes                       String                                      @default("")
-  recommend                        ReviewRecommendType?
-  status                           ReviewStatusType?                           @default(awaitingReview)
-  emailVerified                    Boolean                                     @default(false)
-  accessKey                        String                                      @unique @default("")
+  id                                  Int                                           @id @default(autoincrement())
+  name                                String                                        @default("")
+  email                               String                                        @default("")
+  company                             Company?                                      @relation("Review_company", fields: [companyId], references: [id])
+  companyId                           Int?                                          @map("company")
+  collective                          Boolean                                       @default(false)
+  hoursPerWeek                        Int?
+  overtimePerMonth                    Int?
+  trainingShortenable                 Boolean                                       @default(false)
+  partTime                            Boolean                                       @default(false)
+  specialtiesOther                    String                                        @default("")
+  ageAtEmployment                     Int?
+  yearOfHiring                        String                                        @default("")
+  employmentDuration                  ReviewEmploymentDurationType
+  overtimeHandling                    Json                                          @default("[]")
+  overtimeHandlingOther               String                                        @default("")
+  workplaceSafety                     ReviewWorkplaceSafetyType?
+  position                            ReviewPositionType
+  listenedTo                          ReviewListenedToType?
+  canAskColleagues                    ReviewCanAskColleaguesType?
+  canAskBoss                          ReviewCanAskBossType?
+  canAskTrainer                       ReviewCanAskTrainerType?
+  tone                                ReviewToneType?
+  explained                           ReviewExplainedType?
+  boundariesRespected                 Json                                          @default("[]")
+  appreciated                         ReviewAppreciatedType?
+  experienceText                      String                                        @default("")
+  languages                           String                                        @default("")
+  genderDiscriminationExperienced     ReviewGenderDiscriminationExperiencedType     @default(no)
+  genderDiscriminationObserved        ReviewGenderDiscriminationObservedType        @default(no)
+  ethnicityDiscriminationExperienced  ReviewEthnicityDiscriminationExperiencedType  @default(no)
+  ethnicityDiscriminationObserved     ReviewEthnicityDiscriminationObservedType     @default(no)
+  disabilityDiscriminationExperienced ReviewDisabilityDiscriminationExperiencedType @default(no)
+  disabilityDiscriminationObserved    ReviewDisabilityDiscriminationObservedType    @default(no)
+  discriminationExperienceText        String                                        @default("")
+  feedback                            String                                        @default("")
+  moreWishes                          String                                        @default("")
+  recommend                           ReviewRecommendType?
+  status                              ReviewStatusType?                             @default(awaitingReview)
+  emailVerified                       Boolean                                       @default(false)
+  accessKey                           String                                        @unique @default("")
 
   @@index([companyId])
 }
@@ -100,6 +98,12 @@ enum ReviewEmploymentDurationType {
   six_to_twelve_months
   one_to_three_years
   more_than_three_years
+}
+
+enum ReviewWorkplaceSafetyType {
+  strong
+  medium
+  none
 }
 
 enum ReviewPositionType {
@@ -164,58 +168,46 @@ enum ReviewAppreciatedType {
   no
 }
 
-enum ReviewGenderType {
-  prefer_not_to_say
-  cis_male
-  cis_female
-  enby
-  trans
-  trans_male
-  trans_female
-  diverse
-  other
+enum ReviewGenderDiscriminationExperiencedType {
+  no
+  constantly
+  occasionally
+  rarely
 }
 
-enum ReviewSharedWithCompanyType {
-  yes
-  partly
+enum ReviewGenderDiscriminationObservedType {
   no
+  constantly
+  occasionally
+  rarely
 }
 
-enum ReviewFeltComfortableSharingType {
-  yes
-  partly
+enum ReviewEthnicityDiscriminationExperiencedType {
   no
+  constantly
+  occasionally
+  rarely
 }
 
-enum ReviewDisabilitySharedWithCompanyType {
-  yes
-  partly
+enum ReviewEthnicityDiscriminationObservedType {
   no
+  constantly
+  occasionally
+  rarely
 }
 
-enum ReviewDisabilityFeltComfortableSharingType {
-  yes
-  partly
+enum ReviewDisabilityDiscriminationExperiencedType {
   no
+  constantly
+  occasionally
+  rarely
 }
 
-enum ReviewEthnicitySharedWithCompanyType {
-  yes
-  partly
+enum ReviewDisabilityDiscriminationObservedType {
   no
-}
-
-enum ReviewEthnicityFeltComfortableSharingType {
-  yes
-  partly
-  no
-}
-
-enum ReviewNeedsRespectedType {
-  yes
-  partly
-  no
+  constantly
+  occasionally
+  rarely
 }
 
 enum ReviewRecommendType {

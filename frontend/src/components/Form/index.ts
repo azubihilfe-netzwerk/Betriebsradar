@@ -6,4 +6,5 @@ export { default as FieldLabel } from './FieldLabel';
 export { default as SelectField } from './SelectField';
 export { default as CheckboxField } from './CheckboxField';
 export { default as CheckboxGroup } from './CheckboxGroup';
+export { default as CheckboxSelectField } from './CheckboxSelectField';
 export { default as TextAreaField } from './TextAreaField';
