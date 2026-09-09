@@ -183,10 +183,8 @@ export const lists = {
       operation: allowAll,
     },
     fields: {
-      name: text({ validation: { isRequired: true }, ui: { label: 'Titel des Erfahrungsberichts' } }),
-      email: text({ validation: { isRequired: true }, ui: { label: 'E-Mail-Adresse' } }),
-
-      company: relationship({ ref: 'Company.reviews', ui: { label: 'Betrieb' } }),
+      name: text({ validation: { isRequired: true }, ui: { label: 'Name' } }),
+      email: text({ validation: { isRequired: true }, ui: { label: 'E-Mail-Adresse' } }),      company: relationship({ ref: 'Company.reviews', ui: { label: 'Betrieb' } }),
       collective: checkbox({ defaultValue: false, ui: { label: 'Kollektiv' } }),
       hoursPerWeek: integer({ validation: {isRequired: false}, ui: { label: 'Durchschnittliche h/Woche' } }),
       overtimePerMonth: integer({ validation: {isRequired: false}, ui: { label: 'Geschätzte Überstunden/Monat (Jahresmittel)' } }),
