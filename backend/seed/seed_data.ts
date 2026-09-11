@@ -91,7 +91,7 @@ function randomReviewData(company: { id: string }) {
   const disabilityExperienced = pick(DISCRIMINATION_FREQUENCIES);
   const anyExperienced = [genderExperienced, ethnicityExperienced, disabilityExperienced].some(v => v !== 'no');
   return {
-    name: `${firstName}s Erfahrungsbericht`,
+    name: `${firstName}`,
     email: `${firstName.toLowerCase()}.${randomInt(1000, 9999)}@example.com`,
     company: { connect: { id: company.id } },
     ageAtEmployment: randomInt(16, 45),

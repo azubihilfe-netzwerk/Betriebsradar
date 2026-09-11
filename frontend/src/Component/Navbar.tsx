@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Menu, X, ChevronDown, LogOut } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import logo from '../images/Logo_schwarz-2048x2048.png'; // Pfad anpassen!
+import logo from '../images/logo_schwarz.svg'; // Pfad anpassen!
 
 const Navbar: React.FC = () => {
     const [menuOpen, setMenuOpen] = useState(false);
