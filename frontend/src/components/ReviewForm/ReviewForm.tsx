@@ -457,7 +457,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
           <div>
             <SectionHeading className="mb-3">Allgemeines zum Betrieb</SectionHeading>
             <Paragraph className="mb-6">
-              Hier geht es um allgemeine Rahmenbedingungen im Betrieb.
+              Hier geht es um die allgemeinen Rahmenbedingungen im Betrieb.
             </Paragraph>
           </div>
           <FormField
@@ -590,17 +590,20 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
           </div>
           <div className="space-y-4">
             <h3 className="font-semibold text-blackish text-lg border-b pb-1">Geschlecht</h3>
-            {discriminationCombo(
-              'genderDiscriminationExperienced',
-              genderExperienced,
-              'Ich habe im Betrieb selbst Diskriminierung aufgrund meines Geschlechts oder meiner Sexualität* erfahren.'
-            )}
-            {discriminationCombo(
-              'genderDiscriminationObserved',
-              genderObserved,
-              'Ich habe die Diskriminierung anderer aufgrund ihres Geschlechts oder ihrer Sexualität* im Betrieb beobachtet.'
-            )}
-            <Paragraph className="text-sm text-gray-600">
+            <CheckboxGroup>
+
+              {discriminationCombo(
+                'genderDiscriminationExperienced',
+                genderExperienced,
+                'Ich habe im Betrieb selbst Diskriminierung aufgrund meines Geschlechts oder meiner Sexualität* erfahren.'
+              )}
+              {discriminationCombo(
+                'genderDiscriminationObserved',
+                genderObserved,
+                'Ich habe die Diskriminierung anderer aufgrund ihres Geschlechts oder ihrer Sexualität* im Betrieb beobachtet.'
+              )}
+            </CheckboxGroup>
+            <Paragraph className="text-sm">
               *Sexismus, Homophobie und Queerfeinlichkeit sind Formen der Diskriminierung, bei
               denen Personen aufgrund ihrer Geschlechtsidentität (zB. trans, nicht-binär, inter)
               oder ihrer Sexualität (zB. homosexuell, asexuell) Benachteiligung und Gewalt
@@ -611,17 +614,21 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
             <h3 className="font-semibold text-gray-800 text-lg border-b pb-1">
               Herkunft, Religion, Erscheinungsbild
             </h3>
-            {discriminationCombo(
-              'ethnicityDiscriminationExperienced',
-              ethnicityExperienced,
-              'Ich habe im Betrieb selbst Diskriminierung aufgrund meiner Herkunft, meiner Religion oder meines Erscheinungsbildes* erfahren.'
-            )}
-            {discriminationCombo(
-              'ethnicityDiscriminationObserved',
-              ethnicityObserved,
-              'Ich habe die Diskriminierung anderer aufgrund ihrer Herkunft, Religion oder ihres Erscheinungsbildes* im Betrieb beobachtet.'
-            )}
-            <Paragraph className="text-sm text-gray-600">
+            <CheckboxGroup>
+
+              {discriminationCombo(
+                'ethnicityDiscriminationExperienced',
+                ethnicityExperienced,
+                'Ich habe im Betrieb selbst Diskriminierung aufgrund meiner Herkunft, meiner Religion oder meines Erscheinungsbildes* erfahren.'
+              )}
+              {discriminationCombo(
+                'ethnicityDiscriminationObserved',
+                ethnicityObserved,
+                'Ich habe die Diskriminierung anderer aufgrund ihrer Herkunft, Religion oder ihres Erscheinungsbildes* im Betrieb beobachtet.'
+              )}
+
+            </CheckboxGroup>
+            <Paragraph className="text-sm">
               *Rassismus, Muslimfeindlichkeit und Antisemitismus sind Formen der Diskriminierung,
               bei der Menschen zum Beispiel wegen ihrer Hautfarbe, ihrer Haare, ihres Namens, ihrer
               Sprache oder ihres Glaubens ausgegrenzt und abgewertet werden.
@@ -629,17 +636,20 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
           </div>
           <div className="space-y-2">
             <h3 className="font-semibold text-blackish text-lg border-b pb-1">Beeinträchtigung</h3>
-            {discriminationCombo(
-              'disabilityDiscriminationExperienced',
-              disabilityExperienced,
-              'Ich habe im Betrieb selbst Diskriminierung aufgrund meiner Behinderung, meiner Krankheit oder meiner Neurodivergenz* erfahren.'
-            )}
-            {discriminationCombo(
-              'disabilityDiscriminationObserved',
-              disabilityObserved,
-              'Ich habe die Diskriminierung anderer aufgrund ihrer Behinderung, ihrer Krankheit oder ihrer Neurodivergenz* im Betrieb beobachtet.'
-            )}
-            <Paragraph className="text-sm text-gray-600">
+            <CheckboxGroup>
+              {discriminationCombo(
+                'disabilityDiscriminationExperienced',
+                disabilityExperienced,
+                'Ich habe im Betrieb selbst Diskriminierung aufgrund meiner Behinderung, meiner Krankheit oder meiner Neurodivergenz* erfahren.'
+              )}
+              {discriminationCombo(
+                'disabilityDiscriminationObserved',
+                disabilityObserved,
+                'Ich habe die Diskriminierung anderer aufgrund ihrer Behinderung, ihrer Krankheit oder ihrer Neurodivergenz* im Betrieb beobachtet.'
+              )}
+            </CheckboxGroup>
+
+            <Paragraph className="text-sm">
               *Ableismus ist eine Form von Diskriminierung, bei der Menschen mit Behinderung von
               Menschen ohne Behinderung auf die Merkmale reduziert werden, in denen sie sich vom
               „Normal" unterscheiden. Diese Merkmale können sichtbar (zB. Rollstuhl) oder
